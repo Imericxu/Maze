@@ -17,6 +17,8 @@ public class Cell
     public static final int END = 4;
     // Prims
     public static final int FRONTIER = 5;
+    // Backtracker
+    public static final int VISITED = 6;
     private final int row;
     private final int col;
     private int state;

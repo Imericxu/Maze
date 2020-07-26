@@ -62,9 +62,4 @@ public class OrthogonalPrims extends OrthogonalMaze
             }
         }
     }
-    
-    private Cell[] getNeighbors(Cell Cell)
-    {
-        return new Cell[]{above(Cell), below(Cell), left(Cell), right(Cell)};
-    }
 }

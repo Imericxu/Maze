@@ -22,28 +22,33 @@ public abstract class OrthogonalMaze
     
     public abstract void step();
     
-    public Cell above(Cell cell)
+    protected Cell above(Cell cell)
     {
         if (cell.getRow() <= 2) return null;
         return grid[cell.getRow() - 2][cell.getCol()];
     }
     
-    public Cell below(Cell cell)
+    protected Cell below(Cell cell)
     {
         if (cell.getRow() >= grid.length - 3) return null;
         return grid[cell.getRow() + 2][cell.getCol()];
     }
     
-    public Cell left(Cell cell)
+    protected Cell left(Cell cell)
     {
         if (cell.getCol() <= 2) return null;
         return grid[cell.getRow()][cell.getCol() - 2];
     }
     
-    public Cell right(Cell cell)
+    protected Cell right(Cell cell)
     {
         if (cell.getCol() >= grid[cell.getRow()].length - 3) return null;
         return grid[cell.getRow()][cell.getCol() + 2];
+    }
+    
+    protected Cell[] getNeighbors(Cell Cell)
+    {
+        return new Cell[]{above(Cell), below(Cell), left(Cell), right(Cell)};
     }
     
     public Cell getStart()

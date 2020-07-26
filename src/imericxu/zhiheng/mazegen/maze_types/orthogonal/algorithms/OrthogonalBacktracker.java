@@ -16,6 +16,7 @@ public class OrthogonalBacktracker extends OrthogonalMaze
     {
         super(rows, cols);
         stack = new Stack<>();
+        stack.push(start);
     }
     
     @Override
