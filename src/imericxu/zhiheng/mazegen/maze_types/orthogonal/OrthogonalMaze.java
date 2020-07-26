@@ -20,6 +20,11 @@ public abstract class OrthogonalMaze
         initNormalGrid();
     }
     
+    protected Cell getWallBetween(Cell c1, Cell c2)
+    {
+        return grid[(c1.getRow() + c2.getRow()) / 2][(c1.getCol() + c2.getCol()) / 2];
+    }
+    
     public abstract void step();
     
     protected Cell above(Cell cell)

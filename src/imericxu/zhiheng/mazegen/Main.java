@@ -1,8 +1,8 @@
 package imericxu.zhiheng.mazegen;
 
+import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalCanvas;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalMaze;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.OrthogonalPrims;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.OrthogonalBacktracker;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,7 +20,7 @@ public class Main extends Application
     public void start(Stage primaryStage)
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        OrthogonalMaze maze = new OrthogonalPrims(32, 32);
+        OrthogonalBacktracker maze = new OrthogonalBacktracker(20, 20);
         OrthogonalCanvas canvas = new OrthogonalCanvas(maze);
         StackPane root = new StackPane(canvas);
         
@@ -34,9 +34,29 @@ public class Main extends Application
             }
         };
         timerRender.start();
+        Scene scene = new Scene(root);
+        /*scene.setOnMouseClicked(e ->
+        {
+            maze.step();
+            for (var row : maze.getGrid())
+            {
+                for (var col : row)
+                {
+                    if (col.getState() == Cell.WALL)
+                    {
+                        System.out.print("█ ");
+                    }
+                    else
+                    {
+                        System.out.print(col.getVisited() + " ");
+                    }
+                }
+                System.out.println();
+            }
+        });*/
         
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }

@@ -12,22 +12,22 @@ public class Cell
 {
     public static final int OPEN = 0;
     public static final int WALL = 1;
-    public static final int SEEN = 2;
+    public static final int VISITED = 2;
     public static final int START = 3;
     public static final int END = 4;
     // Prims
-    public static final int FRONTIER = 5;
-    // Backtracker
-    public static final int VISITED = 6;
+    public static final int SPECIAL = 5;
     private final int row;
     private final int col;
     private int state;
+    private int visited;
     
     public Cell(int row, int col)
     {
         this.row = row;
         this.col = col;
         state = WALL;
+        visited = 0;
     }
     
     public int getState()
@@ -48,5 +48,32 @@ public class Cell
     public int getCol()
     {
         return col;
+    }
+    
+    public int getVisited()
+    {
+        return visited;
+    }
+    
+    public void visited()
+    {
+        state = VISITED;
+        ++visited;
+    }
+    
+    @Override
+    public String toString()
+    {
+        String name = switch (state)
+                {
+                    case OPEN -> "Open";
+                    case WALL -> "Wall";
+                    case VISITED -> "Visited";
+                    case START -> "Start";
+                    case END -> "End";
+                    case SPECIAL -> "Special";
+                    default -> "???";
+                };
+        return name + String.format(" (%d, %d)", row, col);
     }
 }
