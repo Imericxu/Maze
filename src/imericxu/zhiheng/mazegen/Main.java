@@ -20,7 +20,7 @@ public class Main extends Application
     public void start(Stage primaryStage)
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        OrthogonalMaze maze = new OrthogonalPrims(30, 30);
+        OrthogonalMaze maze = new OrthogonalPrims(32, 32);
         OrthogonalCanvas canvas = new OrthogonalCanvas(maze);
         StackPane root = new StackPane(canvas);
         

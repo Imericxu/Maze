@@ -16,7 +16,7 @@ public class OrthogonalPrims extends OrthogonalMaze
     {
         super(rows, cols);
         frontiers = new ArrayList<>();
-        beginWithStart();
+        addFrontiers(start);
     }
     
     public void step()
@@ -34,7 +34,7 @@ public class OrthogonalPrims extends OrthogonalMaze
             
             for (Cell pos : tempPoses)
             {
-                if (pos != null && pos.getState() == Cell.State.SEEN)
+                if (pos != null && pos.getState() == Cell.SEEN)
                 {
                     discoveredCells.add(pos);
                 }
@@ -42,49 +42,29 @@ public class OrthogonalPrims extends OrthogonalMaze
             
             i = (int) (Math.random() * discoveredCells.size());
             Cell chosen = discoveredCells.get(i);
-            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.State.SEEN);
+            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.SEEN);
         }
     }
     
     private void addFrontiers(Cell pos)
     {
-        pos.setState(Cell.State.SEEN);
+        pos.setState(Cell.SEEN);
         
         Cell[] tempPoses = getNeighbors(pos);
         
         for (Cell newPos : tempPoses)
         {
             if (newPos == null) continue;
-            if (!frontiers.contains(newPos) && newPos.getState() != Cell.State.SEEN)
+            if (!frontiers.contains(newPos) && newPos.getState() != Cell.SEEN)
             {
-                newPos.setState(Cell.State.FRONTIER);
+                newPos.setState(Cell.FRONTIER);
                 frontiers.add(newPos);
             }
         }
     }
     
-    private Cell[] getNeighbors(Cell cell)
+    private Cell[] getNeighbors(Cell Cell)
     {
-        return new Cell[]{above(cell), below(cell), left(cell), right(cell)};
-    }
-    
-    private void beginWithStart()
-    {
-        if (start.getRow() == 0)
-        {
-            addFrontiers(grid[start.getRow() + 1][start.getCol()]);
-        }
-        else if (start.getRow() == grid.length - 1)
-        {
-            addFrontiers(grid[start.getRow() - 1][start.getCol()]);
-        }
-        else if (start.getCol() == 0)
-        {
-            addFrontiers(grid[start.getRow()][start.getCol() + 1]);
-        }
-        else
-        {
-            addFrontiers(grid[start.getRow()][start.getCol() - 1]);
-        }
+        return new Cell[]{above(Cell), below(Cell), left(Cell), right(Cell)};
     }
 }

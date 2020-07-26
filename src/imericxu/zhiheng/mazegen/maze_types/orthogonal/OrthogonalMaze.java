@@ -75,7 +75,7 @@ public abstract class OrthogonalMaze
         {
             for (int col = 1; col < grid[0].length - 1; col += 2)
             {
-                grid[row][col].setState(Cell.State.OPEN);
+                grid[row][col].setState(Cell.OPEN);
             }
         }
         
@@ -108,13 +108,19 @@ public abstract class OrthogonalMaze
     
     private void setStart(int row, int col)
     {
+        grid[row][col].setState(Cell.START);
+        
+        if (row == 0) ++row;
+        else if (row == grid.length - 1) --row;
+        else if (col == 0) ++col;
+        else --col;
+        
         start = grid[row][col];
-        grid[row][col].setState(Cell.State.START);
     }
     
     private void setEnd(int row, int col)
     {
         end = grid[row][col];
-        grid[row][col].setState(Cell.State.END);
+        grid[row][col].setState(Cell.END);
     }
 }

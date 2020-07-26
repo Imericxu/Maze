@@ -9,24 +9,18 @@ public class OrthogonalCanvas extends Canvas
 {
     private final int cellSize;
     private final int wallSize;
-    private final OrthogonalMaze maze;
     private final Cell[][] grid;
-    private final Cell start;
-    private final Cell end;
     private final GraphicsContext gc;
     
     public OrthogonalCanvas(OrthogonalMaze maze)
     {
         // TODO: Calculate canvas width based on rows and cols
         cellSize = 20;
-        wallSize = 5;
-        this.maze = maze;
+        wallSize = 3;
         this.grid = maze.getGrid();
         setWidth(1000);
         setHeight(800);
         gc = getGraphicsContext2D();
-        start = maze.getStart();
-        end = maze.getEnd();
     }
     
     public void drawMaze()
@@ -42,8 +36,8 @@ public class OrthogonalCanvas extends Canvas
             {
                 switch (grid[row][col].getState())
                 {
-                case SEEN, START, END -> gc.setFill(Color.WHITE);
-                case FRONTIER -> gc.setFill(Color.PINK);
+                case Cell.SEEN, Cell.START, Cell.END -> gc.setFill(Color.WHITE);
+                case Cell.FRONTIER -> gc.setFill(Color.PINK);
                 default -> {
                     continue;
                 }
