@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import javafx.geometry.Pos;
 
 /**
  * A maze composed of squares
@@ -22,6 +21,30 @@ public abstract class OrthogonalMaze
     }
     
     public abstract void step();
+    
+    public Cell above(Cell cell)
+    {
+        if (cell.getRow() <= 2) return null;
+        return grid[cell.getRow() - 2][cell.getCol()];
+    }
+    
+    public Cell below(Cell cell)
+    {
+        if (cell.getRow() >= grid.length - 3) return null;
+        return grid[cell.getRow() + 2][cell.getCol()];
+    }
+    
+    public Cell left(Cell cell)
+    {
+        if (cell.getCol() <= 2) return null;
+        return grid[cell.getRow()][cell.getCol() - 2];
+    }
+    
+    public Cell right(Cell cell)
+    {
+        if (cell.getCol() >= grid[cell.getRow()].length - 3) return null;
+        return grid[cell.getRow()][cell.getCol() + 2];
+    }
     
     public Cell getStart()
     {
@@ -78,9 +101,9 @@ public abstract class OrthogonalMaze
         }
     }
     
-    private int rand(int upBound)
+    private int rand(int upTo)
     {
-        return (int) (Math.random() * (upBound / 2)) * 2 + 1;
+        return (int) (Math.random() * (upTo / 2)) * 2 + 1;
     }
     
     private void setStart(int row, int col)

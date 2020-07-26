@@ -15,11 +15,6 @@ public class Cell
         this.col = col;
         state = State.WALL;
     }
-
-    public Cell shift(int row, int col)
-    {
-        return new Cell(this.row + row, this.col + col);
-    }
     
     public int getRow()
     {
@@ -49,6 +44,6 @@ public class Cell
     
     public enum State
     {
-        OPEN, WALL, FOUND, START, END
+        OPEN, WALL, SEEN, START, END, FRONTIER
     }
 }

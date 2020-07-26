@@ -34,7 +34,7 @@ public class OrthogonalPrims extends OrthogonalMaze
             
             for (Cell pos : tempPoses)
             {
-                if (pos != null && grid[pos.getRow()][pos.getCol()].getState() == Cell.State.FOUND)
+                if (pos != null && pos.getState() == Cell.State.SEEN)
                 {
                     discoveredCells.add(pos);
                 }
@@ -42,22 +42,22 @@ public class OrthogonalPrims extends OrthogonalMaze
             
             i = (int) (Math.random() * discoveredCells.size());
             Cell chosen = discoveredCells.get(i);
-            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.State.OPEN);
+            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.State.SEEN);
         }
     }
     
     private void addFrontiers(Cell pos)
     {
-        grid[pos.getRow()][pos.getCol()].setState(Cell.State.FOUND);
+        pos.setState(Cell.State.SEEN);
         
         Cell[] tempPoses = getNeighbors(pos);
         
         for (Cell newPos : tempPoses)
         {
             if (newPos == null) continue;
-            boolean isFoundCell = grid[newPos.getRow()][newPos.getCol()].getState() != Cell.State.FOUND;
-            if (!frontiers.contains(newPos) && isFoundCell)
+            if (!frontiers.contains(newPos) && newPos.getState() != Cell.State.SEEN)
             {
+                newPos.setState(Cell.State.FRONTIER);
                 frontiers.add(newPos);
             }
         }
@@ -65,31 +65,26 @@ public class OrthogonalPrims extends OrthogonalMaze
     
     private Cell[] getNeighbors(Cell cell)
     {
-        Cell up = cell.getRow() > 2 ? cell.shift(-2, 0) : null;
-        Cell down = cell.getRow() < grid.length - 3 ? cell.shift(2, 0) : null;
-        Cell left = cell.getCol() > 2 ? cell.shift(0, -2) : null;
-        Cell right = cell.getCol() < grid[0].length - 3 ? cell.shift(0, 2) : null;
-        
-        return new Cell[]{up, down, left, right};
+        return new Cell[]{above(cell), below(cell), left(cell), right(cell)};
     }
     
     private void beginWithStart()
     {
         if (start.getRow() == 0)
         {
-            addFrontiers(start.shift(1, 0));
+            addFrontiers(grid[start.getRow() + 1][start.getCol()]);
         }
         else if (start.getRow() == grid.length - 1)
         {
-            addFrontiers(start.shift(-1, 0));
+            addFrontiers(grid[start.getRow() - 1][start.getCol()]);
         }
         else if (start.getCol() == 0)
         {
-            addFrontiers(start.shift(0, 1));
+            addFrontiers(grid[start.getRow()][start.getCol() + 1]);
         }
         else
         {
-            addFrontiers(start.shift(0, -1));
+            addFrontiers(grid[start.getRow()][start.getCol() - 1]);
         }
     }
 }
