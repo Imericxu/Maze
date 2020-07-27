@@ -13,14 +13,16 @@ public class OrthogonalCanvas extends Canvas
     
     public OrthogonalCanvas(OrthogonalMaze maze)
     {
-        // TODO: Calculate canvas width based on rows and cols
-        cellSize = 20;
-        wallSize = 3;
+        cellSize = 18;
+        wallSize = 10;
         grid = maze.getGrid();
-        setWidth(grid[0].length * cellSize + (grid[0].length + 1) * wallSize);
-        setHeight(grid.length * cellSize + (grid.length + 1) * wallSize);
+        
+        int rows = grid.length;
+        int cols = grid[0].length;
+        setWidth(cols*cellSize + (cols + 1)*wallSize);
+        setHeight(rows*cellSize + (rows + 1)*wallSize);
         gc = getGraphicsContext2D();
-        drawGrid();
+        // drawGrid();
     }
     
     public void drawMaze()
