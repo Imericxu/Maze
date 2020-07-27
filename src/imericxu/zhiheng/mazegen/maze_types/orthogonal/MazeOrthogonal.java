@@ -1,5 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
+import java.util.Random;
+
 /**
  * A maze composed of squares
  */
@@ -8,6 +10,10 @@ public abstract class MazeOrthogonal
     protected final OCell[][] grid;
     protected OCell start;
     protected OCell end;
+    /**
+     * Random number generator (better than Math.random())
+     */
+    protected Random r;
     
     /**
      * Generates a rectangular maze
@@ -15,6 +21,7 @@ public abstract class MazeOrthogonal
     protected MazeOrthogonal(int rows, int cols)
     {
         grid = new OCell[rows][cols];
+        r = new Random();
         initializeGrid();
         randomizeStartAndEnd();
     }

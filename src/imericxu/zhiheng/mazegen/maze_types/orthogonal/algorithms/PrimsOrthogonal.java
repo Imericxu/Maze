@@ -16,10 +16,6 @@ public class PrimsOrthogonal extends MazeOrthogonal
      * Cells surrounding the already explored cells
      */
     private final ArrayList<OCell> frontiers;
-    /**
-     * Random number generator (better than Math.random())
-     */
-    private final Random r;
     
     /**
      * Generates a rectangular maze
@@ -28,8 +24,6 @@ public class PrimsOrthogonal extends MazeOrthogonal
     {
         super(rows, cols);
         frontiers = new ArrayList<>();
-        r = new Random();
-        
         addFrontiersOf(start);
     }
     

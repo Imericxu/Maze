@@ -1,29 +1,37 @@
 // package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
 //
 // import imericxu.zhiheng.mazegen.maze_types.Cell;
-// import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalMaze;
+// import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
 //
 // import java.util.ArrayList;
 // import java.util.Stack;
 //
-// public class OrthogonalBacktracker extends OrthogonalMaze
+// public class BacktrackerOrthogonal extends MazeOrthogonal
 // {
 //     private final Stack<Cell> stack;
-//     private Cell previous;
+//     // private Cell previous;
 //
 //     /**
 //      * Generates a rectangular maze
 //      */
-//     public OrthogonalBacktracker(int rows, int cols)
+//     protected BacktrackerOrthogonal(int rows, int cols)
 //     {
 //         super(rows, cols);
 //         stack = new Stack<>();
 //         stack.push(start);
-//         start.visited();
+//         start.setDisplay(Cell.Display.SHOW);
 //     }
 //
 //     @Override
 //     public void step()
+//     {
+//         if (!stack.empty())
+//         {
+//             Cell current =
+//         }
+//     }
+//
+//     public void oldstep()
 //     {
 //         if (!stack.isEmpty())
 //         {
@@ -39,7 +47,6 @@
 //                 chosen.visited();
 //
 //                 previous = current;
-//                 getWallBetween(current, chosen).visited();
 //
 //                 stack.push(chosen);
 //             }
