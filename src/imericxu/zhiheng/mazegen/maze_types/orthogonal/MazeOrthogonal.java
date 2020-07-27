@@ -3,7 +3,7 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 /**
  * A maze composed of squares
  */
-public abstract class OrthogonalMaze
+public abstract class MazeOrthogonal
 {
     protected final OCell[][] grid;
     protected OCell start;
@@ -12,7 +12,7 @@ public abstract class OrthogonalMaze
     /**
      * Generates a rectangular maze
      */
-    protected OrthogonalMaze(int rows, int cols)
+    protected MazeOrthogonal(int rows, int cols)
     {
         grid = new OCell[rows][cols];
         initializeGrid();

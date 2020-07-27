@@ -4,14 +4,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class OrthogonalCanvas extends Canvas
+public class CanvasOrthogonal extends Canvas
 {
     private final int cellSize;
     private final int wallSize;
     private final OCell[][] grid;
     private final GraphicsContext gc;
     
-    public OrthogonalCanvas(OrthogonalMaze maze)
+    public CanvasOrthogonal(MazeOrthogonal maze)
     {
         cellSize = 18;
         wallSize = 10;
@@ -19,8 +19,8 @@ public class OrthogonalCanvas extends Canvas
         
         int rows = grid.length;
         int cols = grid[0].length;
-        setWidth(cols*cellSize + (cols + 1)*wallSize);
-        setHeight(rows*cellSize + (rows + 1)*wallSize);
+        setWidth(cols * cellSize + (cols + 1) * wallSize);
+        setHeight(rows * cellSize + (rows + 1) * wallSize);
         gc = getGraphicsContext2D();
         // drawGrid();
     }
