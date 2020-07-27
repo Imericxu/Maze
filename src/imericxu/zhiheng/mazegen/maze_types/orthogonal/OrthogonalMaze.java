@@ -147,8 +147,8 @@ public abstract class OrthogonalMaze
         default -> throw new IllegalStateException("Unexpected value: " + (int) (Math.random() * 4));
         }
         
-        grid[sRow][sCol] = start;
-        grid[eRow][eCol] = end;
+        start = grid[sRow][sCol];
+        end = grid[eRow][eCol];
         start.setWall(sWall, false);
         end.setWall(eWall, false);
     }
