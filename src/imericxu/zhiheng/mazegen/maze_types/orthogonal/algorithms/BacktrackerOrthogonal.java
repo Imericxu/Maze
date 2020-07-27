@@ -1,78 +1,64 @@
-// package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
-//
-// import imericxu.zhiheng.mazegen.maze_types.Cell;
-// import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
-//
-// import java.util.ArrayList;
-// import java.util.Stack;
-//
-// public class BacktrackerOrthogonal extends MazeOrthogonal
-// {
-//     private final Stack<Cell> stack;
-//     // private Cell previous;
-//
-//     /**
-//      * Generates a rectangular maze
-//      */
-//     protected BacktrackerOrthogonal(int rows, int cols)
-//     {
-//         super(rows, cols);
-//         stack = new Stack<>();
-//         stack.push(start);
-//         start.setDisplay(Cell.Display.SHOW);
-//     }
-//
-//     @Override
-//     public void step()
-//     {
-//         if (!stack.empty())
-//         {
-//             Cell current =
-//         }
-//     }
-//
-//     public void oldstep()
-//     {
-//         if (!stack.isEmpty())
-//         {
-//             Cell current = stack.pop();
-//             ArrayList<Cell> unvisited = getUnvisitedNeighbors(current);
-//
-//             if (!unvisited.isEmpty())
-//             {
-//                 stack.push(current);
-//
-//                 int i = (int) (Math.random() * unvisited.size());
-//                 Cell chosen = unvisited.get(i);
-//                 chosen.visited();
-//
-//                 previous = current;
-//
-//                 stack.push(chosen);
-//             }
-//             else
-//             {
-//                 current.visited();
-//                 getWallBetween(previous, current).visited();
-//                 previous = current;
-//             }
-//         }
-//         else
-//         {
-//             start.setState(Cell.START);
-//         }
-//     }
-//
-//     private ArrayList<Cell> getUnvisitedNeighbors(Cell current)
-//     {
-//         ArrayList<Cell> unvisited = new ArrayList<>();
-//         for (Cell neighbor : getNeighbors(current))
-//         {
-//             if (neighbor != null && neighbor.getState() != Cell.VISITED)
-//             {
-//                 unvisited.add(neighbor);
-//             }
-//         }
-//         return unvisited;
-//     }
-// }
+package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
+
+import imericxu.zhiheng.mazegen.maze_types.Cell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class BacktrackerOrthogonal extends MazeOrthogonal
+{
+    private final Stack<OCell> stack;
+    
+    /**
+     * Generates a rectangular maze
+     */
+    public BacktrackerOrthogonal(int rows, int cols)
+    {
+        super(rows, cols);
+        stack = new Stack<>();
+        stack.push(start);
+        start.visited();
+        start.setDisplay(Cell.Display.SHOW);
+    }
+    
+    @Override
+    public void step()
+    {
+        if (!stack.empty())
+        {
+            OCell current = stack.pop();
+            var unvisited = getUnvisitedNeighbors(current);
+            
+            if (!unvisited.isEmpty())
+            {
+                stack.push(current);
+                
+                OCell selected = unvisited.get(r.nextInt(unvisited.size()));
+                selected.visited();
+                selected.setDisplay(Cell.Display.COLOR_1);
+                stack.push(selected);
+                
+                removeWallsBetween(current, selected);
+            }
+            else
+            {
+                current.setDisplay(Cell.Display.SHOW);
+            }
+        }
+    }
+    
+    private ArrayList<OCell> getUnvisitedNeighbors(OCell current)
+    {
+        ArrayList<OCell> unvisited = new ArrayList<>();
+        for (OCell neighbor : getNeighbors(current))
+        {
+            if (neighbor != null && neighbor.getVisited() == 0)
+            {
+                unvisited.add(neighbor);
+            }
+        }
+        return unvisited;
+    }
+}
