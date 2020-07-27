@@ -28,13 +28,11 @@ public class OrthogonalPrims extends OrthogonalMaze
         if (!frontiers.isEmpty())
         {
             int i = r.nextInt(frontiers.size());
-            Cell randomFrontier = frontiers.remove(i);
-            addFrontiers(randomFrontier);
-            int row = randomFrontier.getRow();
-            int col = randomFrontier.getCol();
+            Cell current = frontiers.remove(i);
+            addFrontiers(current);
             
             ArrayList<Cell> visited = new ArrayList<>();
-            for (Cell pos : getNeighbors(randomFrontier))
+            for (Cell pos : getNeighbors(current))
             {
                 if (pos != null && pos.getState() == Cell.VISITED)
                 {
@@ -44,7 +42,7 @@ public class OrthogonalPrims extends OrthogonalMaze
             
             i = r.nextInt(visited.size());
             Cell chosen = visited.get(i);
-            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.VISITED);
+            getWallBetween(chosen, current).setState(Cell.VISITED);
         }
     }
     
