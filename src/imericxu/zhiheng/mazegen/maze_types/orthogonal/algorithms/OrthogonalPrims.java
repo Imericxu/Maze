@@ -6,9 +6,18 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalMaze;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Uses Prim's algorithm to generate orthogonal mazes
+ */
 public class OrthogonalPrims extends OrthogonalMaze
 {
+    /**
+     * Cells surrounding the already explored cells
+     */
     private final ArrayList<OCell> frontiers;
+    /**
+     * Random number generator (better than Math.random())
+     */
     private final Random r;
     
     /**
@@ -18,8 +27,9 @@ public class OrthogonalPrims extends OrthogonalMaze
     {
         super(rows, cols);
         frontiers = new ArrayList<>();
-        addFrontiers(start);
         r = new Random();
+        
+        addFrontiersOf(start);
     }
     
     @Override
@@ -28,46 +38,20 @@ public class OrthogonalPrims extends OrthogonalMaze
         if (!frontiers.isEmpty())
         {
             OCell current = frontiers.remove(r.nextInt(frontiers.size()));
-            addFrontiers(current);
-            
-            ArrayList<OCell> visited = new ArrayList<>();
-            for (OCell cell : getNeighbors(current))
-            {
-                if (cell != null && cell.getVisited() >= 1)
-                {
-                    visited.add(cell);
-                }
-            }
-            
-            OCell chosen = visited.get(r.nextInt(visited.size()));
-            removeWallsBetween(current, chosen);
+            addFrontiersOf(current);
+            ArrayList<OCell> choices = getChoices(current);
+            OCell selected = choices.get(r.nextInt(choices.size()));
+            removeWallsBetween(current, selected);
         }
     }
     
-    public void oldstep()
-    {
-        if (!frontiers.isEmpty())
-        {
-            int i = (int) (Math.random() * frontiers.size());
-            OCell current = frontiers.remove(i);
-            addFrontiers(current);
-            
-            ArrayList<OCell> visitedNeighbors = new ArrayList<>();
-            for (OCell cell : getNeighbors(current))
-            {
-                if (cell != null && cell.getVisited() >= 1)
-                {
-                    visitedNeighbors.add(cell);
-                }
-            }
-            
-            i = (int) (Math.random() * visitedNeighbors.size());
-            OCell chosen = visitedNeighbors.get(i);
-            removeWallsBetween(current, chosen);
-        }
-    }
-    
-    private void addFrontiers(OCell cell)
+    /**
+     * Marks {@code cell} as visited.<br/>
+     * Gets the neighbors of {@code cell} and adds them to
+     * {@link #frontiers} if not already added and the {@link OCell}
+     * has not been visited
+     */
+    private void addFrontiersOf(OCell cell)
     {
         cell.visited();
         
@@ -79,5 +63,25 @@ public class OrthogonalPrims extends OrthogonalMaze
                 frontiers.add(neighbor);
             }
         }
+    }
+    
+    /**
+     * Gets the neighbors of {@code current} and adds if the
+     * {@link OCell} has previously been explored
+     *
+     * @param current the current frontier
+     * @return an ArrayList containing possible {@link OCell}s {@code current} can connect to
+     */
+    private ArrayList<OCell> getChoices(OCell current)
+    {
+        var visited = new ArrayList<OCell>();
+        for (OCell cell : getNeighbors(current))
+        {
+            if (cell != null && cell.getVisited() >= 1)
+            {
+                visited.add(cell);
+            }
+        }
+        return visited;
     }
 }
