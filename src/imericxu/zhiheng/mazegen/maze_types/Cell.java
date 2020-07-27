@@ -17,6 +17,14 @@ public class Cell
         display = Display.HIDE;
     }
     
+    public Cell(Cell other)
+    {
+        row = other.row;
+        col = other.col;
+        visited = other.visited;
+        display = other.display;
+    }
+    
     public int getRow()
     {
         return row;
@@ -55,7 +63,11 @@ public class Cell
     
     public enum Display
     {
-        HIDE(Color.web("0x1C518B")), SHOW(Color.WHITE), COLOR_1(Color.web("0x82C7FF"));
+        HIDE(Color.web("0x1C518B")),
+        SHOW(Color.WHITE),
+        EXPLORE(Color.web("0x82C7FF")),
+        DARK(Color.web("0xFF5E4D")),
+        PATH(Color.web("0xFED766"));
         private final Color color;
         
         Display(Color color)

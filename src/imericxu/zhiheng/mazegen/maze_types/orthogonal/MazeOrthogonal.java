@@ -26,6 +26,7 @@ public abstract class MazeOrthogonal
         randomizeStartAndEnd();
     }
     
+    
     /* * * * * * * * * * * * * * * * * * * * *
     Methods
     * * * * * * * * * * * * * * * * * * * * */
@@ -38,6 +39,26 @@ public abstract class MazeOrthogonal
     public OCell[][] getGrid()
     {
         return grid;
+    }
+    
+    public OCell getStart()
+    {
+        return start;
+    }
+    
+    public OCell getEnd()
+    {
+        return end;
+    }
+    
+    /**
+     * @param OCell cell to get neighbors of
+     * @return an array of cells on the four sides of this cell;
+     * null if out of bounds
+     */
+    public OCell[] getNeighbors(OCell OCell)
+    {
+        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
     }
     
     protected void removeWallsBetween(OCell c1, OCell c2)
@@ -62,16 +83,6 @@ public abstract class MazeOrthogonal
             c1.setWall(OCell.LEFT, false);
             c2.setWall(OCell.RIGHT, false);
         }
-    }
-    
-    /**
-     * @param OCell cell to get neighbors of
-     * @return an array of cells on the four sides of this cell;
-     * null if out of bounds
-     */
-    protected OCell[] getNeighbors(OCell OCell)
-    {
-        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
     }
     
     protected OCell above(OCell OCell)

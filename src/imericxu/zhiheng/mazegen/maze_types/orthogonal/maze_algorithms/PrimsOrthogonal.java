@@ -1,11 +1,10 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
+package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Uses Prim's algorithm to generate orthogonal mazes
@@ -60,7 +59,7 @@ public class PrimsOrthogonal extends MazeOrthogonal
             if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
                 frontiers.add(neighbor);
-                neighbor.setDisplay(Cell.Display.COLOR_1);
+                neighbor.setDisplay(Cell.Display.EXPLORE);
             }
         }
     }

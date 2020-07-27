@@ -1,7 +1,13 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
+import imericxu.zhiheng.mazegen.maze_types.Cell;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+
+import java.util.ArrayList;
 
 import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
 
@@ -22,7 +28,7 @@ public class CanvasOrthogonal extends Canvas
      */
     public CanvasOrthogonal(MazeOrthogonal maze)
     {
-        cellSize = 12;
+        cellSize = 18;
         wallSize = 5;
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
@@ -59,6 +65,25 @@ public class CanvasOrthogonal extends Canvas
                 var walls = grid[row][col].getWalls();
                 eraseWalls(x, y, walls);
             }
+        }
+    }
+    
+    public void drawPath(ArrayList<OCell> pathList)
+    {
+        Cell first = pathList.get(0);
+        double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
+        double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
+        double x2, y2;
+        
+        gc.setStroke(Display.PATH.getColor());
+        gc.setLineWidth(cellSize * 0.5);
+        for (Cell cell : pathList.subList(1, pathList.size()))
+        {
+            x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;
+            y2 = (wallSize + cellSize) * cell.getRow() + wallSize + cellSize / 2.0;
+            gc.strokeLine(x1, y1, x2, y2);
+            x1 = x2;
+            y1 = y2;
         }
     }
     

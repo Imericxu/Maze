@@ -1,4 +1,4 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
+package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
@@ -40,7 +40,7 @@ public class BacktrackerOrthogonal extends MazeOrthogonal
                 
                 OCell selected = unvisited.get(r.nextInt(unvisited.size()));
                 selected.visited();
-                selected.setDisplay(Cell.Display.COLOR_1);
+                selected.setDisplay(Cell.Display.EXPLORE);
                 stack.push(selected);
                 
                 removeWallsBetween(current, selected);

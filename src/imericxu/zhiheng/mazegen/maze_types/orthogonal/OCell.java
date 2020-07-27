@@ -27,6 +27,12 @@ public class OCell extends Cell
         walls = new boolean[]{true, true, true, true};
     }
     
+    public OCell(OCell other)
+    {
+        super(other);
+        walls = other.getWalls();
+    }
+    
     public boolean[] getWalls()
     {
         return walls;
