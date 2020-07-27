@@ -1,72 +1,65 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
-
 /**
  * A maze composed of squares
  */
 public abstract class OrthogonalMaze
 {
-    protected final Cell[][] grid;
-    protected Cell start;
-    protected Cell end;
+    protected final OCell[][] grid;
+    protected OCell start;
+    protected OCell end;
     
     /**
      * Generates a rectangular maze
      */
     protected OrthogonalMaze(int rows, int cols)
     {
-        grid = new Cell[rows * 2 + 1][cols * 2 + 1];
+        grid = new OCell[rows][cols];
         initNormalGrid();
-    }
-    
-    protected Cell getWallBetween(Cell c1, Cell c2)
-    {
-        return grid[(c1.getRow() + c2.getRow()) / 2][(c1.getCol() + c2.getCol()) / 2];
     }
     
     public abstract void step();
     
-    protected Cell above(Cell cell)
+    protected OCell above(OCell OCell)
     {
-        if (cell.getRow() <= 2) return null;
-        return grid[cell.getRow() - 2][cell.getCol()];
+        if (OCell.getRow() <= 1) return null;
+        return grid[OCell.getRow() - 1][OCell.getCol()];
     }
     
-    protected Cell below(Cell cell)
+    protected OCell below(OCell OCell)
     {
-        if (cell.getRow() >= grid.length - 3) return null;
-        return grid[cell.getRow() + 2][cell.getCol()];
+        if (OCell.getRow() >= grid.length - 2) return null;
+        return grid[OCell.getRow() + 1][OCell.getCol()];
     }
     
-    protected Cell left(Cell cell)
+    protected OCell left(OCell OCell)
     {
-        if (cell.getCol() <= 2) return null;
-        return grid[cell.getRow()][cell.getCol() - 2];
+        if (OCell.getCol() <= 1) return null;
+        return grid[OCell.getRow()][OCell.getCol() - 1];
     }
     
-    protected Cell right(Cell cell)
+    protected OCell right(OCell OCell)
     {
-        if (cell.getCol() >= grid[cell.getRow()].length - 3) return null;
-        return grid[cell.getRow()][cell.getCol() + 2];
+        if (OCell.getCol() >= grid[OCell.getRow()].length - 2) return null;
+        return grid[OCell.getRow()][OCell.getCol() + 1];
     }
     
-    protected Cell[] getNeighbors(Cell Cell)
+    protected OCell[] getNeighbors(OCell OCell)
     {
-        return new Cell[]{above(Cell), below(Cell), left(Cell), right(Cell)};
+        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
     }
     
-    public Cell getStart()
+    public OCell getStart()
     {
         return start;
     }
     
-    public Cell getEnd()
+    public OCell getEnd()
     {
         return end;
     }
     
-    public Cell[][] getGrid()
+    public OCell[][] getGrid()
     {
         return grid;
     }
@@ -77,15 +70,7 @@ public abstract class OrthogonalMaze
         {
             for (int col = 0; col < grid[0].length; ++col)
             {
-                grid[row][col] = new Cell(row, col);
-            }
-        }
-        
-        for (int row = 1; row < grid.length - 1; row += 2)
-        {
-            for (int col = 1; col < grid[0].length - 1; col += 2)
-            {
-                grid[row][col].setState(Cell.OPEN);
+                grid[row][col] = new OCell(row, col);
             }
         }
         
@@ -111,26 +96,42 @@ public abstract class OrthogonalMaze
         }
     }
     
-    private int rand(int upTo)
-    {
-        return (int) (Math.random() * (upTo / 2)) * 2 + 1;
-    }
-    
     private void setStart(int row, int col)
     {
-        grid[row][col].setState(Cell.START);
-        
-        if (row == 0) ++row;
-        else if (row == grid.length - 1) --row;
-        else if (col == 0) ++col;
-        else --col;
-        
+        grid[row][col].setState(OCell.START);
         start = grid[row][col];
+        removeBorderWall(row, col, start);
     }
     
     private void setEnd(int row, int col)
     {
+        grid[row][col].setState(OCell.END);
         end = grid[row][col];
-        grid[row][col].setState(Cell.END);
+        removeBorderWall(row, col, end);
+    }
+    
+    private void removeBorderWall(int row, int col, OCell end)
+    {
+        if (row == 0)
+        {
+            end.setWall(OCell.TOP, false);
+        }
+        else if (row == grid.length - 1)
+        {
+            end.setWall(OCell.BOTTOM, false);
+        }
+        else if (col == 0)
+        {
+            end.setWall(OCell.LEFT, false);
+        }
+        else
+        {
+            end.setWall(OCell.RIGHT, false);
+        }
+    }
+    
+    private int rand(int upTo)
+    {
+        return (int) (Math.random() * upTo);
     }
 }

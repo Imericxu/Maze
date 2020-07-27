@@ -1,13 +1,13 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalMaze;
 
 import java.util.ArrayList;
 
 public class OrthogonalPrims extends OrthogonalMaze
 {
-    private final ArrayList<Cell> frontiers;
+    private final ArrayList<OCell> frontiers;
     
     /**
      * Generates a rectangular maze
@@ -25,40 +25,40 @@ public class OrthogonalPrims extends OrthogonalMaze
         if (!frontiers.isEmpty())
         {
             int i = (int) (Math.random() * frontiers.size());
-            Cell randomFrontier = frontiers.remove(i);
+            OCell randomFrontier = frontiers.remove(i);
             addFrontiers(randomFrontier);
             int row = randomFrontier.getRow();
             int col = randomFrontier.getCol();
             
-            ArrayList<Cell> discoveredCells = new ArrayList<>();
-            Cell[] tempPoses = getNeighbors(randomFrontier);
+            ArrayList<OCell> discoveredOCells = new ArrayList<>();
+            OCell[] tempPoses = getNeighbors(randomFrontier);
             
-            for (Cell pos : tempPoses)
+            for (OCell pos : tempPoses)
             {
-                if (pos != null && pos.getState() == Cell.VISITED)
+                if (pos != null && pos.getState() == OCell.VISITED)
                 {
-                    discoveredCells.add(pos);
+                    discoveredOCells.add(pos);
                 }
             }
             
-            i = (int) (Math.random() * discoveredCells.size());
-            Cell chosen = discoveredCells.get(i);
-            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.VISITED);
+            i = (int) (Math.random() * discoveredOCells.size());
+            OCell chosen = discoveredOCells.get(i);
+            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(OCell.VISITED);
         }
     }
     
-    private void addFrontiers(Cell pos)
+    private void addFrontiers(OCell pos)
     {
-        pos.setState(Cell.VISITED);
+        pos.setState(OCell.VISITED);
         
-        Cell[] tempPoses = getNeighbors(pos);
+        OCell[] tempPoses = getNeighbors(pos);
         
-        for (Cell newPos : tempPoses)
+        for (OCell newPos : tempPoses)
         {
             if (newPos == null) continue;
-            if (!frontiers.contains(newPos) && newPos.getState() != Cell.VISITED)
+            if (!frontiers.contains(newPos) && newPos.getState() != OCell.VISITED)
             {
-                newPos.setState(Cell.SPECIAL);
+                newPos.setState(OCell.SPECIAL);
                 frontiers.add(newPos);
             }
         }
