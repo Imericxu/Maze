@@ -4,10 +4,12 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalMaze;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class OrthogonalPrims extends OrthogonalMaze
 {
     private final ArrayList<OCell> frontiers;
+    private final Random r;
     
     /**
      * Generates a rectangular maze
@@ -17,10 +19,32 @@ public class OrthogonalPrims extends OrthogonalMaze
         super(rows, cols);
         frontiers = new ArrayList<>();
         addFrontiers(start);
+        r = new Random();
     }
     
     @Override
     public void step()
+    {
+        if (!frontiers.isEmpty())
+        {
+            OCell current = frontiers.remove(r.nextInt(frontiers.size()));
+            addFrontiers(current);
+            
+            ArrayList<OCell> visited = new ArrayList<>();
+            for (OCell cell : getNeighbors(current))
+            {
+                if (cell != null && cell.getVisited() >= 1)
+                {
+                    visited.add(cell);
+                }
+            }
+            
+            OCell chosen = visited.get(r.nextInt(visited.size()));
+            removeWallsBetween(current, chosen);
+        }
+    }
+    
+    public void oldstep()
     {
         if (!frontiers.isEmpty())
         {

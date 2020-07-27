@@ -22,32 +22,26 @@ public abstract class OrthogonalMaze
     
     protected void removeWallsBetween(OCell c1, OCell c2)
     {
-        int c1Wall;
-        int c2Wall;
-        
         if (c1.getRow() < c2.getRow())
         {
-            c1Wall = OCell.BOTTOM;
-            c2Wall = OCell.TOP;
+            c1.setWall(OCell.BOTTOM, false);
+            c2.setWall(OCell.TOP, false);
         }
         else if (c1.getRow() > c2.getRow())
         {
-            c1Wall = OCell.TOP;
-            c2Wall = OCell.BOTTOM;
+            c1.setWall(OCell.TOP, false);
+            c2.setWall(OCell.BOTTOM, false);
         }
         else if (c1.getCol() < c2.getCol())
         {
-            c1Wall = OCell.RIGHT;
-            c2Wall = OCell.LEFT;
+            c1.setWall(OCell.RIGHT, false);
+            c2.setWall(OCell.LEFT, false);
         }
         else
         {
-            c1Wall = OCell.LEFT;
-            c2Wall = OCell.RIGHT;
+            c1.setWall(OCell.LEFT, false);
+            c2.setWall(OCell.RIGHT, false);
         }
-        
-        c1.setWall(c1Wall, false);
-        c2.setWall(c2Wall, false);
     }
     
     protected OCell[] getNeighbors(OCell OCell)
