@@ -1,5 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms;
 
+import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
 
@@ -54,6 +55,7 @@ public class PrimsOrthogonal extends MazeOrthogonal
     private void addFrontiersOf(OCell cell)
     {
         cell.visited();
+        cell.setDisplay(Cell.Display.SHOW);
         
         for (OCell neighbor : getNeighbors(cell))
         {
@@ -61,6 +63,7 @@ public class PrimsOrthogonal extends MazeOrthogonal
             if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
                 frontiers.add(neighbor);
+                neighbor.setDisplay(Cell.Display.COLOR_1);
             }
         }
     }

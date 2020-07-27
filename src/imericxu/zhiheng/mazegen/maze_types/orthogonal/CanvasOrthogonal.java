@@ -4,6 +4,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * {@link Canvas} specifically designed to display orthogonal mazes
+ */
 public class CanvasOrthogonal extends Canvas
 {
     private final int cellSize;
@@ -14,22 +17,21 @@ public class CanvasOrthogonal extends Canvas
     public CanvasOrthogonal(MazeOrthogonal maze)
     {
         cellSize = 18;
-        wallSize = 10;
+        wallSize = 6;
         grid = maze.getGrid();
+        gc = getGraphicsContext2D();
         
         int rows = grid.length;
         int cols = grid[0].length;
-        setWidth(cols * cellSize + (cols + 1) * wallSize);
-        setHeight(rows * cellSize + (rows + 1) * wallSize);
-        gc = getGraphicsContext2D();
+        setWidth(cols * (cellSize + wallSize) + wallSize);
+        setHeight(rows * (cellSize + wallSize) + wallSize);
         // drawGrid();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, getWidth(), getHeight());
     }
     
     public void drawMaze()
     {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, getWidth(), getHeight());
-        
         int x, y;
         
         // Draw cells and erase walls
@@ -37,7 +39,14 @@ public class CanvasOrthogonal extends Canvas
         {
             for (int col = 0; col < grid[row].length; ++col)
             {
-                gc.setFill(Color.WHITE);
+                switch (grid[row][col].getDisplay())
+                {
+                case SHOW -> gc.setFill(Color.WHITE);
+                case COLOR_1 -> gc.setFill(Color.PINK);
+                case HIDE -> {
+                    continue;
+                }
+                }
                 
                 x = (wallSize + cellSize) * col + wallSize;
                 y = (wallSize + cellSize) * row + wallSize;
