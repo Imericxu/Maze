@@ -4,8 +4,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
+
 /**
- * {@link Canvas} specifically designed to display orthogonal mazes
+ * {@link Canvas} specifically designed to display {@link MazeOrthogonal orthogonal} mazes
  */
 public class CanvasOrthogonal extends Canvas
 {
@@ -14,6 +16,11 @@ public class CanvasOrthogonal extends Canvas
     private final OCell[][] grid;
     private final GraphicsContext gc;
     
+    /**
+     * Covered in black until algorithm generates paths
+     *
+     * @param maze any subtype of {@link MazeOrthogonal}
+     */
     public CanvasOrthogonal(MazeOrthogonal maze)
     {
         cellSize = 18;
@@ -30,6 +37,9 @@ public class CanvasOrthogonal extends Canvas
         gc.fillRect(0, 0, getWidth(), getHeight());
     }
     
+    /**
+     * Colors cells if they're found (based on their {@link Display Display} property)
+     */
     public void drawMaze()
     {
         int x, y;
@@ -58,38 +68,54 @@ public class CanvasOrthogonal extends Canvas
         }
     }
     
-    private void drawGrid()
-    {
-        int x, y;
-        
-        // Horizontal walls
-        for (int row = 0; row < grid.length; ++row)
-        {
-            
-            for (int col = 0; col < grid[0].length; ++col)
-            {
-                if (grid[row][col] != null)
-                {
-                    x = (cellSize + wallSize) * col;
-                    y = (cellSize + wallSize) * row;
-                    int longSide = cellSize + 2 * wallSize;
-                    
-                    // Top and left
-                    gc.fillRect(x, y, longSide, wallSize);
-                    gc.fillRect(x, y, wallSize, longSide);
-                    
-                    // Right
-                    int x1 = x + cellSize + wallSize;
-                    gc.fillRect(x1, y, wallSize, longSide);
-                    
-                    // Bottom
-                    int y1 = y + cellSize + wallSize;
-                    gc.fillRect(x, y1, longSide, wallSize);
-                }
-            }
-        }
-    }
+    // /**
+    //  * Currently unused method that draws the actual grid
+    //  */
+    //
+    // private void drawGrid()
+    // {
+    //     int x, y;
+    //
+    //     // Horizontal walls
+    //     for (int row = 0; row < grid.length; ++row)
+    //     {
+    //
+    //         for (int col = 0; col < grid[0].length; ++col)
+    //         {
+    //             if (grid[row][col] != null)
+    //             {
+    //                 x = (cellSize + wallSize) * col;
+    //                 y = (cellSize + wallSize) * row;
+    //                 int longSide = cellSize + 2 * wallSize;
+    //
+    //                 // Top and left
+    //                 gc.fillRect(x, y, longSide, wallSize);
+    //                 gc.fillRect(x, y, wallSize, longSide);
+    //
+    //                 // Right
+    //                 int x1 = x + cellSize + wallSize;
+    //                 gc.fillRect(x1, y, wallSize, longSide);
+    //
+    //                 // Bottom
+    //                 int y1 = y + cellSize + wallSize;
+    //                 gc.fillRect(x, y1, longSide, wallSize);
+    //             }
+    //         }
+    //     }
+    // }
     
+    /* * * * * * * * * * * * * * * * * * * * *
+    Helper Methods
+    * * * * * * * * * * * * * * * * * * * * */
+    
+    /**
+     * If an {@link OCell} doesn't have a wall on a side, fill it with a rectangle
+     * the same color as the {@link OCell}
+     *
+     * @param x     the x coordinate of the {@link OCell}
+     * @param y     the y coordinate of the {@link OCell}
+     * @param walls use the {@link OCell#getWalls()} method
+     */
     private void eraseWalls(int x, int y, boolean[] walls)
     {
         if (!walls[OCell.TOP])
