@@ -16,7 +16,7 @@ public class OrthogonalCanvas extends Canvas
     {
         // TODO: Calculate canvas width based on rows and cols
         cellSize = 15;
-        wallSize = 15;
+        wallSize = 10;
         this.grid = maze.getGrid();
         setWidth(900);
         setHeight(600);
@@ -37,8 +37,7 @@ public class OrthogonalCanvas extends Canvas
                 switch (grid[row][col].getState())
                 {
                 case Cell.VISITED -> {
-                    if (grid[row][col].getVisited() > 1) gc.setFill(Color.WHITE);
-                    else gc.setFill(Color.PINK);
+                    gc.setFill(Color.WHITE);
                 }
                 case Cell.START, Cell.END -> gc.setFill(Color.WHITE);
                 case Cell.SPECIAL -> gc.setFill(Color.PINK);

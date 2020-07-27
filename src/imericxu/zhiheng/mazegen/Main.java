@@ -1,8 +1,7 @@
 package imericxu.zhiheng.mazegen;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalCanvas;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.OrthogonalBacktracker;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.OrthogonalPrims;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,7 +19,8 @@ public class Main extends Application
     public void start(Stage primaryStage)
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        OrthogonalBacktracker maze = new OrthogonalBacktracker(20, 20);
+        OrthogonalPrims maze = new OrthogonalPrims(20, 20);
+        // OrthogonalBacktracker maze = new OrthogonalBacktracker(20, 20);
         OrthogonalCanvas canvas = new OrthogonalCanvas(maze);
         StackPane root = new StackPane(canvas);
         

@@ -30,19 +30,17 @@ public class OrthogonalPrims extends OrthogonalMaze
             int row = randomFrontier.getRow();
             int col = randomFrontier.getCol();
             
-            ArrayList<Cell> discoveredCells = new ArrayList<>();
-            Cell[] tempPoses = getNeighbors(randomFrontier);
-            
-            for (Cell pos : tempPoses)
+            ArrayList<Cell> visited = new ArrayList<>();
+            for (Cell pos : getNeighbors(randomFrontier))
             {
                 if (pos != null && pos.getState() == Cell.VISITED)
                 {
-                    discoveredCells.add(pos);
+                    visited.add(pos);
                 }
             }
             
-            i = (int) (Math.random() * discoveredCells.size());
-            Cell chosen = discoveredCells.get(i);
+            i = (int) (Math.random() * visited.size());
+            Cell chosen = visited.get(i);
             grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(Cell.VISITED);
         }
     }
@@ -51,9 +49,7 @@ public class OrthogonalPrims extends OrthogonalMaze
     {
         pos.setState(Cell.VISITED);
         
-        Cell[] tempPoses = getNeighbors(pos);
-        
-        for (Cell newPos : tempPoses)
+        for (Cell newPos : getNeighbors(pos))
         {
             if (newPos == null) continue;
             if (!frontiers.contains(newPos) && newPos.getState() != Cell.VISITED)
