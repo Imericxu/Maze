@@ -27,13 +27,13 @@ public abstract class OrthogonalMaze
         
         if (c1.getRow() < c2.getRow())
         {
-            c1Wall = OCell.TOP;
-            c2Wall = OCell.BOTTOM;
+            c1Wall = OCell.BOTTOM;
+            c2Wall = OCell.TOP;
         }
         else if (c1.getRow() > c2.getRow())
         {
-            c1Wall = OCell.BOTTOM;
-            c2Wall = OCell.TOP;
+            c1Wall = OCell.TOP;
+            c2Wall = OCell.BOTTOM;
         }
         else if (c1.getCol() < c2.getCol())
         {
@@ -47,7 +47,7 @@ public abstract class OrthogonalMaze
         }
         
         c1.setWall(c1Wall, false);
-        c1.setWall(c2Wall, false);
+        c2.setWall(c2Wall, false);
     }
     
     protected OCell[] getNeighbors(OCell OCell)
@@ -97,65 +97,59 @@ public abstract class OrthogonalMaze
                 grid[row][col] = new OCell(row, col);
             }
         }
+    
+        randomizeStartAndEnd();
+    }
+    
+    private void randomizeStartAndEnd()
+    {
+        int sRow, sCol, eRow, eCol;
+        int sWall, eWall;
         
-        // Generate start and end
         switch ((int) (Math.random() * 4))
         {
         case 0 -> { // Up
-            setStart(0, rand(grid[0].length));
-            setEnd(grid.length - 1, rand(grid[0].length));
+            sRow = 0;
+            sCol = (int) (Math.random() * grid[0].length);
+            sWall = OCell.TOP;
+            
+            eRow = grid.length - 1;
+            eCol = (int) (Math.random() * grid[0].length);
+            eWall = OCell.BOTTOM;
         }
         case 1 -> { // Down
-            setStart(grid.length - 1, rand(grid[0].length));
-            setEnd(0, rand(grid[0].length));
+            sRow = grid.length - 1;
+            sCol = (int) (Math.random() * grid[0].length);
+            sWall = OCell.BOTTOM;
+            
+            eRow = 0;
+            eCol = (int) (Math.random() * grid[0].length);
+            eWall = OCell.TOP;
         }
         case 2 -> { // Left
-            setStart(rand(grid.length), 0);
-            setEnd(rand(grid.length), grid[0].length - 1);
+            sRow = (int) (Math.random() * grid.length);
+            sCol = 0;
+            sWall = OCell.LEFT;
+    
+            eRow = (int) (Math.random() * grid.length);
+            eCol = grid[0].length - 1;
+            eWall = OCell.RIGHT;
         }
         case 3 -> { // Right
-            setStart(rand(grid.length), grid[0].length - 1);
-            setEnd(rand(grid.length), 0);
+            sRow = (int) (Math.random() * grid.length);
+            sCol = grid[0].length - 1;
+            sWall = OCell.RIGHT;
+            
+            eRow = (int) (Math.random() * grid.length);
+            eCol = 0;
+            eWall = OCell.LEFT;
         }
+        default -> throw new IllegalStateException("Unexpected value: " + (int) (Math.random() * 4));
         }
-    }
-    
-    private void setStart(int row, int col)
-    {
-        grid[row][col].setState(OCell.START);
-        start = grid[row][col];
-        removeBorderWall(row, col, start);
-    }
-    
-    private void setEnd(int row, int col)
-    {
-        grid[row][col].setState(OCell.END);
-        end = grid[row][col];
-        removeBorderWall(row, col, end);
-    }
-    
-    private void removeBorderWall(int row, int col, OCell end)
-    {
-        if (row == 0)
-        {
-            end.setWall(OCell.TOP, false);
-        }
-        else if (row == grid.length - 1)
-        {
-            end.setWall(OCell.BOTTOM, false);
-        }
-        else if (col == 0)
-        {
-            end.setWall(OCell.LEFT, false);
-        }
-        else
-        {
-            end.setWall(OCell.RIGHT, false);
-        }
-    }
-    
-    private int rand(int upTo)
-    {
-        return (int) (Math.random() * upTo);
+        
+        grid[sRow][sCol] = start;
+        grid[eRow][eCol] = end;
+        start.setWall(sWall, false);
+        end.setWall(eWall, false);
     }
 }

@@ -31,7 +31,7 @@ public class OrthogonalPrims extends OrthogonalMaze
             ArrayList<OCell> visitedNeighbors = new ArrayList<>();
             for (OCell cell : getNeighbors(current))
             {
-                if (cell != null && cell.getState() == OCell.VISITED)
+                if (cell != null && cell.getVisited() >= 1)
                 {
                     visitedNeighbors.add(cell);
                 }
@@ -45,14 +45,13 @@ public class OrthogonalPrims extends OrthogonalMaze
     
     private void addFrontiers(OCell cell)
     {
-        cell.setState(OCell.VISITED);
+        cell.visited();
         
         for (OCell neighbor : getNeighbors(cell))
         {
             if (neighbor == null) continue;
-            if (!frontiers.contains(neighbor) && neighbor.getState() != OCell.VISITED)
+            if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
-                neighbor.setState(OCell.SPECIAL);
                 frontiers.add(neighbor);
             }
         }

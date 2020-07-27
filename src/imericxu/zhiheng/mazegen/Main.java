@@ -34,27 +34,8 @@ public class Main extends Application
             }
         };
         timerRender.start();
-        Scene scene = new Scene(root);
-        /*scene.setOnMouseClicked(e ->
-        {
-            maze.step();
-            for (var row : maze.getGrid())
-            {
-                for (var col : row)
-                {
-                    if (col.getState() == Cell.WALL)
-                    {
-                        System.out.print("█ ");
-                    }
-                    else
-                    {
-                        System.out.print(col.getVisited() + " ");
-                    }
-                }
-                System.out.println();
-            }
-        });*/
         
+        Scene scene = new Scene(root);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
