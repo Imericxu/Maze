@@ -7,6 +7,9 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * Uses the Recursive Backtracking algorithm in a {@code Stack}
+ */
 public class BacktrackerOrthogonal extends MazeOrthogonal
 {
     private final Stack<OCell> stack;
@@ -49,6 +52,10 @@ public class BacktrackerOrthogonal extends MazeOrthogonal
         }
     }
     
+    /**
+     * Gets all neighbors of {@code current} and adds them to an {@code ArrayList}
+     * if they are unvisited.
+     */
     private ArrayList<OCell> getUnvisitedNeighbors(OCell current)
     {
         ArrayList<OCell> unvisited = new ArrayList<>();

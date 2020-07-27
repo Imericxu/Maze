@@ -20,8 +20,8 @@ public class Main extends Application
     public void start(Stage primaryStage)
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        // PrimsOrthogonal maze = new PrimsOrthogonal(20, 20);
-        BacktrackerOrthogonal maze = new BacktrackerOrthogonal(20, 20);
+        // PrimsOrthogonal maze = new PrimsOrthogonal(30, 30);
+        BacktrackerOrthogonal maze = new BacktrackerOrthogonal(30, 30);
         CanvasOrthogonal canvas = new CanvasOrthogonal(maze);
         StackPane root = new StackPane(canvas);
         
