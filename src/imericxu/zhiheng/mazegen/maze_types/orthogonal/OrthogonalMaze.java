@@ -15,10 +15,20 @@ public abstract class OrthogonalMaze
     protected OrthogonalMaze(int rows, int cols)
     {
         grid = new OCell[rows][cols];
-        initNormalGrid();
+        initializeGrid();
+        randomizeStartAndEnd();
     }
     
+    /* * * * * * * * * * * * * * * * * * * * *
+    Methods
+    * * * * * * * * * * * * * * * * * * * * */
+    
     public abstract void step();
+    
+    public OCell[][] getGrid()
+    {
+        return grid;
+    }
     
     protected void removeWallsBetween(OCell c1, OCell c2)
     {
@@ -44,6 +54,11 @@ public abstract class OrthogonalMaze
         }
     }
     
+    /**
+     * @param OCell cell to get neighbors of
+     * @return an array of cells on the four sides of this cell;
+     * null if out of bounds
+     */
     protected OCell[] getNeighbors(OCell OCell)
     {
         return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
@@ -73,16 +88,11 @@ public abstract class OrthogonalMaze
         return grid[OCell.getRow()][OCell.getCol() + 1];
     }
     
-    public OCell[][] getGrid()
-    {
-        return grid;
-    }
-    
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */
     
-    private void initNormalGrid()
+    private void initializeGrid()
     {
         for (int row = 0; row < grid.length; ++row)
         {
@@ -91,8 +101,6 @@ public abstract class OrthogonalMaze
                 grid[row][col] = new OCell(row, col);
             }
         }
-    
-        randomizeStartAndEnd();
     }
     
     private void randomizeStartAndEnd()
@@ -124,7 +132,7 @@ public abstract class OrthogonalMaze
             sRow = (int) (Math.random() * grid.length);
             sCol = 0;
             sWall = OCell.LEFT;
-    
+            
             eRow = (int) (Math.random() * grid.length);
             eCol = grid[0].length - 1;
             eWall = OCell.RIGHT;
