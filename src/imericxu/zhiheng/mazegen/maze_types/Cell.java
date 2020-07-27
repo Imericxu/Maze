@@ -1,5 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types;
 
+import javafx.scene.paint.Color;
+
 public class Cell
 {
     private final int row;
@@ -53,6 +55,17 @@ public class Cell
     
     public enum Display
     {
-        HIDE, SHOW, COLOR_1, COLOR_2
+        HIDE(Color.web("0x1C518B")), SHOW(Color.WHITE), COLOR_1(Color.web("0x82C7FF"));
+        private final Color color;
+        
+        Display(Color color)
+        {
+            this.color = color;
+        }
+        
+        public Color getColor()
+        {
+            return color;
+        }
     }
 }

@@ -27,7 +27,7 @@ public class BacktrackerOrthogonal extends MazeOrthogonal
     }
     
     @Override
-    public void step()
+    public boolean step()
     {
         if (!stack.empty())
         {
@@ -49,7 +49,10 @@ public class BacktrackerOrthogonal extends MazeOrthogonal
             {
                 current.setDisplay(Cell.Display.SHOW);
             }
+            
+            return true;
         }
+        else return false;
     }
     
     /**

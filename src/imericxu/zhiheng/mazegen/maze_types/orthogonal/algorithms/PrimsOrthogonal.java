@@ -28,7 +28,7 @@ public class PrimsOrthogonal extends MazeOrthogonal
     }
     
     @Override
-    public void step()
+    public boolean step()
     {
         if (!frontiers.isEmpty())
         {
@@ -37,7 +37,10 @@ public class PrimsOrthogonal extends MazeOrthogonal
             ArrayList<OCell> choices = getChoices(current);
             OCell selected = choices.get(r.nextInt(choices.size()));
             removeWallsBetween(current, selected);
+            
+            return true;
         }
+        else return false;
     }
     
     /**

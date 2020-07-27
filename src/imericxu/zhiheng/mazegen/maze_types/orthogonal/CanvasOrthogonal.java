@@ -2,7 +2,6 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
 
@@ -23,8 +22,8 @@ public class CanvasOrthogonal extends Canvas
      */
     public CanvasOrthogonal(MazeOrthogonal maze)
     {
-        cellSize = 18;
-        wallSize = 6;
+        cellSize = 12;
+        wallSize = 5;
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
         
@@ -33,7 +32,7 @@ public class CanvasOrthogonal extends Canvas
         setWidth(cols * (cellSize + wallSize) + wallSize);
         setHeight(rows * (cellSize + wallSize) + wallSize);
         // drawGrid();
-        gc.setFill(Color.BLACK);
+        gc.setFill(Display.HIDE.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
     }
     
@@ -49,14 +48,9 @@ public class CanvasOrthogonal extends Canvas
         {
             for (int col = 0; col < grid[row].length; ++col)
             {
-                switch (grid[row][col].getDisplay())
-                {
-                case SHOW -> gc.setFill(Color.WHITE);
-                case COLOR_1 -> gc.setFill(Color.PINK);
-                case HIDE -> {
-                    continue;
-                }
-                }
+                var display = grid[row][col].getDisplay();
+                if (display == Display.HIDE) continue;
+                gc.setFill(display.getColor());
                 
                 x = (wallSize + cellSize) * col + wallSize;
                 y = (wallSize + cellSize) * row + wallSize;

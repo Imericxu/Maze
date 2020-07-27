@@ -21,7 +21,7 @@ public class Main extends Application
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         // PrimsOrthogonal maze = new PrimsOrthogonal(30, 30);
-        BacktrackerOrthogonal maze = new BacktrackerOrthogonal(30, 30);
+        BacktrackerOrthogonal maze = new BacktrackerOrthogonal(30, 50);
         CanvasOrthogonal canvas = new CanvasOrthogonal(maze);
         StackPane root = new StackPane(canvas);
         
@@ -31,7 +31,7 @@ public class Main extends Application
             public void handle(long l)
             {
                 canvas.drawMaze();
-                maze.step();
+                if (!maze.step()) stop();
             }
         };
         timerRender.start();

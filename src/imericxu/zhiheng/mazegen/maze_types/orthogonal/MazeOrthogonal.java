@@ -30,7 +30,10 @@ public abstract class MazeOrthogonal
     Methods
     * * * * * * * * * * * * * * * * * * * * */
     
-    public abstract void step();
+    /**
+     * @return true if maze is not fully generated
+     */
+    public abstract boolean step();
     
     public OCell[][] getGrid()
     {
