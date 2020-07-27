@@ -26,7 +26,7 @@ public class OrthogonalCanvas extends Canvas
     public void drawMaze()
     {
         gc.setFill(Color.BLACK);
-        // gc.fillRect(0, 0, getWidth(), getHeight());
+        gc.fillRect(0, 0, getWidth(), getHeight());
         
         int x, y;
         
@@ -36,6 +36,10 @@ public class OrthogonalCanvas extends Canvas
             for (int col = 0; col < grid[row].length; ++col)
             {
                 gc.setFill(Color.WHITE);
+                if (grid[row][col].getState() == OCell.SPECIAL)
+                {
+                    gc.setFill(Color.PINK);
+                }
                 
                 x = (wallSize + cellSize) * col + wallSize;
                 y = (wallSize + cellSize) * row + wallSize;
@@ -87,7 +91,7 @@ public class OrthogonalCanvas extends Canvas
         }
         if (!walls[OCell.RIGHT])
         {
-            gc.fillRect(x + cellSize, y + wallSize, wallSize, cellSize);
+            gc.fillRect(x + cellSize, y, wallSize, cellSize);
         }
         if (!walls[OCell.BOTTOM])
         {

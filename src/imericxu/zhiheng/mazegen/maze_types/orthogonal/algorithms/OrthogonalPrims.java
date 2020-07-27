@@ -25,41 +25,35 @@ public class OrthogonalPrims extends OrthogonalMaze
         if (!frontiers.isEmpty())
         {
             int i = (int) (Math.random() * frontiers.size());
-            OCell randomFrontier = frontiers.remove(i);
-            addFrontiers(randomFrontier);
-            int row = randomFrontier.getRow();
-            int col = randomFrontier.getCol();
+            OCell current = frontiers.remove(i);
+            addFrontiers(current);
             
-            ArrayList<OCell> discoveredOCells = new ArrayList<>();
-            OCell[] tempPoses = getNeighbors(randomFrontier);
-            
-            for (OCell pos : tempPoses)
+            ArrayList<OCell> visitedNeighbors = new ArrayList<>();
+            for (OCell cell : getNeighbors(current))
             {
-                if (pos != null && pos.getState() == OCell.VISITED)
+                if (cell != null && cell.getState() == OCell.VISITED)
                 {
-                    discoveredOCells.add(pos);
+                    visitedNeighbors.add(cell);
                 }
             }
             
-            i = (int) (Math.random() * discoveredOCells.size());
-            OCell chosen = discoveredOCells.get(i);
-            grid[(chosen.getRow() + row) / 2][(chosen.getCol() + col) / 2].setState(OCell.VISITED);
+            i = (int) (Math.random() * visitedNeighbors.size());
+            OCell chosen = visitedNeighbors.get(i);
+            removeWallsBetween(current, chosen);
         }
     }
     
-    private void addFrontiers(OCell pos)
+    private void addFrontiers(OCell cell)
     {
-        pos.setState(OCell.VISITED);
+        cell.setState(OCell.VISITED);
         
-        OCell[] tempPoses = getNeighbors(pos);
-        
-        for (OCell newPos : tempPoses)
+        for (OCell neighbor : getNeighbors(cell))
         {
-            if (newPos == null) continue;
-            if (!frontiers.contains(newPos) && newPos.getState() != OCell.VISITED)
+            if (neighbor == null) continue;
+            if (!frontiers.contains(neighbor) && neighbor.getState() != OCell.VISITED)
             {
-                newPos.setState(OCell.SPECIAL);
-                frontiers.add(newPos);
+                neighbor.setState(OCell.SPECIAL);
+                frontiers.add(neighbor);
             }
         }
     }

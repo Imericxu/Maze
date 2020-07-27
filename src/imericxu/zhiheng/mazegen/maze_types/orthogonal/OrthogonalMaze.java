@@ -20,6 +20,41 @@ public abstract class OrthogonalMaze
     
     public abstract void step();
     
+    protected void removeWallsBetween(OCell c1, OCell c2)
+    {
+        int c1Wall;
+        int c2Wall;
+        
+        if (c1.getRow() < c2.getRow())
+        {
+            c1Wall = OCell.TOP;
+            c2Wall = OCell.BOTTOM;
+        }
+        else if (c1.getRow() > c2.getRow())
+        {
+            c1Wall = OCell.BOTTOM;
+            c2Wall = OCell.TOP;
+        }
+        else if (c1.getCol() < c2.getCol())
+        {
+            c1Wall = OCell.RIGHT;
+            c2Wall = OCell.LEFT;
+        }
+        else
+        {
+            c1Wall = OCell.LEFT;
+            c2Wall = OCell.RIGHT;
+        }
+        
+        c1.setWall(c1Wall, false);
+        c1.setWall(c2Wall, false);
+    }
+    
+    protected OCell[] getNeighbors(OCell OCell)
+    {
+        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
+    }
+    
     protected OCell above(OCell OCell)
     {
         if (OCell.getRow() <= 1) return null;
@@ -44,25 +79,14 @@ public abstract class OrthogonalMaze
         return grid[OCell.getRow()][OCell.getCol() + 1];
     }
     
-    protected OCell[] getNeighbors(OCell OCell)
-    {
-        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
-    }
-    
-    public OCell getStart()
-    {
-        return start;
-    }
-    
-    public OCell getEnd()
-    {
-        return end;
-    }
-    
     public OCell[][] getGrid()
     {
         return grid;
     }
+    
+    /* * * * * * * * * * * * * * * * * * * * *
+    Helper Methods
+    * * * * * * * * * * * * * * * * * * * * */
     
     private void initNormalGrid()
     {
