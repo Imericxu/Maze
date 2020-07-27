@@ -51,25 +51,25 @@ public abstract class OrthogonalMaze
     
     protected OCell above(OCell OCell)
     {
-        if (OCell.getRow() <= 1) return null;
+        if (OCell.getRow() < 1) return null;
         return grid[OCell.getRow() - 1][OCell.getCol()];
     }
     
     protected OCell below(OCell OCell)
     {
-        if (OCell.getRow() >= grid.length - 2) return null;
+        if (OCell.getRow() > grid.length - 2) return null;
         return grid[OCell.getRow() + 1][OCell.getCol()];
     }
     
     protected OCell left(OCell OCell)
     {
-        if (OCell.getCol() <= 1) return null;
+        if (OCell.getCol() < 1) return null;
         return grid[OCell.getRow()][OCell.getCol() - 1];
     }
     
     protected OCell right(OCell OCell)
     {
-        if (OCell.getCol() >= grid[OCell.getRow()].length - 2) return null;
+        if (OCell.getCol() > grid[OCell.getRow()].length - 2) return null;
         return grid[OCell.getRow()][OCell.getCol() + 1];
     }
     
