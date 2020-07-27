@@ -1,7 +1,8 @@
 package imericxu.zhiheng.mazegen;
 
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OrthogonalCanvas;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.OrthogonalPrims;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.CanvasOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.BacktrackerOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.algorithms.PrimsOrthogonal;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,9 +20,9 @@ public class Main extends Application
     public void start(Stage primaryStage)
     {
         // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        OrthogonalPrims maze = new OrthogonalPrims(20, 20);
-        // OrthogonalBacktracker maze = new OrthogonalBacktracker(20, 20);
-        OrthogonalCanvas canvas = new OrthogonalCanvas(maze);
+        // PrimsOrthogonal maze = new PrimsOrthogonal(20, 20);
+        BacktrackerOrthogonal maze = new BacktrackerOrthogonal(20, 20);
+        CanvasOrthogonal canvas = new CanvasOrthogonal(maze);
         StackPane root = new StackPane(canvas);
         
         AnimationTimer timerRender = new AnimationTimer()
@@ -34,27 +35,8 @@ public class Main extends Application
             }
         };
         timerRender.start();
-        Scene scene = new Scene(root);
-        /*scene.setOnMouseClicked(e ->
-        {
-            maze.step();
-            for (var row : maze.getGrid())
-            {
-                for (var col : row)
-                {
-                    if (col.getState() == Cell.WALL)
-                    {
-                        System.out.print("█ ");
-                    }
-                    else
-                    {
-                        System.out.print(col.getVisited() + " ");
-                    }
-                }
-                System.out.println();
-            }
-        });*/
         
+        Scene scene = new Scene(root);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
