@@ -6,7 +6,7 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 /**
  * Path-finding {@link Cell} specialized for the algorithms
  */
-public class PCell extends OCell
+public class Node extends OCell
 {
     private double f;
     private double g;
@@ -14,7 +14,7 @@ public class PCell extends OCell
     /**
      * {@link #f} and {@link #g} default to infinity
      */
-    public PCell(OCell cell)
+    public Node(OCell cell)
     {
         super(cell);
         f = Double.POSITIVE_INFINITY;

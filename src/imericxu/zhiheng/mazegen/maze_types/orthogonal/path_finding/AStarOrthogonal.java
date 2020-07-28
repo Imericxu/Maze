@@ -1,7 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.PCell;
+import imericxu.zhiheng.mazegen.maze_types.Node;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
@@ -13,17 +13,17 @@ import java.util.HashSet;
 public class AStarOrthogonal
 {
     private final OCell[][] oldGrid;
-    private final PCell[][] grid;
-    private final HashSet<PCell> openList;
-    private final HashSet<PCell> closedList;
-    private final HashMap<PCell, PCell> cameFrom;
-    private final PCell end;
+    private final Node[][] grid;
+    private final HashSet<Node> openList;
+    private final HashSet<Node> closedList;
+    private final HashMap<Node, Node> cameFrom;
+    private final Node end;
     private ArrayList<OCell> path;
     
     public AStarOrthogonal(MazeOrthogonal maze)
     {
         oldGrid = maze.getGrid();
-        grid = new PCell[oldGrid.length][oldGrid[0].length];
+        grid = new Node[oldGrid.length][oldGrid[0].length];
         openList = new HashSet<>();
         closedList = new HashSet<>();
         cameFrom = new HashMap<>();
@@ -31,11 +31,11 @@ public class AStarOrthogonal
         convertToPCell();
         var tempStart = maze.getStart();
         var tempEnd = maze.getEnd();
-        PCell start = grid[tempStart.getRow()][tempStart.getCol()];
+        Node start = grid[tempStart.getRow()][tempStart.getCol()];
         end = grid[tempEnd.getRow()][tempEnd.getCol()];
         
         start.setG(0);
-        start.setF(PCell.heuristic(start, end, PCell.Heuristic.MANHATTAN));
+        start.setF(Node.heuristic(start, end, Node.Heuristic.MANHATTAN));
         openList.add(start);
     }
     
@@ -43,7 +43,7 @@ public class AStarOrthogonal
     {
         if (!openList.isEmpty())
         {
-            PCell current = Collections.min(openList, (o1, o2) -> (int) ((o1.getF() - o2.getF()) * 10));
+            Node current = Collections.min(openList, (o1, o2) -> (int) ((o1.getF() - o2.getF()) * 10));
             oldGrid[current.getRow()][current.getCol()].setDisplay(Cell.Display.EXPLORE);
             
             path = reconstructPath(cameFrom, current);
@@ -66,7 +66,7 @@ public class AStarOrthogonal
                     {
                         cameFrom.put(neighbor, current);
                         neighbor.setG(tempG);
-                        neighbor.setF(tempG + PCell.heuristic(neighbor, end, PCell.Heuristic.MANHATTAN));
+                        neighbor.setF(tempG + Node.heuristic(neighbor, end, Node.Heuristic.MANHATTAN));
                     }
                     
                     // HashSet automatically checks if it contains neighbor
@@ -88,7 +88,7 @@ public class AStarOrthogonal
         return path;
     }
     
-    private ArrayList<OCell> reconstructPath(HashMap<PCell, PCell> cameFrom, PCell current)
+    private ArrayList<OCell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
     {
         ArrayList<OCell> path = new ArrayList<>();
         path.add(oldGrid[current.getRow()][current.getCol()]);
@@ -102,9 +102,9 @@ public class AStarOrthogonal
         return path;
     }
     
-    private ArrayList<PCell> getNeighbors(OCell current)
+    private ArrayList<Node> getNeighbors(OCell current)
     {
-        var neighbors = new ArrayList<PCell>();
+        var neighbors = new ArrayList<Node>();
         var walls = current.getWalls();
         int row = current.getRow();
         int col = current.getCol();
@@ -119,7 +119,7 @@ public class AStarOrthogonal
     
     /**
      * Goes through the {@link MazeOrthogonal#getGrid() grid} and uses the copy constructor to
-     * create new {@link PCell PCells}
+     * create new {@link Node PCells}
      */
     private void convertToPCell()
     {
@@ -128,7 +128,7 @@ public class AStarOrthogonal
             for (int col = 0; col < grid[0].length; ++col)
             {
                 OCell cell = oldGrid[row][col];
-                grid[row][col] = new PCell(cell);
+                grid[row][col] = new Node(cell);
             }
         }
     }
