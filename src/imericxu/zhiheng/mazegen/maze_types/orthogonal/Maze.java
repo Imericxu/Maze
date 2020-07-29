@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * A maze composed of squares
  */
-public abstract class MazeOrthogonal
+public abstract class Maze
 {
     protected final OCell[][] grid;
     protected OCell start;
@@ -18,7 +18,7 @@ public abstract class MazeOrthogonal
     /**
      * Generates a rectangular maze
      */
-    protected MazeOrthogonal(int rows, int cols)
+    protected Maze(int rows, int cols)
     {
         grid = new OCell[rows][cols];
         r = new Random();
@@ -35,6 +35,14 @@ public abstract class MazeOrthogonal
      * @return true if maze is not fully generated
      */
     public abstract boolean step();
+    
+    public void instantSolve()
+    {
+        while (true)
+        {
+            if (!step()) break;
+        }
+    }
     
     public OCell[][] getGrid()
     {

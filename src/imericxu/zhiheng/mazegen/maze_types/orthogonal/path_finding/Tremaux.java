@@ -1,27 +1,25 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class Tremaux
+public class Tremaux extends Pathfinder
 {
-    private final Stack<OCell> path;
     private final OCell[][] grid;
     private final OCell end;
     private final Random r;
-    public Tremaux(MazeOrthogonal maze)
+    
+    public Tremaux(Maze maze)
     {
         path = new Stack<>();
         grid = maze.getGrid();
         end = maze.getEnd();
         r = new Random();
-        
-        clearVisited();
         
         var start = maze.getStart();
         start.setDisplay(Cell.Display.EXPLORE);
@@ -48,11 +46,6 @@ public class Tremaux
         }
         
         return true;
-    }
-    
-    public Stack<OCell> getPath()
-    {
-        return path;
     }
     
     private ArrayList<OCell> getUnvisited(OCell current)
@@ -84,16 +77,5 @@ public class Tremaux
         }
         
         return unvisited;
-    }
-    
-    private void clearVisited()
-    {
-        for (var row : grid)
-        {
-            for (var cell : row)
-            {
-                cell.clearVisited();
-            }
-        }
     }
 }

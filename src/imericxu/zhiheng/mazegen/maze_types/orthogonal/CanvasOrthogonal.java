@@ -9,7 +9,7 @@ import java.util.Stack;
 import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
 
 /**
- * {@link Canvas} specifically designed to display {@link MazeOrthogonal orthogonal} mazes
+ * {@link Canvas} specifically designed to display {@link Maze orthogonal} mazes
  */
 public class CanvasOrthogonal extends Canvas
 {
@@ -21,9 +21,9 @@ public class CanvasOrthogonal extends Canvas
     /**
      * Covered in black until algorithm generates paths
      *
-     * @param maze any subtype of {@link MazeOrthogonal}
+     * @param maze any subtype of {@link Maze}
      */
-    public CanvasOrthogonal(MazeOrthogonal maze, double sceneWidth, double sceneHeight)
+    public CanvasOrthogonal(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
     {
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
@@ -31,12 +31,8 @@ public class CanvasOrthogonal extends Canvas
         int rows = grid.length;
         int cols = grid[0].length;
         
-        // Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-        // // double sWidth = screen.getWidth();
-        // // double sHeight = screen.getHeight();
         double screenRatio = sceneWidth / sceneHeight;
         double gridRatio = (double) cols / rows;
-        double cellWallRatio = .8;
         if (screenRatio > gridRatio)
         {
             setHeight(sceneHeight);
@@ -101,14 +97,15 @@ public class CanvasOrthogonal extends Canvas
     
     public void drawPath(Stack<OCell> pathList)
     {
-        Cell first = pathList.get(0);
+        var first = pathList.get(0);
         double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
         
         gc.setStroke(Display.PATH.getColor());
         gc.setLineWidth(cellSize * 0.5);
-        for (Cell cell : pathList.subList(1, pathList.size()))
+        
+        for (var cell : pathList.subList(1, pathList.size()))
         {
             x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;
             y2 = (wallSize + cellSize) * cell.getRow() + wallSize + cellSize / 2.0;

@@ -1,7 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
@@ -10,14 +10,14 @@ import java.util.Stack;
 /**
  * Uses the Recursive Backtracking algorithm in a {@code Stack}
  */
-public class BacktrackerOrthogonal extends MazeOrthogonal
+public class Backtracker extends Maze
 {
     private final Stack<OCell> stack;
     
     /**
      * Generates a rectangular maze
      */
-    public BacktrackerOrthogonal(int rows, int cols)
+    public Backtracker(int rows, int cols)
     {
         super(rows, cols);
         stack = new Stack<>();
@@ -52,7 +52,17 @@ public class BacktrackerOrthogonal extends MazeOrthogonal
             
             return true;
         }
-        else return false;
+        else
+        {
+            for (var row : grid)
+            {
+                for (var cell : row)
+                {
+                    cell.clearVisited();
+                }
+            }
+            return false;
+        }
     }
     
     /**

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.FlowPane?>
@@ -9,9 +8,12 @@
     <padding>
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
     </padding>
-    <TextField fx:id="inputRows" minWidth="-Infinity" prefWidth="80.0" promptText="Rows"/>
-    <TextField fx:id="inputCols" minWidth="-Infinity" prefWidth="80.0" promptText="Cols"/>
+    <TextField fx:id="inputRows" minWidth="-Infinity" prefWidth="70.0" promptText="Rows"/>
+    <TextField fx:id="inputCols" minWidth="-Infinity" prefWidth="70.0" promptText="Cols"/>
+    <TextField fx:id="inputRatio" minWidth="-Infinity" prefWidth="90.0" promptText="Cell-to-Wall Size Ratio"/>
     <ComboBox fx:id="comboMaze" prefWidth="150.0" promptText="Maze Algorithm"/>
+    <CheckBox fx:id="checkShowMazeGen" mnemonicParsing="false" selected="true" text="Show Maze Generation"/>
     <ComboBox fx:id="comboPath" prefWidth="150.0" promptText="Solve Algorithm"/>
-    <Button fx:id="btnStart" mnemonicParsing="false" onAction="#launchMaze" text="Button"/>
+    <CheckBox fx:id="checkShowPathfinding" mnemonicParsing="false" selected="true" text="Solve Maze Solve"/>
+    <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startPressed" text="Generate"/>
 </FlowPane>

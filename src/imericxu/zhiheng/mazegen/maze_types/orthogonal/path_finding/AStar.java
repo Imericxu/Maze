@@ -2,12 +2,12 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.Node;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.*;
 
-public class AStarOrthogonal
+public class AStar extends Pathfinder
 {
     private final OCell[][] oldGrid;
     private final Node[][] grid;
@@ -15,9 +15,8 @@ public class AStarOrthogonal
     private final HashSet<Node> closedList;
     private final HashMap<Node, Node> cameFrom;
     private final Node end;
-    private Stack<OCell> path;
     
-    public AStarOrthogonal(MazeOrthogonal maze)
+    public AStar(Maze maze)
     {
         oldGrid = maze.getGrid();
         grid = new Node[oldGrid.length][oldGrid[0].length];
@@ -36,6 +35,7 @@ public class AStarOrthogonal
         openList.add(start);
     }
     
+    @Override
     public boolean step()
     {
         if (!openList.isEmpty())
@@ -80,11 +80,6 @@ public class AStarOrthogonal
         }
     }
     
-    public Stack<OCell> getPath()
-    {
-        return path;
-    }
-    
     private Stack<OCell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
     {
         var path = new Stack<OCell>();
@@ -115,7 +110,7 @@ public class AStarOrthogonal
     }
     
     /**
-     * Goes through the {@link MazeOrthogonal#getGrid() grid} and uses the copy constructor to
+     * Goes through the {@link Maze#getGrid() grid} and uses the copy constructor to
      * create new {@link Node PCells}
      */
     private void convertToPCell()

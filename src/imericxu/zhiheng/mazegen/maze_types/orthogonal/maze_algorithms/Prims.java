@@ -2,14 +2,14 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 
 import java.util.ArrayList;
 
 /**
  * Uses Prim's algorithm to generate orthogonal mazes
  */
-public class PrimsOrthogonal extends MazeOrthogonal
+public class Prims extends Maze
 {
     /**
      * Cells surrounding the already explored cells
@@ -19,7 +19,7 @@ public class PrimsOrthogonal extends MazeOrthogonal
     /**
      * Generates a rectangular maze
      */
-    public PrimsOrthogonal(int rows, int cols)
+    public Prims(int rows, int cols)
     {
         super(rows, cols);
         frontiers = new ArrayList<>();
@@ -39,7 +39,17 @@ public class PrimsOrthogonal extends MazeOrthogonal
             
             return true;
         }
-        else return false;
+        else
+        {
+            for (var row : grid)
+            {
+                for (var cell : row)
+                {
+                    cell.clearVisited();
+                }
+            }
+            return false;
+        }
     }
     
     /**
