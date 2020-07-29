@@ -13,10 +13,10 @@ import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
  */
 public class CanvasOrthogonal extends Canvas
 {
-    private final int cellSize;
-    private final int wallSize;
     private final OCell[][] grid;
     private final GraphicsContext gc;
+    private int cellSize;
+    private int wallSize;
     
     /**
      * Covered in black until algorithm generates paths
@@ -25,8 +25,8 @@ public class CanvasOrthogonal extends Canvas
      */
     public CanvasOrthogonal(MazeOrthogonal maze)
     {
-        cellSize = 18;
-        wallSize = 5;
+        cellSize = 5;
+        wallSize = 12;
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
         
@@ -45,7 +45,8 @@ public class CanvasOrthogonal extends Canvas
     public void drawMaze()
     {
         int x, y;
-        
+        var openCells = new Stack<Cell>();
+    
         // Draw cells and erase walls
         for (int row = 0; row < grid.length; ++row)
         {
@@ -53,15 +54,30 @@ public class CanvasOrthogonal extends Canvas
             {
                 var display = grid[row][col].getDisplay();
                 if (display == Display.HIDE) continue;
+                if (display == Display.SHOW)
+                {
+                    openCells.push(grid[row][col]);
+                    continue;
+                }
                 gc.setFill(display.getColor());
-                
+    
                 x = (wallSize + cellSize) * col + wallSize;
                 y = (wallSize + cellSize) * row + wallSize;
                 gc.fillRect(x, y, cellSize, cellSize);
-                
+    
                 var walls = grid[row][col].getWalls();
                 eraseWalls(x, y, walls);
             }
+        }
+    
+        gc.setFill(Display.SHOW.getColor());
+        for (var cell : openCells)
+        {
+            x = (wallSize + cellSize) * cell.getCol() + wallSize;
+            y = (wallSize + cellSize) * cell.getRow() + wallSize;
+            gc.fillRect(x, y, cellSize, cellSize);
+            var walls = grid[cell.getRow()][cell.getCol()].getWalls();
+            eraseWalls(x, y, walls);
         }
     }
     

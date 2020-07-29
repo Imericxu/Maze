@@ -72,7 +72,7 @@ public class Cell
         SHOW(Color.WHITE),
         EXPLORE(Color.web("0x82C7FF")),
         DARK(Color.web("0xFF5E4D")),
-        PATH(Color.web("0xFED766"));
+        PATH(Color.web("0xFF4422"));
         private final Color color;
         
         Display(Color color)
