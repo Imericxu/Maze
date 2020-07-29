@@ -70,9 +70,9 @@ public class Cell
     {
         HIDE(Color.web("0x1C518B")),
         SHOW(Color.WHITE),
-        EXPLORE(Color.web("0x82C7FF")),
+        EXPLORE(Color.web("0xADDAFF")),
         DARK(Color.web("0xFF5E4D")),
-        PATH(Color.web("0xFF4422"));
+        PATH(Color.web("0xAD360B"));
         private final Color color;
         
         Display(Color color)

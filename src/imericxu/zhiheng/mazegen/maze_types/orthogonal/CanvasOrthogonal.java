@@ -15,25 +15,43 @@ public class CanvasOrthogonal extends Canvas
 {
     private final OCell[][] grid;
     private final GraphicsContext gc;
-    private int cellSize;
-    private int wallSize;
+    private double cellSize;
+    private double wallSize;
     
     /**
      * Covered in black until algorithm generates paths
      *
      * @param maze any subtype of {@link MazeOrthogonal}
      */
-    public CanvasOrthogonal(MazeOrthogonal maze)
+    public CanvasOrthogonal(MazeOrthogonal maze, double sceneWidth, double sceneHeight)
     {
-        cellSize = 5;
-        wallSize = 12;
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
         
         int rows = grid.length;
         int cols = grid[0].length;
-        setWidth(cols * (cellSize + wallSize) + wallSize);
-        setHeight(rows * (cellSize + wallSize) + wallSize);
+        
+        // Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        // // double sWidth = screen.getWidth();
+        // // double sHeight = screen.getHeight();
+        double screenRatio = sceneWidth / sceneHeight;
+        double gridRatio = (double) cols / rows;
+        double cellWallRatio = .8;
+        if (screenRatio > gridRatio)
+        {
+            setHeight(sceneHeight);
+            wallSize = sceneHeight / (rows * (cellWallRatio + 1) + 1);
+            cellSize = wallSize * cellWallRatio;
+            setWidth(cols * (cellSize + wallSize) + wallSize);
+        }
+        else
+        {
+            setWidth(sceneWidth);
+            wallSize = sceneWidth / (cols * (cellWallRatio + 1) + 1);
+            cellSize = wallSize * cellWallRatio;
+            setHeight(rows * (cellSize + wallSize) + wallSize);
+        }
+        
         // drawGrid();
         gc.setFill(Display.HIDE.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
@@ -44,9 +62,9 @@ public class CanvasOrthogonal extends Canvas
      */
     public void drawMaze()
     {
-        int x, y;
+        double x, y;
         var openCells = new Stack<Cell>();
-    
+        
         // Draw cells and erase walls
         for (int row = 0; row < grid.length; ++row)
         {
@@ -60,16 +78,16 @@ public class CanvasOrthogonal extends Canvas
                     continue;
                 }
                 gc.setFill(display.getColor());
-    
+                
                 x = (wallSize + cellSize) * col + wallSize;
                 y = (wallSize + cellSize) * row + wallSize;
                 gc.fillRect(x, y, cellSize, cellSize);
-    
+                
                 var walls = grid[row][col].getWalls();
                 eraseWalls(x, y, walls);
             }
         }
-    
+        
         gc.setFill(Display.SHOW.getColor());
         for (var cell : openCells)
         {
@@ -148,7 +166,7 @@ public class CanvasOrthogonal extends Canvas
      * @param y     the y coordinate of the {@link OCell}
      * @param walls use the {@link OCell#getWalls()} method
      */
-    private void eraseWalls(int x, int y, boolean[] walls)
+    private void eraseWalls(double x, double y, boolean[] walls)
     {
         if (!walls[OCell.TOP])
         {
