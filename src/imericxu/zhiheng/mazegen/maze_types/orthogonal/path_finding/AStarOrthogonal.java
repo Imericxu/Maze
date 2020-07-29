@@ -5,10 +5,7 @@ import imericxu.zhiheng.mazegen.maze_types.Node;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.MazeOrthogonal;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class AStarOrthogonal
 {
@@ -18,7 +15,7 @@ public class AStarOrthogonal
     private final HashSet<Node> closedList;
     private final HashMap<Node, Node> cameFrom;
     private final Node end;
-    private ArrayList<OCell> path;
+    private Stack<OCell> path;
     
     public AStarOrthogonal(MazeOrthogonal maze)
     {
@@ -83,20 +80,20 @@ public class AStarOrthogonal
         }
     }
     
-    public ArrayList<OCell> getPath()
+    public Stack<OCell> getPath()
     {
         return path;
     }
     
-    private ArrayList<OCell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
+    private Stack<OCell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
     {
-        ArrayList<OCell> path = new ArrayList<>();
-        path.add(oldGrid[current.getRow()][current.getCol()]);
+        var path = new Stack<OCell>();
+        path.push(oldGrid[current.getRow()][current.getCol()]);
         
         while (cameFrom.containsKey(current))
         {
             current = cameFrom.get(current);
-            path.add(oldGrid[current.getRow()][current.getCol()]);
+            path.push(oldGrid[current.getRow()][current.getCol()]);
         }
         
         return path;

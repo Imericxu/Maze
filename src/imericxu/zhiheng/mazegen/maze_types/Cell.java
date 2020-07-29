@@ -45,6 +45,11 @@ public class Cell
         ++visited;
     }
     
+    public void clearVisited()
+    {
+        visited = 0;
+    }
+    
     public Display getDisplay()
     {
         return display;

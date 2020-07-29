@@ -6,7 +6,6 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracke
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.PrimsOrthogonal;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStarOrthogonal;
 import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
