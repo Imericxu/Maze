@@ -4,7 +4,6 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
 
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * A maze composed of squares
@@ -115,46 +114,47 @@ public abstract class Maze extends Orthogonal
     {
         int sRow, sCol, eRow, eCol;
         int sWall, eWall;
-        
-        switch ((int) (Math.random() * 4))
+    
+        int random = r.nextInt(4);
+        switch (random)
         {
         case 0 -> { // Up
             sRow = 0;
-            sCol = (int) (Math.random() * grid[0].length);
+            sCol = r.nextInt(grid[0].length);
             sWall = OCell.TOP;
-            
+        
             eRow = grid.length - 1;
-            eCol = (int) (Math.random() * grid[0].length);
+            eCol = r.nextInt(grid[0].length);
             eWall = OCell.BOTTOM;
         }
         case 1 -> { // Down
             sRow = grid.length - 1;
-            sCol = (int) (Math.random() * grid[0].length);
+            sCol = r.nextInt(grid[0].length);
             sWall = OCell.BOTTOM;
-            
+    
             eRow = 0;
-            eCol = (int) (Math.random() * grid[0].length);
+            eCol = r.nextInt(grid[0].length);
             eWall = OCell.TOP;
         }
         case 2 -> { // Left
-            sRow = (int) (Math.random() * grid.length);
+            sRow = r.nextInt(grid.length);
             sCol = 0;
             sWall = OCell.LEFT;
-            
-            eRow = (int) (Math.random() * grid.length);
+    
+            eRow = r.nextInt(grid.length);
             eCol = grid[0].length - 1;
             eWall = OCell.RIGHT;
         }
         case 3 -> { // Right
-            sRow = (int) (Math.random() * grid.length);
+            sRow = r.nextInt(grid.length);
             sCol = grid[0].length - 1;
             sWall = OCell.RIGHT;
-            
-            eRow = (int) (Math.random() * grid.length);
+        
+            eRow = r.nextInt(grid.length);
             eCol = 0;
             eWall = OCell.LEFT;
         }
-        default -> throw new IllegalStateException("Unexpected value: " + (int) (Math.random() * 4));
+        default -> throw new IllegalStateException("Unexpected value: " + random);
         }
         
         start = grid[sRow][sCol];
