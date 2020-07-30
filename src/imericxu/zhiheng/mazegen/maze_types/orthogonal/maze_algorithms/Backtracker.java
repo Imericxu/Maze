@@ -43,7 +43,7 @@ public class Backtracker extends Maze
                 changeList.push(selected);
                 stack.push(selected);
                 
-                removeWallsBetween(current, selected);
+                setWallsBetween(current, selected, false);
             }
             else
             {

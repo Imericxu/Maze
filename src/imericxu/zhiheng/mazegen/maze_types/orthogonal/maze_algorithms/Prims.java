@@ -35,7 +35,7 @@ public class Prims extends Maze
     
             ArrayList<OCell> choices = getChoices(current);
             var selected = choices.get(r.nextInt(choices.size()));
-            removeWallsBetween(current, selected);
+            setWallsBetween(current, selected, false);
             
             return true;
         }

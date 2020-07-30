@@ -57,27 +57,27 @@ public abstract class Maze extends Orthogonal
         return neighbors;
     }
     
-    protected void removeWallsBetween(OCell c1, OCell c2)
+    protected void setWallsBetween(OCell c1, OCell c2, boolean hasWall)
     {
         if (c1.getRow() < c2.getRow())
         {
-            c1.setWall(OCell.BOTTOM, false);
-            c2.setWall(OCell.TOP, false);
+            c1.setWall(OCell.BOTTOM, hasWall);
+            c2.setWall(OCell.TOP, hasWall);
         }
         else if (c1.getRow() > c2.getRow())
         {
-            c1.setWall(OCell.TOP, false);
-            c2.setWall(OCell.BOTTOM, false);
+            c1.setWall(OCell.TOP, hasWall);
+            c2.setWall(OCell.BOTTOM, hasWall);
         }
         else if (c1.getCol() < c2.getCol())
         {
-            c1.setWall(OCell.RIGHT, false);
-            c2.setWall(OCell.LEFT, false);
+            c1.setWall(OCell.RIGHT, hasWall);
+            c2.setWall(OCell.LEFT, hasWall);
         }
         else
         {
-            c1.setWall(OCell.LEFT, false);
-            c2.setWall(OCell.RIGHT, false);
+            c1.setWall(OCell.LEFT, hasWall);
+            c2.setWall(OCell.RIGHT, hasWall);
         }
     }
     
@@ -108,7 +108,7 @@ public abstract class Maze extends Orthogonal
             sRow = 0;
             sCol = r.nextInt(grid[0].length);
             sWall = OCell.TOP;
-        
+    
             eRow = grid.length - 1;
             eCol = r.nextInt(grid[0].length);
             eWall = OCell.BOTTOM;
@@ -135,7 +135,7 @@ public abstract class Maze extends Orthogonal
             sRow = r.nextInt(grid.length);
             sCol = grid[0].length - 1;
             sWall = OCell.RIGHT;
-        
+    
             eRow = r.nextInt(grid.length);
             eCol = 0;
             eWall = OCell.LEFT;
