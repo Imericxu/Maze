@@ -1,12 +1,11 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
 
 public class Tremaux extends Pathfinder
 {
@@ -16,7 +15,6 @@ public class Tremaux extends Pathfinder
     
     public Tremaux(Maze maze)
     {
-        path = new Stack<>();
         grid = maze.getGrid();
         end = maze.getEnd();
         r = new Random();

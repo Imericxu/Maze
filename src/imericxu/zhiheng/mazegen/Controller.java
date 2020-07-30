@@ -31,6 +31,8 @@ public class Controller
     @FXML
     private CheckBox checkShowMazeGen;
     @FXML
+    private CheckBox checkDoSolve;
+    @FXML
     private ComboBox<String> comboPath;
     @FXML
     private CheckBox checkShowPathfinding;
@@ -78,6 +80,7 @@ public class Controller
         double cellWallRatio = Double.parseDouble(inputRatio.getText());
         int mazeType = comboMaze.getSelectionModel().getSelectedIndex();
         boolean doShowMazeGen = checkShowMazeGen.isSelected();
+        boolean doSolve = checkDoSolve.isSelected();
         int algType = comboPath.getSelectionModel().getSelectedIndex();
         boolean doShowPathfinding = checkShowPathfinding.isSelected();
     
@@ -97,11 +100,11 @@ public class Controller
         default -> pathfinder = new Tremaux(maze);
         }
     
-        launchMaze(cellWallRatio, maze, doShowMazeGen, pathfinder, doShowPathfinding);
+        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
     }
     
-    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, Pathfinder pathfinder,
-            boolean doShowPathfinding)
+    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
+            Pathfinder pathfinder, boolean doShowPathfinding)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -142,14 +145,17 @@ public class Controller
                 canvas.drawMaze(maze.getChangeList());
                 if (!maze.step())
                 {
-                    if (doShowPathfinding)
+                    if (doSolve)
                     {
-                        pathTimer.start();
-                    }
-                    else
-                    {
-                        pathfinder.instantSolve();
-                        canvas.drawPath(pathfinder.getPath());
+                        if (doShowPathfinding)
+                        {
+                            pathTimer.start();
+                        }
+                        else
+                        {
+                            pathfinder.instantSolve();
+                            canvas.drawPath(pathfinder.getPath());
+                        }
                     }
                     stop();
                 }
@@ -163,18 +169,21 @@ public class Controller
         else
         {
             maze.instantSolve();
-            if (doShowPathfinding)
+            canvas.drawMaze();
+            if (doSolve)
             {
-                pathTimer.start();
-            }
-            else
-            {
-                pathfinder.instantSolve();
+                if (doShowPathfinding)
+                {
+                    pathTimer.start();
+                }
+                else
+                {
+                    pathfinder.instantSolve();
+                    canvas.drawMaze();
+                    canvas.drawPath(pathfinder.getPath());
+                }
             }
         }
-        canvas.drawMaze();
-        canvas.drawPath(pathfinder.getPath());
-        maze.getChangeList().clear();
         
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work

@@ -30,10 +30,11 @@ public class Prims extends Maze
     {
         if (!frontiers.isEmpty())
         {
-            OCell current = frontiers.remove(r.nextInt(frontiers.size()));
+            var current = frontiers.remove(r.nextInt(frontiers.size()));
             addFrontiersOf(current);
+    
             ArrayList<OCell> choices = getChoices(current);
-            OCell selected = choices.get(r.nextInt(choices.size()));
+            var selected = choices.get(r.nextInt(choices.size()));
             removeWallsBetween(current, selected);
             
             return true;

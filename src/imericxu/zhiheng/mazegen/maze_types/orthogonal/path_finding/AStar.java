@@ -102,37 +102,22 @@ public class AStar extends Pathfinder
         int row = current.getRow();
         int col = current.getCol();
     
-        if (!walls[OCell.TOP] && row > 0) neighbors.add(grid[row - 1][col]);
-        if (!walls[OCell.RIGHT] && col < grid[0].length - 1) neighbors.add(grid[row][col + 1]);
-        if (!walls[OCell.BOTTOM] && row < grid.length - 1) neighbors.add(grid[row + 1][col]);
-        if (!walls[OCell.LEFT] && col > 0) neighbors.add(grid[row][col - 1]);
-    
-        // var previous = path.size() < 2 ? null : path.get(path.size() - 2);
-        //
-        // if (!walls[OCell.TOP] && row > 0)
-        // {
-        //     var cell = oldGrid[row - 1][col];
-        //     if (cell != previous) changeList.push(cell);
-        //     neighbors.add(grid[row - 1][col]);
-        // }
-        // if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
-        // {
-        //     var cell = oldGrid[row][col + 1];
-        //     if (cell != previous) changeList.push(cell);
-        //     neighbors.add(grid[row][col + 1]);
-        // }
-        // if (!walls[OCell.BOTTOM] && row < grid.length - 1)
-        // {
-        //     var cell = oldGrid[row + 1][col];
-        //     if (cell != previous) changeList.push(cell);
-        //     neighbors.add(grid[row + 1][col]);
-        // }
-        // if (!walls[OCell.LEFT] && col > 0)
-        // {
-        //     var cell = oldGrid[row][col - 1];
-        //     if (cell != previous) changeList.push(cell);
-        //     neighbors.add(grid[row][col - 1]);
-        // }
+        if (!walls[OCell.TOP] && row > 0)
+        {
+            neighbors.add(grid[row - 1][col]);
+        }
+        if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
+        {
+            neighbors.add(grid[row][col + 1]);
+        }
+        if (!walls[OCell.BOTTOM] && row < grid.length - 1)
+        {
+            neighbors.add(grid[row + 1][col]);
+        }
+        if (!walls[OCell.LEFT] && col > 0)
+        {
+            neighbors.add(grid[row][col - 1]);
+        }
     
         return neighbors;
     }

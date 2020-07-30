@@ -13,7 +13,8 @@
     <TextField fx:id="inputRatio" minWidth="-Infinity" prefWidth="90.0" promptText="Cell-to-Wall Size Ratio"/>
     <ComboBox fx:id="comboMaze" prefWidth="150.0" promptText="Maze Algorithm"/>
     <CheckBox fx:id="checkShowMazeGen" mnemonicParsing="false" selected="true" text="Show Maze Generation"/>
+    <CheckBox fx:id="checkDoSolve" mnemonicParsing="false" selected="true" text="Solve the Maze"/>
     <ComboBox fx:id="comboPath" prefWidth="150.0" promptText="Solve Algorithm"/>
-    <CheckBox fx:id="checkShowPathfinding" mnemonicParsing="false" selected="true" text="Solve Maze Solve"/>
+    <CheckBox fx:id="checkShowPathfinding" mnemonicParsing="false" selected="true" text="Show Solve Animation"/>
     <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startPressed" text="Generate"/>
 </FlowPane>
