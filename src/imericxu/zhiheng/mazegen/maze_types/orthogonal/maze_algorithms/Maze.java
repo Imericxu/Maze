@@ -3,6 +3,7 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -42,9 +43,18 @@ public abstract class Maze extends Orthogonal
      * @return an array of cells on the four sides of this cell;
      * null if out of bounds
      */
-    public OCell[] getNeighbors(OCell OCell)
+    public ArrayList<OCell> getNeighbors(OCell OCell)
     {
-        return new OCell[]{above(OCell), below(OCell), left(OCell), right(OCell)};
+        var neighbors = new ArrayList<OCell>();
+        int row = OCell.getRow();
+        int col = OCell.getCol();
+        
+        if (row > 0) neighbors.add(grid[row - 1][col]);
+        if (row < grid.length - 1) neighbors.add(grid[row + 1][col]);
+        if (col > 0) neighbors.add(grid[row][col - 1]);
+        if (col < grid[0].length - 1) neighbors.add(grid[row][col + 1]);
+        
+        return neighbors;
     }
     
     protected void removeWallsBetween(OCell c1, OCell c2)
@@ -69,30 +79,6 @@ public abstract class Maze extends Orthogonal
             c1.setWall(OCell.LEFT, false);
             c2.setWall(OCell.RIGHT, false);
         }
-    }
-    
-    protected OCell above(OCell OCell)
-    {
-        if (OCell.getRow() < 1) return null;
-        return grid[OCell.getRow() - 1][OCell.getCol()];
-    }
-    
-    protected OCell below(OCell OCell)
-    {
-        if (OCell.getRow() > grid.length - 2) return null;
-        return grid[OCell.getRow() + 1][OCell.getCol()];
-    }
-    
-    protected OCell left(OCell OCell)
-    {
-        if (OCell.getCol() < 1) return null;
-        return grid[OCell.getRow()][OCell.getCol() - 1];
-    }
-    
-    protected OCell right(OCell OCell)
-    {
-        if (OCell.getCol() > grid[OCell.getRow()].length - 2) return null;
-        return grid[OCell.getRow()][OCell.getCol() + 1];
     }
     
     /* * * * * * * * * * * * * * * * * * * * *

@@ -75,7 +75,7 @@ public class Backtracker extends Maze
         ArrayList<OCell> unvisited = new ArrayList<>();
         for (OCell neighbor : getNeighbors(current))
         {
-            if (neighbor != null && neighbor.getVisited() == 0)
+            if (neighbor.getVisited() == 0)
             {
                 unvisited.add(neighbor);
             }

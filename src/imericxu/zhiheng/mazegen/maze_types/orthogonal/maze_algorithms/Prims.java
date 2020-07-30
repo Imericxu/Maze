@@ -65,7 +65,6 @@ public class Prims extends Maze
         
         for (OCell neighbor : getNeighbors(cell))
         {
-            if (neighbor == null) continue;
             if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
                 frontiers.add(neighbor);
@@ -87,7 +86,7 @@ public class Prims extends Maze
         var visited = new ArrayList<OCell>();
         for (OCell cell : getNeighbors(current))
         {
-            if (cell != null && cell.getVisited() >= 1)
+            if (cell.getVisited() >= 1)
             {
                 visited.add(cell);
             }
