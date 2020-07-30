@@ -122,41 +122,40 @@ public class CanvasOrthogonal extends Canvas
         }
     }
     
-    // /**
-    //  * Currently unused method that draws the actual grid
-    //  */
-    //
-    // private void drawGrid()
-    // {
-    //     int x, y;
-    //
-    //     // Horizontal walls
-    //     for (int row = 0; row < grid.length; ++row)
-    //     {
-    //
-    //         for (int col = 0; col < grid[0].length; ++col)
-    //         {
-    //             if (grid[row][col] != null)
-    //             {
-    //                 x = (cellSize + wallSize) * col;
-    //                 y = (cellSize + wallSize) * row;
-    //                 int longSide = cellSize + 2 * wallSize;
-    //
-    //                 // Top and left
-    //                 gc.fillRect(x, y, longSide, wallSize);
-    //                 gc.fillRect(x, y, wallSize, longSide);
-    //
-    //                 // Right
-    //                 int x1 = x + cellSize + wallSize;
-    //                 gc.fillRect(x1, y, wallSize, longSide);
-    //
-    //                 // Bottom
-    //                 int y1 = y + cellSize + wallSize;
-    //                 gc.fillRect(x, y1, longSide, wallSize);
-    //             }
-    //         }
-    //     }
-    // }
+    /**
+     * Currently unused method that draws the actual grid
+     */
+    private void drawGrid()
+    {
+        double x, y;
+        
+        // Horizontal walls
+        for (int row = 0; row < grid.length; ++row)
+        {
+            
+            for (int col = 0; col < grid[0].length; ++col)
+            {
+                if (grid[row][col] != null)
+                {
+                    x = (cellSize + wallSize) * col;
+                    y = (cellSize + wallSize) * row;
+                    double longSide = cellSize + 2 * wallSize;
+                    
+                    // Top and left
+                    gc.fillRect(x, y, longSide, wallSize);
+                    gc.fillRect(x, y, wallSize, longSide);
+                    
+                    // Right
+                    double x1 = x + cellSize + wallSize;
+                    gc.fillRect(x1, y, wallSize, longSide);
+                    
+                    // Bottom
+                    double y1 = y + cellSize + wallSize;
+                    gc.fillRect(x, y1, longSide, wallSize);
+                }
+            }
+        }
+    }
     
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
