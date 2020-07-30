@@ -1,7 +1,7 @@
 package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.CanvasOrthogonal;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracker;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.util.Arrays;
 import java.util.function.UnaryOperator;
 
 public class Controller
@@ -117,7 +116,7 @@ public class Controller
             @Override
             public void handle(long l)
             {
-                canvas.drawMaze();
+                canvas.drawMaze(pathfinder.getChangeList());
                 if (!pathfinder.step())
                 {
                     canvas.drawPath(pathfinder.getPath());
@@ -132,7 +131,7 @@ public class Controller
             @Override
             public void handle(long l)
             {
-                canvas.drawMaze();
+                canvas.drawMaze(maze.getChangeList());
                 if (!maze.step())
                 {
                     if (doShowPathfinding)
@@ -167,6 +166,7 @@ public class Controller
         }
         canvas.drawMaze();
         canvas.drawPath(pathfinder.getPath());
+        maze.getChangeList().clear();
         
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work

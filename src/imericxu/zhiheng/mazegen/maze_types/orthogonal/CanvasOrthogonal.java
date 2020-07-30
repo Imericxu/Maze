@@ -1,6 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -15,8 +16,8 @@ public class CanvasOrthogonal extends Canvas
 {
     private final OCell[][] grid;
     private final GraphicsContext gc;
-    private double cellSize;
-    private double wallSize;
+    private final double cellSize;
+    private final double wallSize;
     
     /**
      * Covered in black until algorithm generates paths
@@ -51,6 +52,44 @@ public class CanvasOrthogonal extends Canvas
         // drawGrid();
         gc.setFill(Display.HIDE.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
+    }
+    
+    public void drawMaze(Stack<OCell> changeList)
+    {
+        if (changeList.isEmpty()) return;
+        
+        double x, y;
+        var openCells = new Stack<Cell>();
+        
+        while (!changeList.isEmpty())
+        {
+            var cell = changeList.pop();
+            
+            if (cell.getDisplay() == Display.SHOW)
+            {
+                openCells.push(cell);
+                continue;
+            }
+    
+            gc.setFill(cell.getDisplay().getColor());
+    
+            x = (wallSize + cellSize) * cell.getCol() + wallSize;
+            y = (wallSize + cellSize) * cell.getRow() + wallSize;
+            gc.fillRect(x, y, cellSize, cellSize);
+    
+            var walls = grid[cell.getRow()][cell.getCol()].getWalls();
+            eraseWalls(x, y, walls);
+        }
+    
+        gc.setFill(Display.SHOW.getColor());
+        for (var cell : openCells)
+        {
+            x = (wallSize + cellSize) * cell.getCol() + wallSize;
+            y = (wallSize + cellSize) * cell.getRow() + wallSize;
+            gc.fillRect(x, y, cellSize, cellSize);
+            var walls = grid[cell.getRow()][cell.getCol()].getWalls();
+            eraseWalls(x, y, walls);
+        }
     }
     
     /**

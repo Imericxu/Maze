@@ -1,22 +1,13 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
 
 import java.util.Stack;
 
-public abstract class Pathfinder
+public abstract class Pathfinder extends Orthogonal
 {
     protected Stack<OCell> path;
-    
-    public abstract boolean step();
-    
-    public void instantSolve()
-    {
-        while (true)
-        {
-            if (!step()) return;
-        }
-    }
     
     public Stack<OCell> getPath()
     {

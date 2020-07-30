@@ -2,7 +2,7 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.Node;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.*;

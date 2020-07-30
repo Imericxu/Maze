@@ -2,7 +2,6 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 
 import java.util.ArrayList;
 
@@ -62,6 +61,7 @@ public class Prims extends Maze
     {
         cell.visited();
         cell.setDisplay(Cell.Display.SHOW);
+        changeList.push(cell);
         
         for (OCell neighbor : getNeighbors(cell))
         {
@@ -70,6 +70,7 @@ public class Prims extends Maze
             {
                 frontiers.add(neighbor);
                 neighbor.setDisplay(Cell.Display.EXPLORE);
+                changeList.push(neighbor);
             }
         }
     }

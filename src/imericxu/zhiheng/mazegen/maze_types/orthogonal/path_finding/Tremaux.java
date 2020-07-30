@@ -1,7 +1,7 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
@@ -55,24 +55,31 @@ public class Tremaux extends Pathfinder
         int col = current.getCol();
         var walls = current.getWalls();
         
+        var previous = path.size() < 2 ? null : path.get(path.size() - 2);
+        changeList.push(current);
+        
         if (!walls[OCell.TOP] && row > 0)
         {
             var cell = grid[row - 1][col];
+            if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
         {
             var cell = grid[row][col + 1];
+            if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[OCell.BOTTOM] && row < grid.length - 1)
         {
             var cell = grid[row + 1][col];
+            if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[OCell.LEFT] && col > 0)
         {
             var cell = grid[row][col - 1];
+            if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         

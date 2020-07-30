@@ -1,15 +1,17 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal;
+package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
+
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
 
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * A maze composed of squares
  */
-public abstract class Maze
+public abstract class Maze extends Orthogonal
 {
     protected final OCell[][] grid;
-    protected OCell start;
-    protected OCell end;
     /**
      * Random number generator (better than Math.random())
      */
@@ -31,32 +33,9 @@ public abstract class Maze
     Methods
     * * * * * * * * * * * * * * * * * * * * */
     
-    /**
-     * @return true if maze is not fully generated
-     */
-    public abstract boolean step();
-    
-    public void instantSolve()
-    {
-        while (true)
-        {
-            if (!step()) break;
-        }
-    }
-    
     public OCell[][] getGrid()
     {
         return grid;
-    }
-    
-    public OCell getStart()
-    {
-        return start;
-    }
-    
-    public OCell getEnd()
-    {
-        return end;
     }
     
     /**

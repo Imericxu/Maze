@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ public class Backtracker extends Maze
                 OCell selected = unvisited.get(r.nextInt(unvisited.size()));
                 selected.visited();
                 selected.setDisplay(Cell.Display.EXPLORE);
+                changeList.push(selected);
                 stack.push(selected);
                 
                 removeWallsBetween(current, selected);
@@ -48,6 +48,7 @@ public class Backtracker extends Maze
             else
             {
                 current.setDisplay(Cell.Display.SHOW);
+                changeList.push(current);
             }
             
             return true;
