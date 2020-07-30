@@ -6,6 +6,7 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -63,7 +64,7 @@ public class Controller
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
         comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker");
-        comboPath.getItems().addAll("None", "AStar");
+        comboPath.getItems().addAll("Trémaux", "AStar");
     }
     
     /**
@@ -79,7 +80,7 @@ public class Controller
         boolean doShowMazeGen = checkShowMazeGen.isSelected();
         int algType = comboPath.getSelectionModel().getSelectedIndex();
         boolean doShowPathfinding = checkShowPathfinding.isSelected();
-        
+    
         Maze maze;
         switch (mazeType)
         {
@@ -88,7 +89,14 @@ public class Controller
         default -> maze = new Backtracker(rows, cols);
         }
     
-        Pathfinder pathfinder = new AStar(maze);
+        Pathfinder pathfinder;
+        switch (algType)
+        {
+        case 0 -> pathfinder = new Tremaux(maze);
+        case 1 -> pathfinder = new AStar(maze);
+        default -> pathfinder = new Tremaux(maze);
+        }
+    
         launchMaze(cellWallRatio, maze, doShowMazeGen, pathfinder, doShowPathfinding);
     }
     
