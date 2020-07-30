@@ -1,6 +1,5 @@
 package imericxu.zhiheng.mazegen.maze_types;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 /**
@@ -8,7 +7,13 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
  */
 public class Node extends OCell
 {
+    /**
+     * Total estimated cost from beginning to end
+     */
     private double f;
+    /**
+     * Cost from beginning to current node
+     */
     private double g;
     
     /**
@@ -39,7 +44,7 @@ public class Node extends OCell
     {
         return f;
     }
-
+    
     public void setF(double f)
     {
         this.f = f;

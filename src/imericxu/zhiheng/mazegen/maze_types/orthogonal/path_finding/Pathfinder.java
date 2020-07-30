@@ -9,6 +9,11 @@ public abstract class Pathfinder extends Orthogonal
 {
     protected Stack<OCell> path;
     
+    public Pathfinder()
+    {
+        path = new Stack<>();
+    }
+    
     public Stack<OCell> getPath()
     {
         return path;

@@ -68,21 +68,23 @@ public class Cell
     
     public enum Display
     {
-        HIDE(Color.web("0x1C518B")),
-        SHOW(Color.WHITE),
-        EXPLORE(Color.web("0xADDAFF")),
-        DARK(Color.web("0xFF5E4D")),
+        HIDE(Color.web("0x1C518B")), SHOW(Color.WHITE), EXPLORE(Color.web("0xADDAFF")), // DARK(Color.web("0xFF5E4D")),
         PATH(Color.web("0xAD360B"));
-        private final Color color;
-        
+        private Color color;
+    
         Display(Color color)
         {
             this.color = color;
         }
-        
+    
         public Color getColor()
         {
             return color;
+        }
+    
+        public void setColor(Color color)
+        {
+            this.color = color;
         }
     }
 }

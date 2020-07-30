@@ -1,11 +1,11 @@
 package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.CanvasOrthogonal;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracker;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -87,8 +87,8 @@ public class Controller
         case 1 -> maze = new Backtracker(rows, cols);
         default -> maze = new Backtracker(rows, cols);
         }
-        
-        Pathfinder pathfinder = new Tremaux(maze);
+    
+        Pathfinder pathfinder = new AStar(maze);
         launchMaze(cellWallRatio, maze, doShowMazeGen, pathfinder, doShowPathfinding);
     }
     

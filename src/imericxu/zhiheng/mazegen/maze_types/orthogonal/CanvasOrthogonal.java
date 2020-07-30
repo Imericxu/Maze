@@ -136,14 +136,16 @@ public class CanvasOrthogonal extends Canvas
     
     public void drawPath(Stack<OCell> pathList)
     {
+        if (pathList.isEmpty()) return;
+    
         var first = pathList.get(0);
         double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
-        
+    
         gc.setStroke(Display.PATH.getColor());
         gc.setLineWidth(cellSize * 0.5);
-        
+    
         for (var cell : pathList.subList(1, pathList.size()))
         {
             x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;

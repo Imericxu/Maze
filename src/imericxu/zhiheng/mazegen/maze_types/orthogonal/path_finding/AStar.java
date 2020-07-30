@@ -2,8 +2,8 @@ package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.Node;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
 import java.util.*;
 
@@ -29,9 +29,9 @@ public class AStar extends Pathfinder
         var tempEnd = maze.getEnd();
         Node start = grid[tempStart.getRow()][tempStart.getCol()];
         end = grid[tempEnd.getRow()][tempEnd.getCol()];
-        
+    
         start.setG(0);
-        start.setF(Node.heuristic(start, end, Node.Heuristic.MANHATTAN));
+        start.setF(Node.heuristic(start, end, Node.Heuristic.EUCLIDEAN));
         openList.add(start);
     }
     
@@ -41,15 +41,16 @@ public class AStar extends Pathfinder
         if (!openList.isEmpty())
         {
             Node current = Collections.min(openList, (o1, o2) -> (int) ((o1.getF() - o2.getF()) * 10));
-            oldGrid[current.getRow()][current.getCol()].setDisplay(Cell.Display.EXPLORE);
-            
-            path = reconstructPath(cameFrom, current);
-            
+            var cellCurrent = oldGrid[current.getRow()][current.getCol()];
+            cellCurrent.setDisplay(Cell.Display.EXPLORE);
+            changeList.push(cellCurrent);
+    
             if (current == end)
             {
+                path = reconstructPath(cameFrom, current);
                 return false;
             }
-            
+    
             openList.remove(current);
             closedList.add(current);
             
@@ -63,12 +64,11 @@ public class AStar extends Pathfinder
                     {
                         cameFrom.put(neighbor, current);
                         neighbor.setG(tempG);
-                        neighbor.setF(tempG + Node.heuristic(neighbor, end, Node.Heuristic.MANHATTAN));
+                        neighbor.setF(tempG + Node.heuristic(neighbor, end, Node.Heuristic.EUCLIDEAN));
                     }
                     
                     // HashSet automatically checks if it contains neighbor
                     openList.add(neighbor);
-                    // oldGrid[neighbor.getRow()][neighbor.getCol()].setDisplay(Cell.Display.EXPLORE);
                 }
             }
             
@@ -76,6 +76,7 @@ public class AStar extends Pathfinder
         }
         else
         {
+            System.out.println("No path found");
             return false;
         }
     }
@@ -100,12 +101,39 @@ public class AStar extends Pathfinder
         var walls = current.getWalls();
         int row = current.getRow();
         int col = current.getCol();
-        
+    
         if (!walls[OCell.TOP] && row > 0) neighbors.add(grid[row - 1][col]);
         if (!walls[OCell.RIGHT] && col < grid[0].length - 1) neighbors.add(grid[row][col + 1]);
         if (!walls[OCell.BOTTOM] && row < grid.length - 1) neighbors.add(grid[row + 1][col]);
         if (!walls[OCell.LEFT] && col > 0) neighbors.add(grid[row][col - 1]);
-        
+    
+        // var previous = path.size() < 2 ? null : path.get(path.size() - 2);
+        //
+        // if (!walls[OCell.TOP] && row > 0)
+        // {
+        //     var cell = oldGrid[row - 1][col];
+        //     if (cell != previous) changeList.push(cell);
+        //     neighbors.add(grid[row - 1][col]);
+        // }
+        // if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
+        // {
+        //     var cell = oldGrid[row][col + 1];
+        //     if (cell != previous) changeList.push(cell);
+        //     neighbors.add(grid[row][col + 1]);
+        // }
+        // if (!walls[OCell.BOTTOM] && row < grid.length - 1)
+        // {
+        //     var cell = oldGrid[row + 1][col];
+        //     if (cell != previous) changeList.push(cell);
+        //     neighbors.add(grid[row + 1][col]);
+        // }
+        // if (!walls[OCell.LEFT] && col > 0)
+        // {
+        //     var cell = oldGrid[row][col - 1];
+        //     if (cell != previous) changeList.push(cell);
+        //     neighbors.add(grid[row][col - 1]);
+        // }
+    
         return neighbors;
     }
     
