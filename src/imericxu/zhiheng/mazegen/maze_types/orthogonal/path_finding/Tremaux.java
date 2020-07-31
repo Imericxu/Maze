@@ -9,18 +9,20 @@ import java.util.Random;
 
 public class Tremaux extends Pathfinder
 {
-    private final OCell[][] grid;
     private final Random r;
+    private OCell[][] grid;
     
-    public Tremaux(Maze maze)
+    public Tremaux()
     {
-        super(maze);
-        grid = maze.getGrid();
+        super();
         r = new Random();
     }
     
-    public void init()
+    @Override
+    public void setMaze(Maze maze)
     {
+        super.setMaze(maze);
+        grid = maze.getGrid();
         path.push(start);
         start.visited();
     }

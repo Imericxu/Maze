@@ -10,14 +10,16 @@ public abstract class Pathfinder extends Orthogonal
 {
     protected Stack<OCell> path;
     
-    public Pathfinder(Maze maze)
+    public Pathfinder()
     {
         path = new Stack<>();
+    }
+    
+    public void setMaze(Maze maze)
+    {
         start = maze.getStart();
         end = maze.getEnd();
     }
-    
-    public abstract void init();
     
     public Stack<OCell> getPath()
     {

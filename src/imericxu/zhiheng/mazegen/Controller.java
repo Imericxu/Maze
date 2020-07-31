@@ -1,16 +1,20 @@
 package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.CanvasOrthogonal;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.TimerMaze;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.TimerPath;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracker;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
@@ -36,10 +40,6 @@ public class Controller
     private ComboBox<String> comboPath;
     @FXML
     private CheckBox checkShowPathfinding;
-    @FXML
-    private Button btnStart;
-    private AnimationTimer mazeTimer;
-    private AnimationTimer pathTimer;
     
     @FXML
     public void initialize()
@@ -72,7 +72,7 @@ public class Controller
     }
     
     /**
-     * Attempts to launch the maze after pressing {@link #btnStart start button}
+     * Attempts to launch the maze after pressing start button
      */
     @FXML
     public void startPressed()
@@ -81,32 +81,23 @@ public class Controller
         int cols = Integer.parseInt(inputCols.getText());
         double cellWallRatio = Double.parseDouble(inputRatio.getText());
         int mazeType = comboMaze.getSelectionModel().getSelectedIndex();
+        int pathType = comboPath.getSelectionModel().getSelectedIndex();
         boolean doShowMazeGen = checkShowMazeGen.isSelected();
         boolean doSolve = checkDoSolve.isSelected();
-        int algType = comboPath.getSelectionModel().getSelectedIndex();
         boolean doShowPathfinding = checkShowPathfinding.isSelected();
     
-        Maze maze;
-        switch (mazeType)
-        {
-        case 0 -> maze = new Prims(rows, cols);
-        case 1 -> maze = new Backtracker(rows, cols);
-        default -> maze = new Backtracker(rows, cols);
-        }
+        //noinspection SwitchStatementWithTooFewBranches
+        Maze maze = switch (mazeType)
+                {
+                    case 0 -> new Prims(rows, cols);
+                    default -> new Backtracker(rows, cols);
+                };
     
-        Pathfinder pathfinder;
-        switch (algType)
-        {
-        case 0 -> pathfinder = new Tremaux(maze);
-        case 1 -> pathfinder = new AStar(maze);
-        default -> pathfinder = new Tremaux(maze);
-        }
-    
-        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
+        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathType, doShowPathfinding);
     }
     
-    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
-            Pathfinder pathfinder, boolean doShowPathfinding)
+    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve, int pathType,
+            boolean doShowPathfinding)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -116,102 +107,43 @@ public class Controller
         // Need to show stage to actually maximize
         stage.setOpacity(0);
         stage.show();
-    
+        
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
-    
+        
         CanvasOrthogonal canvas = new CanvasOrthogonal(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
-    
+        
         root.getChildren().add(canvas);
-    
-        if (doSolve && doShowPathfinding) pathTimer = setPathTimer(canvas, pathfinder);
-        if (doShowMazeGen)
-        {
-            mazeTimer = setMazeTimer(canvas, maze, pathfinder, doSolve, doShowPathfinding);
-            mazeTimer.start();
-            // Pathfinder is handled in mazeTimer
-        }
+        
+        //noinspection SwitchStatementWithTooFewBranches
+        Pathfinder pathfinder = switch (pathType)
+                {
+                    case 1 -> new AStar();
+                    default -> new Tremaux();
+                };
+        
+        var timerPath = new TimerPath(pathfinder, canvas);
+        var timerMaze = new TimerMaze(timerPath, canvas, maze, pathfinder, doSolve, doShowPathfinding);
+        
+        if (doShowMazeGen) timerMaze.start();
         else
         {
             maze.instantSolve();
             canvas.drawMaze();
-    
-            if (doSolve && doShowPathfinding)
+            
+            if (doSolve)
             {
-                pathfinder.init();
-                pathTimer.start();
-            }
-            else if (doSolve)
-            {
-                pathfinder.init();
-                pathfinder.instantSolve();
-                canvas.drawMaze();
-                canvas.drawPath(pathfinder.getPath());
-                var path = pathfinder.getPath();
-                var start = path.get(0);
-                var first2 = path.get(1);
-                var end = path.peek();
-                System.out.println("Start: " + start.getRow() + ", " + start.getCol());
-                System.out.println("2S: " + first2.getRow() + ", " + first2.getCol());
-                System.out.println("End: " + end.getRow() + ", " + end.getCol());
+                TimerMaze.solveMaze(timerPath, canvas, maze, pathfinder, doShowPathfinding);
             }
         }
-    
+        
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work
-    
+        
         stage.setOnCloseRequest(windowEvent ->
         {
-            if (mazeTimer != null) mazeTimer.stop();
-            if (pathTimer != null) pathTimer.stop();
+            timerPath.stop();
+            timerMaze.stop();
         });
-    }
-    
-    private AnimationTimer setPathTimer(CanvasOrthogonal canvas, Pathfinder pathfinder)
-    {
-        return new AnimationTimer()
-        {
-            @Override
-            public void handle(long l)
-            {
-                if (!pathfinder.step())
-                {
-                    canvas.drawMaze();
-                    canvas.drawPath(pathfinder.getPath());
-                    stop();
-                }
-                canvas.drawMaze(pathfinder.getChangeList());
-                canvas.drawPath(pathfinder.getPath());
-            }
-        };
-    }
-    
-    private AnimationTimer setMazeTimer(CanvasOrthogonal canvas, Maze maze, Pathfinder pathfinder, boolean doSolve,
-            boolean doShowPathfinding)
-    {
-        return new AnimationTimer()
-        {
-            @Override
-            public void handle(long l)
-            {
-                if (!maze.step())
-                {
-                    canvas.drawMaze();
-                    if (doSolve && doShowPathfinding)
-                    {
-                        pathTimer.start();
-                    }
-                    else if (doSolve)
-                    {
-                        pathfinder.init();
-                        pathfinder.instantSolve();
-                        canvas.drawMaze();
-                        canvas.drawPath(pathfinder.getPath());
-                    }
-                    stop();
-                }
-                canvas.drawMaze(maze.getChangeList());
-            }
-        };
     }
 }
