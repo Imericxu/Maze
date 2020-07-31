@@ -46,6 +46,7 @@ public class TimerMaze extends AnimationTimer
             if (doSolve) solveMaze(timerPath, canvas, maze, pathfinder, doShowPathfinding);
             stop();
         }
-        canvas.drawMaze(maze.getChangeList());
+        // canvas.drawMaze(maze.getChangeList());
+        canvas.drawMaze();
     }
 }

@@ -70,14 +70,24 @@ public class CanvasOrthogonal extends Canvas
         while (!changeList.isEmpty())
         {
             var cell = changeList.pop();
-            
-            if (cell.getDisplay() == Display.SHOW)
+            var display = cell.getDisplay();
+    
+            if (display == Display.SHOW)
             {
                 openCells.add(cell);
                 continue;
             }
-            
-            gc.setFill(cell.getDisplay().getColor());
+            else if (display == Display.HIDE)
+            {
+                x = (wallSize + cellSize) * cell.getCol();
+                y = (wallSize + cellSize) * cell.getRow();
+                double size = cellSize + 2 * wallSize;
+                gc.setFill(Display.HIDE.getColor());
+                gc.fillRect(x, y, size, size);
+                continue;
+            }
+    
+            gc.setFill(display.getColor());
             fillCell(cell);
         }
         

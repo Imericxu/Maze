@@ -6,6 +6,7 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.TimerPath;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracker;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Wilson;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
@@ -67,7 +68,7 @@ public class Controller
         inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
-        comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker");
+        comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker", "Wilson's Algorithm");
         comboPath.getItems().addAll("Trémaux", "AStar");
     }
     
@@ -86,10 +87,10 @@ public class Controller
         boolean doSolve = checkDoSolve.isSelected();
         boolean doShowPathfinding = checkShowPathfinding.isSelected();
     
-        //noinspection SwitchStatementWithTooFewBranches
         Maze maze = switch (mazeType)
                 {
                     case 0 -> new Prims(rows, cols);
+                    case 2 -> new Wilson(rows, cols);
                     default -> new Backtracker(rows, cols);
                 };
     
@@ -129,6 +130,7 @@ public class Controller
         else
         {
             maze.instantSolve();
+            maze.getChangeList().clear();
             canvas.drawMaze();
             
             if (doSolve)
