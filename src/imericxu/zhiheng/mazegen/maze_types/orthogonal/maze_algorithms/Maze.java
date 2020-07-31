@@ -15,7 +15,7 @@ public abstract class Maze extends Orthogonal
     /**
      * Random number generator (better than Math.random())
      */
-    protected Random r;
+    protected final Random r;
     
     /**
      * Generates a rectangular maze

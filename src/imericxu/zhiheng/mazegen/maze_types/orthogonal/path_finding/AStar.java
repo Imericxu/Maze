@@ -53,7 +53,7 @@ public class AStar extends Pathfinder
             if (current == endNode)
             {
                 path = reconstructPath(cameFrom, current);
-                return false;
+                return true;
             }
             
             openList.remove(current);
@@ -76,13 +76,13 @@ public class AStar extends Pathfinder
                     openList.add(neighbor);
                 }
             }
-            
-            return true;
+    
+            return false;
         }
         else
         {
             System.out.println("No path found");
-            return false;
+            return true;
         }
     }
     

@@ -18,7 +18,7 @@ public class TimerPath extends AnimationTimer
     @Override
     public void handle(long l)
     {
-        if (!pathfinder.step())
+        if (pathfinder.step())
         {
             canvas.drawPath(pathfinder.getPath());
             canvas.drawMaze();

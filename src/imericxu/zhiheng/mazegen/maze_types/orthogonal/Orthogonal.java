@@ -23,7 +23,7 @@ public abstract class Orthogonal
     {
         while (true)
         {
-            if (!step()) return;
+            if (step()) return;
         }
     }
     

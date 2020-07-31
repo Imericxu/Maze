@@ -38,14 +38,14 @@ public class Tremaux extends Pathfinder
             selected.setDisplay(Cell.Display.EXPLORE);
             selected.visited();
             path.push(selected);
-            return selected != end;
+            return selected == end;
         }
         else
         {
             path.pop();
         }
-        
-        return true;
+    
+        return false;
     }
     
     private ArrayList<OCell> getUnvisited(OCell current)

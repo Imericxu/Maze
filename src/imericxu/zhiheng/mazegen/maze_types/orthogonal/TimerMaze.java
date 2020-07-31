@@ -40,7 +40,7 @@ public class TimerMaze extends AnimationTimer
     @Override
     public void handle(long l)
     {
-        if (!maze.step())
+        if (maze.step())
         {
             canvas.drawMaze();
             if (doSolve) solveMaze(timerPath, canvas, maze, pathfinder, doShowPathfinding);

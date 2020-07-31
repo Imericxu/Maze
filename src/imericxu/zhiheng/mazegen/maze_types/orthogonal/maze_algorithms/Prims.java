@@ -37,7 +37,7 @@ public class Prims extends Maze
             var selected = choices.get(r.nextInt(choices.size()));
             setWallsBetween(current, selected, false);
             
-            return true;
+            return false;
         }
         else
         {
@@ -48,7 +48,7 @@ public class Prims extends Maze
                     cell.clearVisited();
                 }
             }
-            return false;
+            return true;
         }
     }
     

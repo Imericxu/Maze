@@ -72,13 +72,13 @@ public class Wilson extends Maze
                     random.setDisplay(Cell.Display.EXPLORE);
                     setWallsBetween(current, random, false);
                     changeList.push(random);
-            
+    
                     currentWalk.push(random);
                 }
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
     
     @Override

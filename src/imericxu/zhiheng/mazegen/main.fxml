@@ -16,5 +16,5 @@
     <CheckBox fx:id="checkDoSolve" mnemonicParsing="false" selected="true" text="Solve the Maze"/>
     <ComboBox fx:id="comboPath" prefWidth="150.0" promptText="Solve Algorithm"/>
     <CheckBox fx:id="checkShowPathfinding" mnemonicParsing="false" selected="true" text="Show Solve Animation"/>
-    <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startPressed" text="Generate"/>
+    <Button mnemonicParsing="false" onAction="#startPressed" text="Generate"/>
 </FlowPane>

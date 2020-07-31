@@ -4,7 +4,7 @@ import imericxu.zhiheng.mazegen.maze_types.Cell;
 
 /**
  * A cell specialized for orthogonal mazes.<br/>
- * Contains 4 constants represting the walls:<br/>
+ * Contains 4 constants representing the walls:<br/>
  * {@link #TOP}, {@link #RIGHT}, {@link #BOTTOM}, {@link #LEFT}
  */
 public class OCell extends Cell

@@ -52,7 +52,7 @@ public class Backtracker extends Maze
                 changeList.push(current);
             }
             
-            return true;
+            return false;
         }
         else
         {
@@ -63,7 +63,7 @@ public class Backtracker extends Maze
                     cell.clearVisited();
                 }
             }
-            return false;
+            return true;
         }
     }
     
