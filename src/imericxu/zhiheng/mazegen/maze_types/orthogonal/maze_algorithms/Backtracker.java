@@ -22,7 +22,8 @@ public class Backtracker extends Maze
         stack = new Stack<>();
         stack.push(start);
         start.visited();
-        start.setDisplay(Cell.Display.SHOW);
+        start.setDisplay(Cell.Display.EXPLORE);
+        changeList.push(start);
     }
     
     @Override

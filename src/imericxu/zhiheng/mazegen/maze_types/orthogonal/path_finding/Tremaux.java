@@ -20,8 +20,7 @@ public class Tremaux extends Pathfinder
         r = new Random();
         
         var start = maze.getStart();
-        start.setDisplay(Cell.Display.EXPLORE);
-        start.visited();
+        // start.visited();
         path.push(start);
     }
     
@@ -48,6 +47,7 @@ public class Tremaux extends Pathfinder
     
     private ArrayList<OCell> getUnvisited(OCell current)
     {
+        current.setDisplay(Cell.Display.EXPLORE);
         var unvisited = new ArrayList<OCell>();
         int row = current.getRow();
         int col = current.getCol();

@@ -38,6 +38,8 @@ public class Controller
     private CheckBox checkShowPathfinding;
     @FXML
     private Button btnStart;
+    private AnimationTimer mazeTimer;
+    private AnimationTimer pathTimer;
     
     @FXML
     public void initialize()
@@ -114,84 +116,89 @@ public class Controller
         // Need to show stage to actually maximize
         stage.setOpacity(0);
         stage.show();
-        
+    
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
-        
+    
         CanvasOrthogonal canvas = new CanvasOrthogonal(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
-        
+    
         root.getChildren().add(canvas);
-        
-        AnimationTimer pathTimer = new AnimationTimer()
-        {
-            @Override
-            public void handle(long l)
-            {
-                canvas.drawMaze(pathfinder.getChangeList());
-                if (!pathfinder.step())
-                {
-                    canvas.drawPath(pathfinder.getPath());
-                    stop();
-                }
-                canvas.drawPath(pathfinder.getPath());
-            }
-        };
-        
-        AnimationTimer mazeTimer = new AnimationTimer()
-        {
-            @Override
-            public void handle(long l)
-            {
-                canvas.drawMaze(maze.getChangeList());
-                if (!maze.step())
-                {
-                    if (doSolve)
-                    {
-                        if (doShowPathfinding)
-                        {
-                            pathTimer.start();
-                        }
-                        else
-                        {
-                            pathfinder.instantSolve();
-                            canvas.drawPath(pathfinder.getPath());
-                        }
-                    }
-                    stop();
-                }
-            }
-        };
-        
+    
+        if (doSolve && doShowPathfinding) pathTimer = setPathTimer(canvas, pathfinder);
         if (doShowMazeGen)
         {
+            mazeTimer = setMazeTimer(canvas, maze, pathfinder, doSolve, doShowPathfinding);
             mazeTimer.start();
+            // Pathfinder is handled in mazeTimer
         }
         else
         {
             maze.instantSolve();
             canvas.drawMaze();
-            if (doSolve)
+        
+            if (doSolve && doShowPathfinding) pathTimer.start();
+            else if (doSolve)
             {
-                if (doShowPathfinding)
-                {
-                    pathTimer.start();
-                }
-                else
-                {
-                    pathfinder.instantSolve();
-                    canvas.drawMaze();
-                    canvas.drawPath(pathfinder.getPath());
-                }
+                pathfinder.instantSolve();
+                canvas.drawMaze();
+                canvas.drawPath(pathfinder.getPath());
             }
         }
-        
+    
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work
-        
+    
         stage.setOnCloseRequest(windowEvent ->
         {
-            mazeTimer.stop();
-            pathTimer.stop();
+            if (mazeTimer != null) mazeTimer.stop();
+            if (pathTimer != null) pathTimer.stop();
         });
+    }
+    
+    private AnimationTimer setPathTimer(CanvasOrthogonal canvas, Pathfinder pathfinder)
+    {
+        return new AnimationTimer()
+        {
+            @Override
+            public void handle(long l)
+            {
+                if (!pathfinder.step())
+                {
+                    canvas.drawMaze();
+                    canvas.drawPath(pathfinder.getPath());
+                    stop();
+                }
+                canvas.drawMaze(pathfinder.getChangeList());
+                canvas.drawPath(pathfinder.getPath());
+            }
+        };
+    }
+    
+    private AnimationTimer setMazeTimer(CanvasOrthogonal canvas, Maze maze, Pathfinder pathfinder, boolean doSolve,
+            boolean doShowPathfinding)
+    {
+        return new AnimationTimer()
+        {
+            @Override
+            public void handle(long l)
+            {
+                if (!maze.step())
+                {
+                    canvas.drawMaze();
+                    if (doSolve && doShowPathfinding)
+                    {
+                        pathTimer.start();
+                    }
+                    else if (doSolve)
+                    {
+                        pathfinder.instantSolve();
+                        canvas.drawMaze();
+                        canvas.drawPath(pathfinder.getPath());
+                    }
+                    stop();
+                }
+                canvas.drawMaze(maze.getChangeList());
+            }
+        };
     }
 }
