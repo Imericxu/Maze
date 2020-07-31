@@ -40,7 +40,8 @@ public class OCell extends Cell
     
     /**
      * Used to alter a single wall
-     * @param wall use one of the {@link OCell} constants
+     *
+     * @param wall    use one of the {@link OCell} constants
      * @param hasWall set the wall to true or false
      */
     public void setWall(int wall, boolean hasWall)

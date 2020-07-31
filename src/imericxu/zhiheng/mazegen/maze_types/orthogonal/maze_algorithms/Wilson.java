@@ -86,7 +86,7 @@ public class Wilson extends Maze
     {
         var neighbors = super.getNeighbors(current);
         int size = currentWalk.size();
-        if (size > 1) neighbors.remove(currentWalk.get(size - 1));
+        if (size > 1) neighbors.remove(currentWalk.get(size - 2));
         return neighbors;
     }
     
