@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.Node;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
@@ -36,7 +35,7 @@ public class AStar extends Pathfinder
         endNode = nodeGrid[end.getRow()][end.getCol()];
         
         startNode.setG(0);
-        startNode.setF(Node.heuristic(startNode, endNode, Node.Heuristic.EUCLIDEAN));
+        startNode.setF(Node.heuristic(startNode, endNode, Node.Heuristic.MANHATTAN));
         openList.add(startNode);
     }
     
@@ -69,7 +68,7 @@ public class AStar extends Pathfinder
                     {
                         cameFrom.put(neighbor, current);
                         neighbor.setG(tempG);
-                        neighbor.setF(tempG + Node.heuristic(neighbor, endNode, Node.Heuristic.EUCLIDEAN));
+                        neighbor.setF(tempG + Node.heuristic(neighbor, endNode, Node.Heuristic.MANHATTAN));
                     }
                     
                     // HashSet automatically checks if it contains neighbor
@@ -140,6 +139,70 @@ public class AStar extends Pathfinder
                 OCell cell = cellGrid[row][col];
                 nodeGrid[row][col] = new Node(cell);
             }
+        }
+    }
+    
+    /**
+     * Path-finding {@link Cell} specialized for the algorithms
+     */
+    private static class Node extends OCell
+    {
+        /**
+         * Total estimated cost from beginning to end
+         */
+        private double f;
+        /**
+         * Cost from beginning to current node
+         */
+        private double g;
+        
+        /**
+         * {@link #f} and {@link #g} default to infinity
+         */
+        public Node(OCell cell)
+        {
+            super(cell);
+            f = Double.POSITIVE_INFINITY;
+            g = Double.POSITIVE_INFINITY;
+        }
+        
+        public static double heuristic(Cell c1, Cell c2, Heuristic h)
+        {
+            int row1 = c1.getRow();
+            int col1 = c1.getCol();
+            int row2 = c2.getRow();
+            int col2 = c2.getCol();
+            
+            return switch (h)
+                    {
+                        case MANHATTAN -> Math.abs(row2 - row1) + Math.abs(col2 - col1);
+                        case EUCLIDEAN -> Math.hypot(row2 - row1, col2 - col1);
+                    };
+        }
+        
+        public double getF()
+        {
+            return f;
+        }
+        
+        public void setF(double f)
+        {
+            this.f = f;
+        }
+        
+        public double getG()
+        {
+            return g;
+        }
+        
+        public void setG(double g)
+        {
+            this.g = g;
+        }
+        
+        public enum Heuristic
+        {
+            MANHATTAN, EUCLIDEAN
         }
     }
 }

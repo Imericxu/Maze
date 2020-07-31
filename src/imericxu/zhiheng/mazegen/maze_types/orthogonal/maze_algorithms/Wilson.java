@@ -51,7 +51,7 @@ public class Wilson extends Maze
                 var current = currentWalk.peek();
                 var neighbors = getNeighbors(current);
                 var random = neighbors.get(r.nextInt(neighbors.size()));
-        
+    
                 if (currentWalk.contains(random))
                 {
                     if (currentWalk.size() > 1) deleteLoop(random);
@@ -79,6 +79,19 @@ public class Wilson extends Maze
             return false;
         }
         return true;
+    }
+    
+    @Override
+    public void instantSolve()
+    {
+        while (!step())
+        {
+            for (int i = 0; i < 50; ++i)
+            {
+                step();
+                changeList.clear();
+            }
+        }
     }
     
     @Override

@@ -23,6 +23,7 @@ public class Tremaux extends Pathfinder
     {
         super.setMaze(maze);
         grid = maze.getGrid();
+        clearVisited(grid);
         path.push(start);
         start.visited();
     }

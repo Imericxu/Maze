@@ -43,7 +43,7 @@ public class Backtracker extends Maze
                 selected.setDisplay(Cell.Display.EXPLORE);
                 changeList.push(selected);
                 stack.push(selected);
-                
+    
                 setWallsBetween(current, selected, false);
             }
             else
@@ -51,20 +51,10 @@ public class Backtracker extends Maze
                 current.setDisplay(Cell.Display.SHOW);
                 changeList.push(current);
             }
-            
+    
             return false;
         }
-        else
-        {
-            for (var row : grid)
-            {
-                for (var cell : row)
-                {
-                    cell.clearVisited();
-                }
-            }
-            return true;
-        }
+        else return true;
     }
     
     /**

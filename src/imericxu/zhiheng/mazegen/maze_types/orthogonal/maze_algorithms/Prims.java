@@ -36,20 +36,10 @@ public class Prims extends Maze
             ArrayList<OCell> choices = getChoices(current);
             var selected = choices.get(r.nextInt(choices.size()));
             setWallsBetween(current, selected, false);
-            
+    
             return false;
         }
-        else
-        {
-            for (var row : grid)
-            {
-                for (var cell : row)
-                {
-                    cell.clearVisited();
-                }
-            }
-            return true;
-        }
+        else return true;
     }
     
     /**

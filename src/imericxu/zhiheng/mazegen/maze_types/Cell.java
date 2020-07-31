@@ -68,7 +68,10 @@ public class Cell
     
     public enum Display
     {
-        HIDE(Color.web("0x1C518B")), SHOW(Color.WHITE), EXPLORE(Color.web("0xADDAFF")), // DARK(Color.web("0xFF5E4D")),
+        HIDE(Color.web("0x1C518B")),
+        SHOW(Color.WHITE),
+        EXPLORE(Color.web("0xADD9FF")),
+        CURRENT(Color.web("0x1B998B")),
         PATH(Color.web("0xAD360B"));
         private Color color;
     

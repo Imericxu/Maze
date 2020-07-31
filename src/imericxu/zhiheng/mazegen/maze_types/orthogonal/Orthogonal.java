@@ -7,6 +7,7 @@ public abstract class Orthogonal
     protected final Stack<OCell> changeList;
     protected OCell start;
     protected OCell end;
+    
     public Orthogonal()
     {
         changeList = new Stack<>();
@@ -17,6 +18,9 @@ public abstract class Orthogonal
         return changeList;
     }
     
+    /**
+     * @return true if not finished
+     */
     public abstract boolean step();
     
     public void instantSolve()

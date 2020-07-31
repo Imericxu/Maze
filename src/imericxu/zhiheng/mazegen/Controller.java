@@ -8,6 +8,7 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Wilson;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
+import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.BreadthFirstSearch;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
 import javafx.fxml.FXML;
@@ -69,7 +70,7 @@ public class Controller
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
         comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker", "Wilson's Algorithm");
-        comboPath.getItems().addAll("Trémaux", "AStar");
+        comboPath.getItems().addAll("Trémaux", "AStar", "Breadth First Search");
     }
     
     /**
@@ -94,11 +95,18 @@ public class Controller
                     default -> new Backtracker(rows, cols);
                 };
     
-        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathType, doShowPathfinding);
+        Pathfinder pathfinder = switch (pathType)
+                {
+                    case 1 -> new AStar();
+                    case 2 -> new BreadthFirstSearch();
+                    default -> new Tremaux();
+                };
+    
+        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
     }
     
-    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve, int pathType,
-            boolean doShowPathfinding)
+    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
+            Pathfinder pathfinder, boolean doShowPathfinding)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -115,13 +123,6 @@ public class Controller
         CanvasOrthogonal canvas = new CanvasOrthogonal(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
         
         root.getChildren().add(canvas);
-        
-        //noinspection SwitchStatementWithTooFewBranches
-        Pathfinder pathfinder = switch (pathType)
-                {
-                    case 1 -> new AStar();
-                    default -> new Tremaux();
-                };
         
         var timerPath = new TimerPath(pathfinder, canvas);
         var timerMaze = new TimerMaze(timerPath, canvas, maze, pathfinder, doSolve, doShowPathfinding);
