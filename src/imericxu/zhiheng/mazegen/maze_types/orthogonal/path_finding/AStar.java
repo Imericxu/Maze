@@ -14,25 +14,28 @@ public class AStar extends Pathfinder
     private final HashSet<Node> openList;
     private final HashSet<Node> closedList;
     private final HashMap<Node, Node> cameFrom;
-    private final Node end;
+    private Node endNode;
     
     public AStar(Maze maze)
     {
+        super(maze);
         oldGrid = maze.getGrid();
         grid = new Node[oldGrid.length][oldGrid[0].length];
         openList = new HashSet<>();
         closedList = new HashSet<>();
         cameFrom = new HashMap<>();
-        
-        convertToPCell();
-        var tempStart = maze.getStart();
-        var tempEnd = maze.getEnd();
-        Node start = grid[tempStart.getRow()][tempStart.getCol()];
-        end = grid[tempEnd.getRow()][tempEnd.getCol()];
+    }
     
-        start.setG(0);
-        start.setF(Node.heuristic(start, end, Node.Heuristic.EUCLIDEAN));
-        openList.add(start);
+    @Override
+    public void init()
+    {
+        convertToNodes();
+        Node startNode = grid[start.getRow()][start.getCol()];
+        endNode = grid[end.getRow()][end.getCol()];
+        
+        startNode.setG(0);
+        startNode.setF(Node.heuristic(startNode, endNode, Node.Heuristic.EUCLIDEAN));
+        openList.add(startNode);
     }
     
     @Override
@@ -44,13 +47,13 @@ public class AStar extends Pathfinder
             var cellCurrent = oldGrid[current.getRow()][current.getCol()];
             cellCurrent.setDisplay(Cell.Display.EXPLORE);
             changeList.push(cellCurrent);
-    
-            if (current == end)
+            
+            if (current == endNode)
             {
                 path = reconstructPath(cameFrom, current);
                 return false;
             }
-    
+            
             openList.remove(current);
             closedList.add(current);
             
@@ -64,7 +67,7 @@ public class AStar extends Pathfinder
                     {
                         cameFrom.put(neighbor, current);
                         neighbor.setG(tempG);
-                        neighbor.setF(tempG + Node.heuristic(neighbor, end, Node.Heuristic.EUCLIDEAN));
+                        neighbor.setF(tempG + Node.heuristic(neighbor, endNode, Node.Heuristic.EUCLIDEAN));
                     }
                     
                     // HashSet automatically checks if it contains neighbor
@@ -126,7 +129,7 @@ public class AStar extends Pathfinder
      * Goes through the {@link Maze#getGrid() grid} and uses the copy constructor to
      * create new {@link Node PCells}
      */
-    private void convertToPCell()
+    private void convertToNodes()
     {
         for (int row = 0; row < grid.length; ++row)
         {

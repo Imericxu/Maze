@@ -135,13 +135,25 @@ public class Controller
         {
             maze.instantSolve();
             canvas.drawMaze();
-        
-            if (doSolve && doShowPathfinding) pathTimer.start();
+    
+            if (doSolve && doShowPathfinding)
+            {
+                pathfinder.init();
+                pathTimer.start();
+            }
             else if (doSolve)
             {
+                pathfinder.init();
                 pathfinder.instantSolve();
                 canvas.drawMaze();
                 canvas.drawPath(pathfinder.getPath());
+                var path = pathfinder.getPath();
+                var start = path.get(0);
+                var first2 = path.get(1);
+                var end = path.peek();
+                System.out.println("Start: " + start.getRow() + ", " + start.getCol());
+                System.out.println("2S: " + first2.getRow() + ", " + first2.getCol());
+                System.out.println("End: " + end.getRow() + ", " + end.getCol());
             }
         }
     
@@ -191,6 +203,7 @@ public class Controller
                     }
                     else if (doSolve)
                     {
+                        pathfinder.init();
                         pathfinder.instantSolve();
                         canvas.drawMaze();
                         canvas.drawPath(pathfinder.getPath());

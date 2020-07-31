@@ -10,18 +10,19 @@ import java.util.Random;
 public class Tremaux extends Pathfinder
 {
     private final OCell[][] grid;
-    private final OCell end;
     private final Random r;
     
     public Tremaux(Maze maze)
     {
+        super(maze);
         grid = maze.getGrid();
-        end = maze.getEnd();
         r = new Random();
-        
-        var start = maze.getStart();
-        // start.visited();
+    }
+    
+    public void init()
+    {
         path.push(start);
+        start.visited();
     }
     
     public boolean step()
@@ -48,14 +49,15 @@ public class Tremaux extends Pathfinder
     private ArrayList<OCell> getUnvisited(OCell current)
     {
         current.setDisplay(Cell.Display.EXPLORE);
+        changeList.push(current);
+    
         var unvisited = new ArrayList<OCell>();
         int row = current.getRow();
         int col = current.getCol();
         var walls = current.getWalls();
-        
+    
         var previous = path.size() < 2 ? null : path.get(path.size() - 2);
-        changeList.push(current);
-        
+    
         if (!walls[OCell.TOP] && row > 0)
         {
             var cell = grid[row - 1][col];
