@@ -1,20 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.FlowPane?>
-<FlowPane alignment="CENTER" prefWrapLength="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="imericxu.zhiheng.mazegen.Controller">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.ToggleSwitch?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" stylesheets="@styles.css"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="imericxu.zhiheng.mazegen.Controller">
     <padding>
-        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
     </padding>
-    <TextField fx:id="inputRows" minWidth="-Infinity" prefWidth="70.0" promptText="Rows"/>
-    <TextField fx:id="inputCols" minWidth="-Infinity" prefWidth="70.0" promptText="Cols"/>
-    <TextField fx:id="inputRatio" minWidth="-Infinity" prefWidth="90.0" promptText="Cell-to-Wall Size Ratio"/>
-    <ComboBox fx:id="comboMaze" prefWidth="150.0" promptText="Maze Algorithm"/>
-    <CheckBox fx:id="checkShowMazeGen" mnemonicParsing="false" selected="true" text="Show Maze Generation"/>
-    <CheckBox fx:id="checkDoSolve" mnemonicParsing="false" selected="true" text="Solve the Maze"/>
-    <ComboBox fx:id="comboPath" prefWidth="150.0" promptText="Solve Algorithm"/>
-    <CheckBox fx:id="checkShowPathfinding" mnemonicParsing="false" selected="true" text="Show Solve Animation"/>
-    <Button mnemonicParsing="false" onAction="#startPressed" text="Generate"/>
-</FlowPane>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Maze Generator" textAlignment="CENTER">
+        <font>
+            <Font name="Corbel Light" size="50.0"/>
+        </font>
+    </Text>
+    <GridPane alignment="BASELINE_LEFT">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="150.0"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Dimensions"/>
+        <Label styleClass="lbl_input" text="Rows" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label styleClass="lbl_input" text="Columns" GridPane.columnIndex="3">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label styleClass="lbl_input" text="Cell-to-Wall-Size Ratio" GridPane.columnIndex="1" GridPane.columnSpan="3"
+               GridPane.rowIndex="1"/>
+        <TextField fx:id="inputRows" promptText="20" styleClass="input" GridPane.columnIndex="2"/>
+        <TextField fx:id="inputCols" promptText="20" styleClass="input" GridPane.columnIndex="4"/>
+        <TextField fx:id="inputRatio" promptText="2" styleClass="input" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0"/>
+        </VBox.margin>
+    </GridPane>
+    <GridPane alignment="CENTER_LEFT">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0"/>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="-Infinity" prefWidth="210.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <ComboBox fx:id="comboMaze" maxWidth="1.7976931348623157E308" promptText="Maze Algorithm" styleClass="combobox"
+                  GridPane.columnIndex="2"/>
+        <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
+        <ToggleSwitch fx:id="switchShowMazeGen" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label styleClass="lbl_toggle" text="Solve Maze" GridPane.rowIndex="2"/>
+        <ToggleSwitch fx:id="switchDoSolve" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Maze Algorithm" GridPane.columnSpan="2"/>
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0"/>
+        </VBox.margin>
+    </GridPane>
+    <StackPane alignment="TOP_LEFT">
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0"/>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="170.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="210.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Pathfinding Algorithm"
+                  GridPane.columnSpan="2"/>
+            <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
+            <ToggleSwitch fx:id="switchShowPathfinding" selected="true" GridPane.columnIndex="1"
+                          GridPane.rowIndex="1"/>
+            <ComboBox fx:id="comboPath" maxWidth="1.7976931348623157E308" promptText="Solve Algorithm"
+                      styleClass="combobox" GridPane.columnIndex="2"/>
+            <Button id="btn_generate" mnemonicParsing="false" onAction="#startPressed" text="Generate"
+                    GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
+        </GridPane>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"
+                   width="200.0"/>
+        <VBox.margin>
+            <Insets top="10.0"/>
+        </VBox.margin>
+    </StackPane>
+</VBox>

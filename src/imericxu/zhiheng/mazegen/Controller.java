@@ -13,7 +13,6 @@ import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -21,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import org.controlsfx.control.ToggleSwitch;
 
 import java.util.function.UnaryOperator;
 
@@ -35,13 +35,13 @@ public class Controller
     @FXML
     private ComboBox<String> comboMaze;
     @FXML
-    private CheckBox checkShowMazeGen;
+    private ToggleSwitch switchShowMazeGen;
     @FXML
-    private CheckBox checkDoSolve;
+    private ToggleSwitch switchDoSolve;
     @FXML
     private ComboBox<String> comboPath;
     @FXML
-    private CheckBox checkShowPathfinding;
+    private ToggleSwitch switchShowPathfinding;
     
     @FXML
     public void initialize()
@@ -84,9 +84,9 @@ public class Controller
         double cellWallRatio = Double.parseDouble(inputRatio.getText());
         int mazeType = comboMaze.getSelectionModel().getSelectedIndex();
         int pathType = comboPath.getSelectionModel().getSelectedIndex();
-        boolean doShowMazeGen = checkShowMazeGen.isSelected();
-        boolean doSolve = checkDoSolve.isSelected();
-        boolean doShowPathfinding = checkShowPathfinding.isSelected();
+        boolean doShowMazeGen = switchShowMazeGen.isSelected();
+        boolean doSolve = switchDoSolve.isSelected();
+        boolean doShowPathfinding = switchShowPathfinding.isSelected();
     
         Maze maze = switch (mazeType)
                 {
