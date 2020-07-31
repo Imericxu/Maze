@@ -33,7 +33,6 @@ public class BreadthFirstSearch extends Pathfinder
         start.visited();
         start.setDisplay(Cell.Display.EXPLORE);
         changeList.push(start);
-        previous = start;
     }
     
     @Override
@@ -42,23 +41,21 @@ public class BreadthFirstSearch extends Pathfinder
         if (!queue.isEmpty())
         {
             var current = queue.poll();
-            current.setDisplay(Cell.Display.CURRENT);
-            previous.setDisplay(Cell.Display.EXPLORE);
-            changeList.push(current);
-            changeList.push(previous);
-            previous = current;
             
             for (var neighbor : getNeighbors(current, grid))
             {
                 if (neighbor.getVisited() == 0)
                 {
+                    neighbor.setDisplay(Cell.Display.EXPLORE);
+                    changeList.push(neighbor);
+    
                     cameFrom.put(neighbor, current);
                     if (neighbor == end)
                     {
-                        end.setDisplay(Cell.Display.EXPLORE);
                         path = reconstructPath(neighbor);
                         return true;
                     }
+    
                     queue.add(neighbor);
                     neighbor.visited();
                 }
