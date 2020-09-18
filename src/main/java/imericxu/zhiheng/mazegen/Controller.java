@@ -42,7 +42,7 @@ public class Controller
     private ComboBox<String> comboPath;
     @FXML
     private ToggleSwitch switchShowPathfinding;
-    
+
     @FXML
     public void initialize()
     {
@@ -55,7 +55,7 @@ public class Controller
             }
             return null;
         };
-        
+
         UnaryOperator<TextFormatter.Change> floatFilter = change ->
         {
             String newText = change.getControlNewText();
@@ -65,14 +65,14 @@ public class Controller
             }
             return null;
         };
-        
+
         inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
         comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker", "Wilson's Algorithm");
         comboPath.getItems().addAll("Trémaux", "AStar", "Breadth First Search");
     }
-    
+
     /**
      * Attempts to launch the maze after pressing start button
      */
@@ -87,26 +87,26 @@ public class Controller
         boolean doShowMazeGen = switchShowMazeGen.isSelected();
         boolean doSolve = switchDoSolve.isSelected();
         boolean doShowPathfinding = switchShowPathfinding.isSelected();
-    
+
         Maze maze = switch (mazeType)
                 {
                     case 0 -> new Prims(rows, cols);
                     case 2 -> new Wilson(rows, cols);
                     default -> new Backtracker(rows, cols);
                 };
-    
+
         Pathfinder pathfinder = switch (pathType)
                 {
                     case 1 -> new AStar();
                     case 2 -> new BreadthFirstSearch();
                     default -> new Tremaux();
                 };
-    
+
         launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
     }
-    
+
     private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
-            Pathfinder pathfinder, boolean doShowPathfinding)
+                            Pathfinder pathfinder, boolean doShowPathfinding)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -116,33 +116,33 @@ public class Controller
         // Need to show stage to actually maximize
         stage.setOpacity(0);
         stage.show();
-        
+
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
-        
+
         CanvasOrthogonal canvas = new CanvasOrthogonal(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
-        
+
         root.getChildren().add(canvas);
-        
+
         var timerPath = new TimerPath(pathfinder, canvas);
         var timerMaze = new TimerMaze(timerPath, canvas, maze, pathfinder, doSolve, doShowPathfinding);
-        
+
         if (doShowMazeGen) timerMaze.start();
         else
         {
             maze.instantSolve();
             maze.getChangeList().clear();
             canvas.drawMaze();
-            
+
             if (doSolve)
             {
                 TimerMaze.solveMaze(timerPath, canvas, maze, pathfinder, doShowPathfinding);
             }
         }
-        
+
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work
-        
+
         stage.setOnCloseRequest(windowEvent ->
         {
             timerPath.stop();

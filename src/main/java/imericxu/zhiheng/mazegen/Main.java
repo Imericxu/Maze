@@ -14,11 +14,11 @@ public class Main extends Application
     {
         launch(args);
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Maze Generator");
         primaryStage.setScene(scene);
