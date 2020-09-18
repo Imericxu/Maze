@@ -112,10 +112,10 @@ public class Controller
         StackPane root = new StackPane();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setMaximized(true);
         // Need to show stage to actually maximize
         stage.setOpacity(0);
         stage.show();
+        stage.setMaximized(true);
 
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
