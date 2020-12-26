@@ -59,7 +59,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-        <ComboBox fx:id="comboMaze" maxWidth="1.7976931348623157E308" promptText="Maze Algorithm" styleClass="combobox"
+        <ComboBox fx:id="comboMazeAlgo" maxWidth="1.7976931348623157E308" promptText="Maze Algorithm" styleClass="combobox"
                   GridPane.columnIndex="2"/>
         <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
         <ToggleSwitch fx:id="switchShowMazeGen" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -86,7 +86,7 @@
             <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
             <ToggleSwitch fx:id="switchShowPathfinding" selected="true" GridPane.columnIndex="1"
                           GridPane.rowIndex="1"/>
-            <ComboBox fx:id="comboPath" maxWidth="1.7976931348623157E308" promptText="Solve Algorithm"
+            <ComboBox fx:id="comboSolveAlgo" maxWidth="1.7976931348623157E308" promptText="Solve Algorithm"
                       styleClass="combobox" GridPane.columnIndex="2"/>
             <Button id="btn_generate" mnemonicParsing="false" onAction="#startPressed" text="Generate"
                     GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>

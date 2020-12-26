@@ -22,6 +22,7 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.Random;
 import java.util.function.UnaryOperator;
 
 public class Controller
@@ -33,15 +34,57 @@ public class Controller
     @FXML
     private TextField inputRatio;
     @FXML
-    private ComboBox<String> comboMaze;
+    private ComboBox<MazeAlgo> comboMazeAlgo;
     @FXML
     private ToggleSwitch switchShowMazeGen;
     @FXML
     private ToggleSwitch switchDoSolve;
     @FXML
-    private ComboBox<String> comboPath;
+    private ComboBox<SolveAlgo> comboSolveAlgo;
     @FXML
     private ToggleSwitch switchShowPathfinding;
+
+    private final Random random = new Random();
+
+    private enum MazeAlgo
+    {
+        PRIM("Prim's Algorithm"),
+        RECURSIVE("Recursive Backtracker"),
+        WILSON("Wilson's Algorithm");
+
+        private final String label;
+
+        MazeAlgo(String label)
+        {
+            this.label = label;
+        }
+
+        @Override
+        public String toString()
+        {
+            return label;
+        }
+    }
+
+    private enum SolveAlgo
+    {
+        TREMAUX("Trémaux"),
+        ASTAR("A*"),
+        BREADTH("Breadth First Search");
+
+        private final String label;
+
+        SolveAlgo(String label)
+        {
+            this.label = label;
+        }
+
+        @Override
+        public String toString()
+        {
+            return label;
+        }
+    }
 
     @FXML
     public void initialize()
@@ -69,8 +112,8 @@ public class Controller
         inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
-        comboMaze.getItems().addAll("Prim's Algorithm", "Recursive Backtracker", "Wilson's Algorithm");
-        comboPath.getItems().addAll("Trémaux", "AStar", "Breadth First Search");
+        comboMazeAlgo.getItems().addAll(MazeAlgo.values());
+        comboSolveAlgo.getItems().addAll(SolveAlgo.values());
     }
 
     /**
@@ -79,30 +122,44 @@ public class Controller
     @FXML
     public void startPressed()
     {
-        int rows = Integer.parseInt(inputRows.getText());
-        int cols = Integer.parseInt(inputCols.getText());
-        double cellWallRatio = Double.parseDouble(inputRatio.getText());
-        int mazeType = comboMaze.getSelectionModel().getSelectedIndex();
-        int pathType = comboPath.getSelectionModel().getSelectedIndex();
-        boolean doShowMazeGen = switchShowMazeGen.isSelected();
-        boolean doSolve = switchDoSolve.isSelected();
-        boolean doShowPathfinding = switchShowPathfinding.isSelected();
+        final int rows = Integer.parseInt(inputRows.getText());
+        final int cols = Integer.parseInt(inputCols.getText());
+        final double cellWallRatio = Double.parseDouble(inputRatio.getText());
+
+        MazeAlgo mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
+        if (mazeType == null)
+            mazeType = randomEnum(MazeAlgo.class);
+
+        SolveAlgo pathType = comboSolveAlgo.getSelectionModel().getSelectedItem();
+        if (pathType == null)
+            pathType = randomEnum(SolveAlgo.class);
+
+        final boolean doShowMazeGen = switchShowMazeGen.isSelected();
+        final boolean doSolve = switchDoSolve.isSelected();
+        final boolean doShowPathfinding = switchShowPathfinding.isSelected();
+
 
         Maze maze = switch (mazeType)
                 {
-                    case 0 -> new Prims(rows, cols);
-                    case 2 -> new Wilson(rows, cols);
-                    default -> new Backtracker(rows, cols);
+                    case PRIM -> new Prims(rows, cols);
+                    case WILSON -> new Wilson(rows, cols);
+                    case RECURSIVE -> new Backtracker(rows, cols);
                 };
 
         Pathfinder pathfinder = switch (pathType)
                 {
-                    case 1 -> new AStar();
-                    case 2 -> new BreadthFirstSearch();
-                    default -> new Tremaux();
+                    case TREMAUX -> new Tremaux();
+                    case ASTAR -> new AStar();
+                    case BREADTH -> new BreadthFirstSearch();
                 };
 
         launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
+    }
+
+    private <T extends Enum<?>> T randomEnum(Class<T> clazz)
+    {
+        int x = random.nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
     }
 
     private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
