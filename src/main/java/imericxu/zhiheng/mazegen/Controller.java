@@ -122,9 +122,35 @@ public class Controller
     @FXML
     public void startPressed()
     {
-        final int rows = Integer.parseInt(inputRows.getText());
-        final int cols = Integer.parseInt(inputCols.getText());
-        final double cellWallRatio = Double.parseDouble(inputRatio.getText());
+        int rows;
+        try
+        {
+            rows = Integer.parseInt(inputRows.getText());
+        }
+        catch (NumberFormatException e)
+        {
+            rows = 20;
+        }
+
+        int cols;
+        try
+        {
+            cols = Integer.parseInt(inputCols.getText());
+        }
+        catch (NumberFormatException e)
+        {
+            cols = 20;
+        }
+
+        double cellWallRatio;
+        try
+        {
+            cellWallRatio = Double.parseDouble(inputRatio.getText());
+        }
+        catch (NumberFormatException e)
+        {
+            cellWallRatio = 2;
+        }
 
         MazeAlgo mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
         if (mazeType == null)
