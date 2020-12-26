@@ -1,8 +1,8 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
+package imericxu.zhiheng.mazegen.maze.solve_algos;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
+import imericxu.zhiheng.mazegen.maze.Cell;
+import imericxu.zhiheng.mazegen.maze.Maze;
+import imericxu.zhiheng.mazegen.maze.Pathfinder;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class AStar extends Pathfinder
     private final HashSet<Node> openList;
     private final HashSet<Node> closedList;
     private final HashMap<Node, Node> cameFrom;
-    private OCell[][] cellGrid;
+    private Cell[][] cellGrid;
     private Node[][] nodeGrid;
     private Node endNode;
     
@@ -85,9 +85,9 @@ public class AStar extends Pathfinder
         }
     }
     
-    private Stack<OCell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
+    private Stack<Cell> reconstructPath(HashMap<Node, Node> cameFrom, Node current)
     {
-        var path = new Stack<OCell>();
+        var path = new Stack<Cell>();
         path.push(cellGrid[current.getRow()][current.getCol()]);
         
         while (cameFrom.containsKey(current))
@@ -99,26 +99,26 @@ public class AStar extends Pathfinder
         return path;
     }
     
-    private ArrayList<Node> getNeighbors(OCell current)
+    private ArrayList<Node> getNeighbors(Cell current)
     {
         var neighbors = new ArrayList<Node>();
         var walls = current.getWalls();
         int row = current.getRow();
         int col = current.getCol();
     
-        if (!walls[OCell.TOP] && row > 0)
+        if (!walls[Cell.TOP] && row > 0)
         {
             neighbors.add(nodeGrid[row - 1][col]);
         }
-        if (!walls[OCell.RIGHT] && col < nodeGrid[0].length - 1)
+        if (!walls[Cell.RIGHT] && col < nodeGrid[0].length - 1)
         {
             neighbors.add(nodeGrid[row][col + 1]);
         }
-        if (!walls[OCell.BOTTOM] && row < nodeGrid.length - 1)
+        if (!walls[Cell.BOTTOM] && row < nodeGrid.length - 1)
         {
             neighbors.add(nodeGrid[row + 1][col]);
         }
-        if (!walls[OCell.LEFT] && col > 0)
+        if (!walls[Cell.LEFT] && col > 0)
         {
             neighbors.add(nodeGrid[row][col - 1]);
         }
@@ -136,7 +136,7 @@ public class AStar extends Pathfinder
         {
             for (int col = 0; col < nodeGrid[0].length; ++col)
             {
-                OCell cell = cellGrid[row][col];
+                Cell cell = cellGrid[row][col];
                 nodeGrid[row][col] = new Node(cell);
             }
         }
@@ -145,7 +145,7 @@ public class AStar extends Pathfinder
     /**
      * Path-finding {@link Cell} specialized for the algorithms
      */
-    private static class Node extends OCell
+    private static class Node extends Cell
     {
         /**
          * Total estimated cost from beginning to end
@@ -159,7 +159,7 @@ public class AStar extends Pathfinder
         /**
          * {@link #f} and {@link #g} default to infinity
          */
-        public Node(OCell cell)
+        public Node(Cell cell)
         {
             super(cell);
             f = Double.POSITIVE_INFINITY;

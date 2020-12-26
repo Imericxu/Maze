@@ -1,6 +1,5 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal;
+package imericxu.zhiheng.mazegen.maze;
 
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -8,14 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
+import static imericxu.zhiheng.mazegen.maze.Cell.Display;
 
 /**
- * {@link Canvas} specifically designed to display {@link Maze orthogonal} mazes
+ * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
  */
-public class CanvasOrthogonal extends Canvas
+public class GameCanvas extends Canvas
 {
-    private final OCell[][] grid;
+    private final Cell[][] grid;
     private final GraphicsContext gc;
     private final double cellSize;
     private final double wallSize;
@@ -25,7 +24,7 @@ public class CanvasOrthogonal extends Canvas
      *
      * @param maze any subtype of {@link Maze}
      */
-    public CanvasOrthogonal(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
+    public GameCanvas(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
     {
         grid = maze.getGrid();
         gc = getGraphicsContext2D();
@@ -49,7 +48,7 @@ public class CanvasOrthogonal extends Canvas
             cellSize = wallSize * cellWallRatio;
             setHeight(rows * (cellSize + wallSize) + wallSize);
         }
-    
+        
         // drawGrid();
         gc.setFill(Display.HIDE.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
@@ -58,20 +57,20 @@ public class CanvasOrthogonal extends Canvas
     /**
      * Draws sections of the maze as requests come in
      *
-     * @param changeList {@link OCell cells} to draw
+     * @param changeList {@link Cell cells} to draw
      */
-    public void drawMaze(Stack<OCell> changeList)
+    public void drawMaze(Stack<Cell> changeList)
     {
         if (changeList.isEmpty()) return;
         
         double x, y;
-        var openCells = new ArrayList<OCell>();
+        var openCells = new ArrayList<Cell>();
         
         while (!changeList.isEmpty())
         {
             var cell = changeList.pop();
             var display = cell.getDisplay();
-    
+            
             if (display == Display.SHOW)
             {
                 openCells.add(cell);
@@ -86,7 +85,7 @@ public class CanvasOrthogonal extends Canvas
                 gc.fillRect(x, y, size, size);
                 continue;
             }
-    
+            
             gc.setFill(display.getColor());
             fillCell(cell);
         }
@@ -100,28 +99,28 @@ public class CanvasOrthogonal extends Canvas
      */
     public void drawMaze()
     {
-        var changeList = new Stack<OCell>();
-    
+        var changeList = new Stack<Cell>();
+        
         for (var row : grid)
         {
             changeList.addAll(Arrays.asList(row));
         }
-    
+        
         drawMaze(changeList);
     }
     
-    public void drawPath(Stack<OCell> pathList)
+    public void drawPath(Stack<Cell> pathList)
     {
         if (pathList.isEmpty()) return;
-    
+        
         var first = pathList.get(0);
         double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
-    
+        
         gc.setStroke(Display.PATH.getColor());
         gc.setLineWidth(cellSize * 0.5);
-    
+        
         for (var cell : pathList.subList(1, pathList.size()))
         {
             x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;
@@ -174,9 +173,9 @@ public class CanvasOrthogonal extends Canvas
     /**
      * Colors the {@code cell} and erases any walls that need to be erased.
      *
-     * @param cell the {@link OCell} to be filled
+     * @param cell the {@link Cell} to be filled
      */
-    private void fillCell(OCell cell)
+    private void fillCell(Cell cell)
     {
         double x = (wallSize + cellSize) * cell.getCol() + wallSize;
         double y = (wallSize + cellSize) * cell.getRow() + wallSize;
@@ -187,28 +186,28 @@ public class CanvasOrthogonal extends Canvas
     }
     
     /**
-     * If an {@link OCell} doesn't have a wall on a side, fill it with a rectangle
-     * the same color as the {@link OCell}
+     * If an {@link Cell} doesn't have a wall on a side, fill it with a rectangle
+     * the same color as the {@link Cell}
      *
-     * @param cellX the x coordinate of the {@link OCell}
-     * @param cellY the y coordinate of the {@link OCell}
-     * @param walls use the {@link OCell#getWalls()} method
+     * @param cellX the x coordinate of the {@link Cell}
+     * @param cellY the y coordinate of the {@link Cell}
+     * @param walls use the {@link Cell#getWalls()} method
      */
     private void eraseWalls(double cellX, double cellY, boolean[] walls)
     {
-        if (!walls[OCell.TOP])
+        if (!walls[Cell.TOP])
         {
             gc.fillRect(cellX, cellY - wallSize, cellSize, wallSize);
         }
-        if (!walls[OCell.RIGHT])
+        if (!walls[Cell.RIGHT])
         {
             gc.fillRect(cellX + cellSize, cellY, wallSize, cellSize);
         }
-        if (!walls[OCell.BOTTOM])
+        if (!walls[Cell.BOTTOM])
         {
             gc.fillRect(cellX, cellY + cellSize, cellSize, wallSize);
         }
-        if (!walls[OCell.LEFT])
+        if (!walls[Cell.LEFT])
         {
             gc.fillRect(cellX - wallSize, cellY, wallSize, cellSize);
         }
