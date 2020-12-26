@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ public class Prims extends Maze
     /**
      * Cells surrounding the already explored cells
      */
-    private final ArrayList<OCell> frontiers;
+    private final ArrayList<Cell> frontiers;
     
     /**
      * Generates a rectangular maze
@@ -33,7 +32,7 @@ public class Prims extends Maze
             var current = frontiers.remove(r.nextInt(frontiers.size()));
             addFrontiersOf(current);
     
-            ArrayList<OCell> choices = getChoices(current);
+            ArrayList<Cell> choices = getChoices(current);
             var selected = choices.get(r.nextInt(choices.size()));
             setWallsBetween(current, selected, false);
     
@@ -45,16 +44,16 @@ public class Prims extends Maze
     /**
      * Marks {@code cell} as visited.<br/>
      * Gets the neighbors of {@code cell} and adds them to
-     * {@link #frontiers} if not already added and the {@link OCell}
+     * {@link #frontiers} if not already added and the {@link Cell}
      * has not been visited
      */
-    private void addFrontiersOf(OCell cell)
+    private void addFrontiersOf(Cell cell)
     {
         cell.visited();
         cell.setDisplay(Cell.Display.SHOW);
         changeList.push(cell);
         
-        for (OCell neighbor : getNeighbors(cell))
+        for (Cell neighbor : getNeighbors(cell))
         {
             if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
@@ -67,15 +66,15 @@ public class Prims extends Maze
     
     /**
      * Gets the neighbors of {@code current} and adds if the
-     * {@link OCell} has previously been explored
+     * {@link Cell} has previously been explored
      *
      * @param current the current frontier
-     * @return an ArrayList containing possible {@link OCell}s {@code current} can connect to
+     * @return an ArrayList containing possible {@link Cell}s {@code current} can connect to
      */
-    private ArrayList<OCell> getChoices(OCell current)
+    private ArrayList<Cell> getChoices(Cell current)
     {
-        var visited = new ArrayList<OCell>();
-        for (OCell cell : getNeighbors(current))
+        var visited = new ArrayList<Cell>();
+        for (Cell cell : getNeighbors(current))
         {
             if (cell.getVisited() >= 1)
             {

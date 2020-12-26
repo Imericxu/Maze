@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.Random;
 public class Tremaux extends Pathfinder
 {
     private final Random r;
-    private OCell[][] grid;
+    private Cell[][] grid;
     
     public Tremaux()
     {
@@ -49,37 +48,37 @@ public class Tremaux extends Pathfinder
         return false;
     }
     
-    private ArrayList<OCell> getUnvisited(OCell current)
+    private ArrayList<Cell> getUnvisited(Cell current)
     {
         current.setDisplay(Cell.Display.EXPLORE);
         changeList.push(current);
     
-        var unvisited = new ArrayList<OCell>();
+        var unvisited = new ArrayList<Cell>();
         int row = current.getRow();
         int col = current.getCol();
         var walls = current.getWalls();
     
         var previous = path.size() < 2 ? null : path.get(path.size() - 2);
     
-        if (!walls[OCell.TOP] && row > 0)
+        if (!walls[Cell.TOP] && row > 0)
         {
             var cell = grid[row - 1][col];
             if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
-        if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
+        if (!walls[Cell.RIGHT] && col < grid[0].length - 1)
         {
             var cell = grid[row][col + 1];
             if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
-        if (!walls[OCell.BOTTOM] && row < grid.length - 1)
+        if (!walls[Cell.BOTTOM] && row < grid.length - 1)
         {
             var cell = grid[row + 1][col];
             if (cell != previous) changeList.push(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
-        if (!walls[OCell.LEFT] && col > 0)
+        if (!walls[Cell.LEFT] && col > 0)
         {
             var cell = grid[row][col - 1];
             if (cell != previous) changeList.push(cell);

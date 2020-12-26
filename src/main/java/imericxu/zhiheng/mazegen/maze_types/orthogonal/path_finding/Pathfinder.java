@@ -1,6 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
+import imericxu.zhiheng.mazegen.maze_types.Cell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public abstract class Pathfinder extends Orthogonal
 {
-    protected Stack<OCell> path;
+    protected Stack<Cell> path;
     
     public Pathfinder()
     {
@@ -22,12 +22,12 @@ public abstract class Pathfinder extends Orthogonal
         end = maze.getEnd();
     }
     
-    public Stack<OCell> getPath()
+    public Stack<Cell> getPath()
     {
         return path;
     }
     
-    protected void clearVisited(OCell[][] grid)
+    protected void clearVisited(Cell[][] grid)
     {
         for (var row : grid)
         {
@@ -38,26 +38,26 @@ public abstract class Pathfinder extends Orthogonal
         }
     }
     
-    protected ArrayList<OCell> getNeighbors(OCell current, OCell[][] grid)
+    protected ArrayList<Cell> getNeighbors(Cell current, Cell[][] grid)
     {
-        var neighbors = new ArrayList<OCell>();
+        var neighbors = new ArrayList<Cell>();
         int row = current.getRow();
         int col = current.getCol();
         var walls = current.getWalls();
         
-        if (!walls[OCell.TOP] && row > 0)
+        if (!walls[Cell.TOP] && row > 0)
         {
             neighbors.add(grid[row - 1][col]);
         }
-        if (!walls[OCell.RIGHT] && col < grid[0].length - 1)
+        if (!walls[Cell.RIGHT] && col < grid[0].length - 1)
         {
             neighbors.add(grid[row][col + 1]);
         }
-        if (!walls[OCell.BOTTOM] && row < grid.length - 1)
+        if (!walls[Cell.BOTTOM] && row < grid.length - 1)
         {
             neighbors.add(grid[row + 1][col]);
         }
-        if (!walls[OCell.LEFT] && col > 0)
+        if (!walls[Cell.LEFT] && col > 0)
         {
             neighbors.add(grid[row][col - 1]);
         }

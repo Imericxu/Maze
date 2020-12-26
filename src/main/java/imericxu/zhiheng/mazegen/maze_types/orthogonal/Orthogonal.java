@@ -1,28 +1,30 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal;
 
+import imericxu.zhiheng.mazegen.maze_types.Cell;
+
 import java.util.Stack;
 
 public abstract class Orthogonal
 {
-    protected final Stack<OCell> changeList;
-    protected OCell start;
-    protected OCell end;
-    
+    protected final Stack<Cell> changeList;
+    protected Cell start;
+    protected Cell end;
+
     public Orthogonal()
     {
         changeList = new Stack<>();
     }
-    
-    public Stack<OCell> getChangeList()
+
+    public Stack<Cell> getChangeList()
     {
         return changeList;
     }
-    
+
     /**
      * @return true if not finished
      */
     public abstract boolean step();
-    
+
     public void instantSolve()
     {
         while (true)
@@ -30,13 +32,13 @@ public abstract class Orthogonal
             if (step()) return;
         }
     }
-    
-    public OCell getStart()
+
+    public Cell getStart()
     {
         return start;
     }
-    
-    public OCell getEnd()
+
+    public Cell getEnd()
     {
         return end;
     }

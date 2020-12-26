@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 
 import java.util.HashMap;
@@ -11,10 +10,10 @@ import java.util.Stack;
 
 public class BreadthFirstSearch extends Pathfinder
 {
-    private final Queue<OCell> queue;
-    private final HashMap<OCell, OCell> cameFrom;
-    private OCell[][] grid;
-    private OCell previous;
+    private final Queue<Cell> queue;
+    private final HashMap<Cell, Cell> cameFrom;
+    private Cell[][] grid;
+    private Cell previous;
     
     public BreadthFirstSearch()
     {
@@ -65,9 +64,9 @@ public class BreadthFirstSearch extends Pathfinder
         else return true;
     }
     
-    private Stack<OCell> reconstructPath(OCell current)
+    private Stack<Cell> reconstructPath(Cell current)
     {
-        var path = new Stack<OCell>();
+        var path = new Stack<Cell>();
         path.push(current);
         
         while (cameFrom.containsKey(current))

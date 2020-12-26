@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -11,7 +10,7 @@ import java.util.Stack;
  */
 public class Backtracker extends Maze
 {
-    private final Stack<OCell> stack;
+    private final Stack<Cell> stack;
     
     /**
      * Generates a rectangular maze
@@ -31,14 +30,14 @@ public class Backtracker extends Maze
     {
         if (!stack.empty())
         {
-            OCell current = stack.pop();
+            Cell current = stack.pop();
             var unvisited = getUnvisitedNeighbors(current);
             
             if (!unvisited.isEmpty())
             {
                 stack.push(current);
                 
-                OCell selected = unvisited.get(r.nextInt(unvisited.size()));
+                Cell selected = unvisited.get(r.nextInt(unvisited.size()));
                 selected.visited();
                 selected.setDisplay(Cell.Display.EXPLORE);
                 changeList.push(selected);
@@ -60,11 +59,12 @@ public class Backtracker extends Maze
     /**
      * Gets all neighbors of {@code current} and adds them to an {@code ArrayList}
      * if they are unvisited.
+     * @param current
      */
-    private ArrayList<OCell> getUnvisitedNeighbors(OCell current)
+    private ArrayList<Cell> getUnvisitedNeighbors(Cell current)
     {
-        ArrayList<OCell> unvisited = new ArrayList<>();
-        for (OCell neighbor : getNeighbors(current))
+        ArrayList<Cell> unvisited = new ArrayList<>();
+        for (Cell neighbor : getNeighbors(current))
         {
             if (neighbor.getVisited() == 0)
             {

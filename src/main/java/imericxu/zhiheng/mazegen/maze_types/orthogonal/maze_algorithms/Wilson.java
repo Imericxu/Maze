@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
 
 import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.OCell;
 
 import java.util.*;
 
@@ -10,9 +9,9 @@ import java.util.*;
  */
 public class Wilson extends Maze
 {
-    private final HashSet<OCell> knownCells;
-    private final HashSet<OCell> unknownCells;
-    private final Stack<OCell> currentWalk;
+    private final HashSet<Cell> knownCells;
+    private final HashSet<Cell> unknownCells;
+    private final Stack<Cell> currentWalk;
     
     /**
      * Generates a rectangular maze
@@ -95,7 +94,7 @@ public class Wilson extends Maze
     }
     
     @Override
-    public ArrayList<OCell> getNeighbors(OCell current)
+    public ArrayList<Cell> getNeighbors(Cell current)
     {
         var neighbors = super.getNeighbors(current);
         int size = currentWalk.size();
@@ -103,7 +102,7 @@ public class Wilson extends Maze
         return neighbors;
     }
     
-    private void deleteLoop(OCell random)
+    private void deleteLoop(Cell random)
     {
         var current = currentWalk.pop();
         current.setDisplay(Cell.Display.HIDE);

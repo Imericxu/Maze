@@ -4,6 +4,14 @@ import javafx.scene.paint.Color;
 
 public class Cell
 {
+    public static final int TOP = 0;
+    public static final int RIGHT = 1;
+    public static final int BOTTOM = 2;
+    public static final int LEFT = 3;
+    /**
+     * An array of walls going clockwise from the top
+     */
+    protected final boolean[] walls;
     private final int row;
     private final int col;
     private int visited;
@@ -15,6 +23,7 @@ public class Cell
         this.col = col;
         visited = 0;
         display = Display.HIDE;
+        walls = new boolean[]{true, true, true, true};
     }
     
     public Cell(Cell other)
@@ -23,6 +32,7 @@ public class Cell
         col = other.col;
         visited = other.visited;
         display = other.display;
+        walls = other.getWalls();
     }
     
     public int getRow()
@@ -65,7 +75,23 @@ public class Cell
     {
         return String.format("(%d, %d)", row, col);
     }
-    
+
+    public boolean[] getWalls()
+    {
+        return walls;
+    }
+
+    /**
+     * Used to alter a single wall
+     *
+     * @param wall    use one of the {@link Cell} constants
+     * @param hasWall set the wall to true or false
+     */
+    public void setWall(int wall, boolean hasWall)
+    {
+        walls[wall] = hasWall;
+    }
+
     public enum Display
     {
         HIDE(Color.web("0x1C518B")),
