@@ -12,7 +12,7 @@ import static imericxu.zhiheng.mazegen.maze.Cell.Display;
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
  */
-public class GameCanvas extends javafx.scene.canvas.Canvas
+public class GameCanvas extends Canvas
 {
     private final Cell[][] grid;
     private final GraphicsContext gc;
@@ -48,7 +48,7 @@ public class GameCanvas extends javafx.scene.canvas.Canvas
             cellSize = wallSize * cellWallRatio;
             setHeight(rows * (cellSize + wallSize) + wallSize);
         }
-    
+        
         // drawGrid();
         gc.setFill(Display.HIDE.getColor());
         gc.fillRect(0, 0, getWidth(), getHeight());
@@ -70,7 +70,7 @@ public class GameCanvas extends javafx.scene.canvas.Canvas
         {
             var cell = changeList.pop();
             var display = cell.getDisplay();
-    
+            
             if (display == Display.SHOW)
             {
                 openCells.add(cell);
@@ -85,7 +85,7 @@ public class GameCanvas extends javafx.scene.canvas.Canvas
                 gc.fillRect(x, y, size, size);
                 continue;
             }
-    
+            
             gc.setFill(display.getColor());
             fillCell(cell);
         }
@@ -100,27 +100,27 @@ public class GameCanvas extends javafx.scene.canvas.Canvas
     public void drawMaze()
     {
         var changeList = new Stack<Cell>();
-    
+        
         for (var row : grid)
         {
             changeList.addAll(Arrays.asList(row));
         }
-    
+        
         drawMaze(changeList);
     }
     
     public void drawPath(Stack<Cell> pathList)
     {
         if (pathList.isEmpty()) return;
-    
+        
         var first = pathList.get(0);
         double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
-    
+        
         gc.setStroke(Display.PATH.getColor());
         gc.setLineWidth(cellSize * 0.5);
-    
+        
         for (var cell : pathList.subList(1, pathList.size()))
         {
             x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;

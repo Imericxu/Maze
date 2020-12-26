@@ -60,7 +60,6 @@ public class Backtracker extends Maze
     /**
      * Gets all neighbors of {@code current} and adds them to an {@code ArrayList}
      * if they are unvisited.
-     * @param current
      */
     private ArrayList<Cell> getUnvisitedNeighbors(Cell current)
     {
