@@ -1,6 +1,7 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms;
+package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
+import imericxu.zhiheng.mazegen.maze.Cell;
+import imericxu.zhiheng.mazegen.maze.Maze;
 
 import java.util.*;
 

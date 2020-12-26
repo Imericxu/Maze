@@ -1,8 +1,4 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding;
-
-import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.Orthogonal;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
+package imericxu.zhiheng.mazegen.maze;
 
 import java.util.ArrayList;
 import java.util.Stack;

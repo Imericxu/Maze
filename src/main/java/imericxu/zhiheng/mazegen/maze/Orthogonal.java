@@ -1,6 +1,4 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal;
-
-import imericxu.zhiheng.mazegen.maze_types.Cell;
+package imericxu.zhiheng.mazegen.maze;
 
 import java.util.Stack;
 

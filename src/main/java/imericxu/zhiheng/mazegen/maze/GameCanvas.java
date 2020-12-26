@@ -1,7 +1,5 @@
-package imericxu.zhiheng.mazegen.maze_types.orthogonal;
+package imericxu.zhiheng.mazegen.maze;
 
-import imericxu.zhiheng.mazegen.maze_types.Cell;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -9,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-import static imericxu.zhiheng.mazegen.maze_types.Cell.Display;
+import static imericxu.zhiheng.mazegen.maze.Cell.Display;
 
 /**
- * {@link Canvas} specifically designed to display {@link Maze orthogonal} mazes
+ * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
  */
-public class CanvasOrthogonal extends Canvas
+public class GameCanvas extends javafx.scene.canvas.Canvas
 {
     private final Cell[][] grid;
     private final GraphicsContext gc;
@@ -26,7 +24,7 @@ public class CanvasOrthogonal extends Canvas
      *
      * @param maze any subtype of {@link Maze}
      */
-    public CanvasOrthogonal(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
+    public GameCanvas(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
     {
         grid = maze.getGrid();
         gc = getGraphicsContext2D();

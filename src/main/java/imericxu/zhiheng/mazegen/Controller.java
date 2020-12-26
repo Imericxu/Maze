@@ -1,16 +1,16 @@
 package imericxu.zhiheng.mazegen;
 
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.CanvasOrthogonal;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.TimerMaze;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.TimerPath;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Backtracker;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Maze;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Prims;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.maze_algorithms.Wilson;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.AStar;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.BreadthFirstSearch;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Pathfinder;
-import imericxu.zhiheng.mazegen.maze_types.orthogonal.path_finding.Tremaux;
+import imericxu.zhiheng.mazegen.maze.GameCanvas;
+import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
+import imericxu.zhiheng.mazegen.maze.timers.TimerPath;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Backtracker;
+import imericxu.zhiheng.mazegen.maze.Maze;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Prims;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Wilson;
+import imericxu.zhiheng.mazegen.maze.solve_algos.AStar;
+import imericxu.zhiheng.mazegen.maze.solve_algos.BreadthFirstSearch;
+import imericxu.zhiheng.mazegen.maze.Pathfinder;
+import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -203,23 +203,23 @@ public class Controller
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
 
-        CanvasOrthogonal canvas = new CanvasOrthogonal(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
+        GameCanvas gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
 
-        root.getChildren().add(canvas);
+        root.getChildren().add(gameCanvas);
 
-        var timerPath = new TimerPath(pathfinder, canvas);
-        var timerMaze = new TimerMaze(timerPath, canvas, maze, pathfinder, doSolve, doShowPathfinding);
+        var timerPath = new TimerPath(pathfinder, gameCanvas);
+        var timerMaze = new TimerMaze(timerPath, gameCanvas, maze, pathfinder, doSolve, doShowPathfinding);
 
         if (doShowMazeGen) timerMaze.start();
         else
         {
             maze.instantSolve();
             maze.getChangeList().clear();
-            canvas.drawMaze();
+            gameCanvas.drawMaze();
 
             if (doSolve)
             {
-                TimerMaze.solveMaze(timerPath, canvas, maze, pathfinder, doShowPathfinding);
+                TimerMaze.solveMaze(timerPath, gameCanvas, maze, pathfinder, doShowPathfinding);
             }
         }
 

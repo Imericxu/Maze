@@ -1,4 +1,4 @@
-package imericxu.zhiheng.mazegen.maze_types;
+package imericxu.zhiheng.mazegen.maze;
 
 import javafx.scene.paint.Color;
 
