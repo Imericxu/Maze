@@ -77,6 +77,15 @@ public class GameCanvas extends Canvas
                 openCells.add(cell);
                 continue;
             }
+            else if (state == State.DEFAULT)
+            {
+                x = (wallSize + cellSize) * cell.getCol();
+                y = (wallSize + cellSize) * cell.getRow();
+                double size = cellSize + 2 * wallSize;
+                gc.setFill(Colors.DEFAULT.color);
+                gc.fillRect(x, y, size, size);
+                continue;
+            }
             
             gc.setFill(getColor(state));
             fillCell(cell);
@@ -213,7 +222,6 @@ public class GameCanvas extends Canvas
                     case DONE -> Color.WHITE;
                 };
     }
-    
     
     enum Colors
     {
