@@ -2,12 +2,13 @@ package imericxu.zhiheng.mazegen.maze;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-import static imericxu.zhiheng.mazegen.maze.Cell.Display;
+import static imericxu.zhiheng.mazegen.maze.Cell.State;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
@@ -50,7 +51,7 @@ public class GameCanvas extends Canvas
         }
         
         // drawGrid();
-        gc.setFill(Display.HIDE.getColor());
+        gc.setFill(Colors.DEFAULT.color);
         gc.fillRect(0, 0, getWidth(), getHeight());
     }
     
@@ -69,28 +70,19 @@ public class GameCanvas extends Canvas
         while (!changeList.isEmpty())
         {
             Cell cell = changeList.pop();
-            Cell.Display display = cell.getDisplay();
+            State state = cell.state;
             
-            if (display == Display.SHOW)
+            if (state == State.DONE)
             {
                 openCells.add(cell);
                 continue;
             }
-            else if (display == Display.HIDE)
-            {
-                x = (wallSize + cellSize) * cell.getCol();
-                y = (wallSize + cellSize) * cell.getRow();
-                double size = cellSize + 2 * wallSize;
-                gc.setFill(Display.HIDE.getColor());
-                gc.fillRect(x, y, size, size);
-                continue;
-            }
             
-            gc.setFill(display.getColor());
+            gc.setFill(getColor(state));
             fillCell(cell);
         }
         
-        gc.setFill(Display.SHOW.getColor());
+        gc.setFill(getColor(State.DONE));
         openCells.forEach(this::fillCell);
     }
     
@@ -118,7 +110,7 @@ public class GameCanvas extends Canvas
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
         
-        gc.setStroke(Display.PATH.getColor());
+        gc.setStroke(Colors.PATH.color);
         gc.setLineWidth(cellSize * 0.5);
         
         for (Cell cell : pathList.subList(1, pathList.size()))
@@ -209,6 +201,32 @@ public class GameCanvas extends Canvas
         if (!walls[Cell.LEFT])
         {
             gc.fillRect(cellX - wallSize, cellY, wallSize, cellSize);
+        }
+    }
+    
+    private Color getColor(State state)
+    {
+        return switch (state)
+                {
+                    case DEFAULT -> Color.web("0x1C518B");
+                    case EXPLORE -> Color.web("0xADD9FF");
+                    case DONE -> Color.WHITE;
+                };
+    }
+    
+    
+    enum Colors
+    {
+        DEFAULT(Color.web("0x1C5188")),
+        EXPLORE(Color.web("0xADD9FF")),
+        DONE(Color.WHITE),
+        PATH(Color.web("0xAD360B"));
+        
+        public Color color;
+        
+        Colors(Color color)
+        {
+            this.color = color;
         }
     }
 }

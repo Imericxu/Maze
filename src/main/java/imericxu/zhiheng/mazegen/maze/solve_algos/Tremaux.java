@@ -36,7 +36,7 @@ public class Tremaux extends Pathfinder
         if (!choices.isEmpty())
         {
             var selected = choices.get(r.nextInt(choices.size()));
-            selected.setDisplay(Cell.Display.EXPLORE);
+            selected.setState(Cell.State.EXPLORE);
             selected.visited();
             path.push(selected);
             return selected == end;
@@ -51,7 +51,7 @@ public class Tremaux extends Pathfinder
     
     private ArrayList<Cell> getUnvisited(Cell current)
     {
-        current.setDisplay(Cell.Display.EXPLORE);
+        current.setState(Cell.State.EXPLORE);
         changeList.push(current);
     
         var unvisited = new ArrayList<Cell>();

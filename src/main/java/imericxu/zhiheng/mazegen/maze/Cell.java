@@ -1,7 +1,5 @@
 package imericxu.zhiheng.mazegen.maze;
 
-import javafx.scene.paint.Color;
-
 public class Cell
 {
     public static final int TOP = 0;
@@ -14,15 +12,15 @@ public class Cell
     protected final boolean[] walls;
     private final int row;
     private final int col;
+    public State state;
     private int visited;
-    private Display display;
     
     public Cell(int row, int col)
     {
         this.row = row;
         this.col = col;
         visited = 0;
-        display = Display.HIDE;
+        state = State.DEFAULT;
         walls = new boolean[]{true, true, true, true};
     }
     
@@ -31,7 +29,7 @@ public class Cell
         row = other.row;
         col = other.col;
         visited = other.visited;
-        display = other.display;
+        state = other.state;
         walls = other.getWalls();
     }
     
@@ -60,14 +58,14 @@ public class Cell
         visited = 0;
     }
     
-    public Display getDisplay()
+    public State getState()
     {
-        return display;
+        return state;
     }
     
-    public void setDisplay(Display display)
+    public void setState(State state)
     {
-        this.display = display;
+        this.state = state;
     }
     
     @Override
@@ -75,12 +73,12 @@ public class Cell
     {
         return String.format("(%d, %d)", row, col);
     }
-
+    
     public boolean[] getWalls()
     {
         return walls;
     }
-
+    
     /**
      * Used to alter a single wall
      *
@@ -91,29 +89,9 @@ public class Cell
     {
         walls[wall] = hasWall;
     }
-
-    public enum Display
+    
+    public enum State
     {
-        HIDE(Color.web("0x1C518B")),
-        SHOW(Color.WHITE),
-        EXPLORE(Color.web("0xADD9FF")),
-        CURRENT(Color.web("0x1B998B")),
-        PATH(Color.web("0xAD360B"));
-        private Color color;
-    
-        Display(Color color)
-        {
-            this.color = color;
-        }
-    
-        public Color getColor()
-        {
-            return color;
-        }
-    
-        public void setColor(Color color)
-        {
-            this.color = color;
-        }
+        DEFAULT, EXPLORE, DONE,
     }
 }

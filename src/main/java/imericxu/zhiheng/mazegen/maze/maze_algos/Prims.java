@@ -51,7 +51,7 @@ public class Prims extends Maze
     private void addFrontiersOf(Cell cell)
     {
         cell.visited();
-        cell.setDisplay(Cell.Display.SHOW);
+        cell.setState(Cell.State.DONE);
         changeList.push(cell);
         
         for (Cell neighbor : getNeighbors(cell))
@@ -59,7 +59,7 @@ public class Prims extends Maze
             if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
             {
                 frontiers.add(neighbor);
-                neighbor.setDisplay(Cell.Display.EXPLORE);
+                neighbor.setState(Cell.State.EXPLORE);
                 changeList.push(neighbor);
             }
         }

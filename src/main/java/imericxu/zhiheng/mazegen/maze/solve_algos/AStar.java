@@ -46,7 +46,7 @@ public class AStar extends Pathfinder
         {
             Node current = Collections.min(openList, (o1, o2) -> (int) ((o1.getF() - o2.getF()) * 10));
             var cellCurrent = cellGrid[current.getRow()][current.getCol()];
-            cellCurrent.setDisplay(Cell.Display.EXPLORE);
+            cellCurrent.setState(Cell.State.EXPLORE);
             changeList.push(cellCurrent);
             
             if (current == endNode)

@@ -22,7 +22,7 @@ public class Backtracker extends Maze
         stack = new Stack<>();
         stack.push(start);
         start.visited();
-        start.setDisplay(Cell.Display.EXPLORE);
+        start.setState(Cell.State.EXPLORE);
         changeList.push(start);
     }
     
@@ -40,7 +40,7 @@ public class Backtracker extends Maze
                 
                 Cell selected = unvisited.get(r.nextInt(unvisited.size()));
                 selected.visited();
-                selected.setDisplay(Cell.Display.EXPLORE);
+                selected.setState(Cell.State.EXPLORE);
                 changeList.push(selected);
                 stack.push(selected);
     
@@ -48,7 +48,7 @@ public class Backtracker extends Maze
             }
             else
             {
-                current.setDisplay(Cell.Display.SHOW);
+                current.setState(Cell.State.DONE);
                 changeList.push(current);
             }
     

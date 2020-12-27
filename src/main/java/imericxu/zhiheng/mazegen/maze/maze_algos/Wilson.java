@@ -31,7 +31,7 @@ public class Wilson extends Maze
         var begin = unknownCells.iterator().next();
         unknownCells.remove(begin);
         knownCells.add(begin);
-        begin.setDisplay(Cell.Display.SHOW);
+        begin.setState(Cell.State.DONE);
         changeList.push(begin);
         
         startNewWalk();
@@ -63,13 +63,13 @@ public class Wilson extends Maze
                     unknownCells.removeAll(currentWalk);
                     for (var cell : currentWalk)
                     {
-                        cell.setDisplay(Cell.Display.SHOW);
+                        cell.setState(Cell.State.DONE);
                     }
                     currentWalk.clear();
                 }
                 else
                 {
-                    random.setDisplay(Cell.Display.EXPLORE);
+                    random.setState(Cell.State.EXPLORE);
                     setWallsBetween(current, random, false);
                     changeList.push(random);
     
@@ -106,7 +106,7 @@ public class Wilson extends Maze
     private void deleteLoop(Cell random)
     {
         var current = currentWalk.pop();
-        current.setDisplay(Cell.Display.HIDE);
+        current.setState(Cell.State.DEFAULT);
         
         if (currentWalk.size() == 1)
         {
@@ -115,7 +115,7 @@ public class Wilson extends Maze
         }
         
         var next = currentWalk.pop();
-        next.setDisplay(Cell.Display.HIDE);
+        next.setState(Cell.State.DEFAULT);
         setWallsBetween(current, next, true);
         
         Collections.addAll(changeList, current, next);
@@ -124,7 +124,7 @@ public class Wilson extends Maze
         {
             current = next;
             next = currentWalk.pop();
-            next.setDisplay(Cell.Display.HIDE);
+            next.setState(Cell.State.DEFAULT);
             setWallsBetween(current, next, true);
             changeList.push(next);
         }
@@ -135,7 +135,7 @@ public class Wilson extends Maze
     private void startNewWalk()
     {
         var walkStart = unknownCells.iterator().next();
-        walkStart.setDisplay(Cell.Display.EXPLORE);
+        walkStart.setState(Cell.State.EXPLORE);
         currentWalk.push(walkStart);
         changeList.push(walkStart);
     }
