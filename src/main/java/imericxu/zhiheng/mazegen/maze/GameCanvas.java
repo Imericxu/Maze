@@ -68,8 +68,8 @@ public class GameCanvas extends Canvas
         
         while (!changeList.isEmpty())
         {
-            var cell = changeList.pop();
-            var display = cell.getDisplay();
+            Cell cell = changeList.pop();
+            Cell.Display display = cell.getDisplay();
             
             if (display == Display.SHOW)
             {
@@ -101,7 +101,7 @@ public class GameCanvas extends Canvas
     {
         var changeList = new Stack<Cell>();
         
-        for (var row : grid)
+        for (Cell[] row : grid)
         {
             changeList.addAll(Arrays.asList(row));
         }
@@ -113,7 +113,7 @@ public class GameCanvas extends Canvas
     {
         if (pathList.isEmpty()) return;
         
-        var first = pathList.get(0);
+        Cell first = pathList.get(0);
         double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
         double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
         double x2, y2;
@@ -121,7 +121,7 @@ public class GameCanvas extends Canvas
         gc.setStroke(Display.PATH.getColor());
         gc.setLineWidth(cellSize * 0.5);
         
-        for (var cell : pathList.subList(1, pathList.size()))
+        for (Cell cell : pathList.subList(1, pathList.size()))
         {
             x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;
             y2 = (wallSize + cellSize) * cell.getRow() + wallSize + cellSize / 2.0;
@@ -141,7 +141,6 @@ public class GameCanvas extends Canvas
         // Horizontal walls
         for (int row = 0; row < grid.length; ++row)
         {
-            
             for (int col = 0; col < grid[0].length; ++col)
             {
                 if (grid[row][col] != null)
@@ -181,7 +180,7 @@ public class GameCanvas extends Canvas
         double y = (wallSize + cellSize) * cell.getRow() + wallSize;
         gc.fillRect(x, y, cellSize, cellSize);
         
-        var walls = cell.getWalls();
+        boolean[] walls = cell.getWalls();
         eraseWalls(x, y, walls);
     }
     
