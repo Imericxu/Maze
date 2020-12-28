@@ -52,7 +52,7 @@ public class Tremaux extends Pathfinder
     private ArrayList<Cell> getUnvisited(Cell current)
     {
         current.setState(Cell.State.EXPLORE);
-        changeList.push(current);
+        changeList.add(current);
     
         var unvisited = new ArrayList<Cell>();
         int row = current.getRow();
@@ -64,25 +64,25 @@ public class Tremaux extends Pathfinder
         if (!walls[Cell.TOP] && row > 0)
         {
             var cell = grid[row - 1][col];
-            if (cell != previous) changeList.push(cell);
+            if (cell != previous) changeList.add(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[Cell.RIGHT] && col < grid[0].length - 1)
         {
             var cell = grid[row][col + 1];
-            if (cell != previous) changeList.push(cell);
+            if (cell != previous) changeList.add(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[Cell.BOTTOM] && row < grid.length - 1)
         {
             var cell = grid[row + 1][col];
-            if (cell != previous) changeList.push(cell);
+            if (cell != previous) changeList.add(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         if (!walls[Cell.LEFT] && col > 0)
         {
             var cell = grid[row][col - 1];
-            if (cell != previous) changeList.push(cell);
+            if (cell != previous) changeList.add(cell);
             if (cell.getVisited() == 0) unvisited.add(cell);
         }
         

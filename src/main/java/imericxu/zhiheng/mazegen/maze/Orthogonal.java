@@ -1,19 +1,20 @@
 package imericxu.zhiheng.mazegen.maze;
 
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public abstract class Orthogonal
 {
-    protected final Stack<Cell> changeList;
+    protected final Queue<Cell> changeList;
     protected Cell start;
     protected Cell end;
 
     public Orthogonal()
     {
-        changeList = new Stack<>();
+        changeList = new LinkedList<>();
     }
 
-    public Stack<Cell> getChangeList()
+    public Queue<Cell> getChangeList()
     {
         return changeList;
     }

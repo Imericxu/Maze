@@ -32,7 +32,7 @@ public class Wilson extends Maze
         unknownCells.remove(begin);
         knownCells.add(begin);
         begin.setState(Cell.State.DONE);
-        changeList.push(begin);
+        queueUpdate(begin);
         
         startNewWalk();
     }
@@ -51,7 +51,7 @@ public class Wilson extends Maze
                 var current = currentWalk.peek();
                 var neighbors = getNeighbors(current);
                 var random = neighbors.get(r.nextInt(neighbors.size()));
-    
+                
                 if (currentWalk.contains(random))
                 {
                     if (currentWalk.size() > 1) deleteLoop(random);
@@ -71,8 +71,8 @@ public class Wilson extends Maze
                 {
                     random.setState(Cell.State.EXPLORE);
                     setWallsBetween(current, random, false);
-                    changeList.push(random);
-    
+                    queueUpdate(random);
+                    
                     currentWalk.push(random);
                 }
             }
@@ -126,7 +126,7 @@ public class Wilson extends Maze
             next = currentWalk.pop();
             next.setState(Cell.State.DEFAULT);
             setWallsBetween(current, next, true);
-            changeList.push(next);
+            queueUpdate(next);
         }
         
         setWallsBetween(next, currentWalk.peek(), true);
@@ -137,6 +137,6 @@ public class Wilson extends Maze
         var walkStart = unknownCells.iterator().next();
         walkStart.setState(Cell.State.EXPLORE);
         currentWalk.push(walkStart);
-        changeList.push(walkStart);
+        queueUpdate(walkStart);
     }
 }

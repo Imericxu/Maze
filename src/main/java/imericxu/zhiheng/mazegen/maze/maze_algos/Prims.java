@@ -32,11 +32,11 @@ public class Prims extends Maze
         {
             var current = frontiers.remove(r.nextInt(frontiers.size()));
             addFrontiersOf(current);
-    
+            
             ArrayList<Cell> choices = getChoices(current);
             var selected = choices.get(r.nextInt(choices.size()));
             setWallsBetween(current, selected, false);
-    
+            
             return false;
         }
         else return true;
@@ -52,7 +52,7 @@ public class Prims extends Maze
     {
         cell.visited();
         cell.setState(Cell.State.DONE);
-        changeList.push(cell);
+        queueUpdate(cell);
         
         for (Cell neighbor : getNeighbors(cell))
         {
@@ -60,7 +60,7 @@ public class Prims extends Maze
             {
                 frontiers.add(neighbor);
                 neighbor.setState(Cell.State.EXPLORE);
-                changeList.push(neighbor);
+                queueUpdate(neighbor);
             }
         }
     }

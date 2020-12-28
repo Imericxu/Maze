@@ -78,6 +78,11 @@ public abstract class Maze extends Orthogonal
         }
     }
     
+    protected void queueUpdate(Cell cell)
+    {
+        changeList.add(cell);
+    }
+    
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */

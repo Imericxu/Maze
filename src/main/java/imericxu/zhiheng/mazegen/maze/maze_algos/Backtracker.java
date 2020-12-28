@@ -23,7 +23,7 @@ public class Backtracker extends Maze
         stack.push(start);
         start.visited();
         start.setState(Cell.State.EXPLORE);
-        changeList.push(start);
+        queueUpdate(start);
     }
     
     @Override
@@ -41,17 +41,17 @@ public class Backtracker extends Maze
                 Cell selected = unvisited.get(r.nextInt(unvisited.size()));
                 selected.visited();
                 selected.setState(Cell.State.EXPLORE);
-                changeList.push(selected);
+                queueUpdate(selected);
                 stack.push(selected);
-    
+                
                 setWallsBetween(current, selected, false);
             }
             else
             {
                 current.setState(Cell.State.DONE);
-                changeList.push(current);
+                queueUpdate(current);
             }
-    
+            
             return false;
         }
         else return true;

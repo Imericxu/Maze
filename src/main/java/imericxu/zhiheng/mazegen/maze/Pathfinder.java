@@ -1,16 +1,13 @@
 package imericxu.zhiheng.mazegen.maze;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public abstract class Pathfinder extends Orthogonal
 {
-    protected Stack<Cell> path;
-    
-    public Pathfinder()
-    {
-        path = new Stack<>();
-    }
+    protected Stack<Cell> path = new Stack<>();
     
     public void setMaze(Maze maze)
     {

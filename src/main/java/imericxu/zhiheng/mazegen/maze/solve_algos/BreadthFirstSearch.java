@@ -32,7 +32,7 @@ public class BreadthFirstSearch extends Pathfinder
         queue.add(start);
         start.visited();
         start.setState(Cell.State.EXPLORE);
-        changeList.push(start);
+        changeList.add(start);
     }
     
     @Override
@@ -47,7 +47,7 @@ public class BreadthFirstSearch extends Pathfinder
                 if (neighbor.getVisited() == 0)
                 {
                     neighbor.setState(Cell.State.EXPLORE);
-                    changeList.push(neighbor);
+                    changeList.add(neighbor);
     
                     cameFrom.put(neighbor, current);
                     if (neighbor == end)

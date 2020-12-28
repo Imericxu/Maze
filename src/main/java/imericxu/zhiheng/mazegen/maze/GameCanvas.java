@@ -4,9 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 import static imericxu.zhiheng.mazegen.maze.Cell.State;
 
@@ -16,7 +14,7 @@ import static imericxu.zhiheng.mazegen.maze.Cell.State;
 public class GameCanvas extends Canvas
 {
     private final Cell[][] grid;
-    private final GraphicsContext gc;
+    private final GraphicsContext gc = getGraphicsContext2D();
     private final double cellSize;
     private final double wallSize;
     
@@ -28,7 +26,6 @@ public class GameCanvas extends Canvas
     public GameCanvas(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
     {
         grid = maze.getGrid();
-        gc = getGraphicsContext2D();
         
         int rows = grid.length;
         int cols = grid[0].length;
@@ -60,7 +57,7 @@ public class GameCanvas extends Canvas
      *
      * @param changeList {@link Cell cells} to draw
      */
-    public void drawMaze(Stack<Cell> changeList)
+    public void drawMaze(Queue<Cell> changeList)
     {
         if (changeList.isEmpty()) return;
         
@@ -69,7 +66,7 @@ public class GameCanvas extends Canvas
         
         while (!changeList.isEmpty())
         {
-            Cell cell = changeList.pop();
+            Cell cell = changeList.poll();
             State state = cell.state;
             
             if (state == State.DONE)
@@ -100,7 +97,7 @@ public class GameCanvas extends Canvas
      */
     public void drawMaze()
     {
-        var changeList = new Stack<Cell>();
+        var changeList = new LinkedList<Cell>();
         
         for (Cell[] row : grid)
         {
