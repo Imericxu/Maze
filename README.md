@@ -1,4 +1,5 @@
-# Maze
-I'm trying to put as many mazeSquare generation and mazeSquare solving algorithms in here as I can. I know right now it's very nasty, but I'll get to cleaning it up 😂.
+# Decrease-Coupling (WIP)
+A rewrite of the original, attempting to decrease coupling and increase performance.
 
-**You need to use JavaFX to run this!**
+## Issues
+JavaFX Canvas seems to have accuracy issues, as there are faint lines on the maze.
