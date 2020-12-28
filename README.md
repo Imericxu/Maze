@@ -6,7 +6,7 @@ Maze Generator is a JavaFX application that can generate rectangular mazes of an
 * Prim's Algorithm
 * Wilson's Algorithm
 
-#### Solve Algorithms**
+#### Solve Algorithms
 * Trémaux
 * A*
 * Breadth First Search
