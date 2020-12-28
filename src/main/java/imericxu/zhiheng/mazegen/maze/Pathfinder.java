@@ -1,63 +1,39 @@
-//package imericxu.zhiheng.mazegen.maze;
-//
-//import java.util.ArrayList;
-//import java.util.Stack;
-//
-//public abstract class Pathfinder extends Orthogonal
-//{
-//    protected Stack<Cell> path;
-//
-//    public Pathfinder()
-//    {
-//        path = new Stack<>();
-//    }
-//
-//    public void setMaze(MazeSquare maze)
-//    {
-//        start = maze.getStart();
-//        end = maze.getEnd();
-//    }
-//
-//    public Stack<Cell> getPath()
-//    {
-//        return path;
-//    }
-//
-//    protected void clearVisited(Cell[][] grid)
-//    {
-//        for (var row : grid)
-//        {
-//            for (var cell : row)
-//            {
-//                cell.clearVisited();
-//            }
-//        }
-//    }
-//
-//    protected ArrayList<Cell> getNeighbors(Cell current, Cell[][] grid)
-//    {
-//        var neighbors = new ArrayList<Cell>();
-//        int row = current.getRow();
-//        int col = current.getCol();
-//        var walls = current.getWalls();
-//
-//        if (!walls[Cell.TOP] && row > 0)
-//        {
-//            neighbors.add(grid[row - 1][col]);
-//        }
-//        if (!walls[Cell.RIGHT] && col < grid[0].length - 1)
-//        {
-//            neighbors.add(grid[row][col + 1]);
-//        }
-//        if (!walls[Cell.BOTTOM] && row < grid.length - 1)
-//        {
-//            neighbors.add(grid[row + 1][col]);
-//        }
-//        if (!walls[Cell.LEFT] && col > 0)
-//        {
-//            neighbors.add(grid[row][col - 1]);
-//        }
-//
-//        return neighbors;
-//    }
-//}
+package imericxu.zhiheng.mazegen.maze;
+
+import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+public abstract class Pathfinder
+{
+    public final Queue<Node> changeList = new LinkedList<>();
+    protected final Node[] nodes;
+    protected final Node start;
+    protected final Node end;
+    protected Stack<Node> path;
+    
+    public Pathfinder(MazeAlgorithm mazeAlgorithm)
+    {
+        path = new Stack<>();
+        nodes = mazeAlgorithm.getNodes();
+        start = mazeAlgorithm.getStart();
+        end = mazeAlgorithm.getEnd();
+        
+        path.push(start);
+    }
+    
+    public abstract boolean step();
+    
+    public Stack<Node> getPath()
+    {
+        return path;
+    }
+    
+    protected void queueUpdate(Node node)
+    {
+        changeList.add(node);
+    }
+}

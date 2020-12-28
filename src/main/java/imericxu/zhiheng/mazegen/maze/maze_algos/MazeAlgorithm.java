@@ -9,10 +9,14 @@ public abstract class MazeAlgorithm
     public final Queue<Node> changeList = new LinkedList<>();
     protected final Node[] nodes;
     protected final Random rand = new Random();
+    private final Node start;
+    private final Node end;
     
     public MazeAlgorithm(Node[] nodes)
     {
         this.nodes = nodes;
+        start = nodes[0];
+        end = nodes[nodes.length - 1];
     }
     
     /**
@@ -35,6 +39,16 @@ public abstract class MazeAlgorithm
     
     public Node[] getNodes()
     {
-        return nodes.clone();
+        return nodes;
+    }
+    
+    public Node getStart()
+    {
+        return start;
+    }
+    
+    public Node getEnd()
+    {
+        return end;
     }
 }

@@ -2,8 +2,11 @@ package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
 import imericxu.zhiheng.mazegen.maze.MazeSquare;
+import imericxu.zhiheng.mazegen.maze.Pathfinder;
 import imericxu.zhiheng.mazegen.maze.maze_algos.*;
+import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
+import imericxu.zhiheng.mazegen.maze.timers.TimerPath;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -126,15 +129,16 @@ public class Controller
                     case WILSON -> new Wilson(nodes);
                     case RECURSIVE -> new Backtracker(nodes);
                 };
-
+    
+        Pathfinder pathfinder = new Tremaux(mazeAlgorithm);
 //        Pathfinder pathfinder = switch (pathType)
 //                {
-//                    case TREMAUX -> new Tremaux();
-//                    case ASTAR -> new AStar();
-//                    case BREADTH -> new BreadthFirstSearch();
+//                    case TREMAUX -> new Tremaux(mazeAlgorithm);
+//                    case ASTAR -> new AStar(mazeAlgorithm);
+//                    case BREADTH -> new BreadthFirstSearch(mazeAlgorithm);
 //                };
         
-        launchMaze(mazeAlgorithm/*, pathfinder*/);
+        launchMaze(mazeAlgorithm, pathfinder);
     }
     
     private <T extends Enum<?>> T randomEnum(Class<T> clazz)
@@ -143,7 +147,7 @@ public class Controller
         return clazz.getEnumConstants()[x];
     }
     
-    private void launchMaze(MazeAlgorithm mazeAlgorithm/*, Pathfinder pathfinder*/)
+    private void launchMaze(MazeAlgorithm mazeAlgorithm, Pathfinder pathfinder)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -160,9 +164,9 @@ public class Controller
         var gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), rows, cols, cellWallRatio);
         
         root.getChildren().add(gameCanvas);
-
-//        var timerPath = new TimerPath(pathfinder, gameCanvas);
-        var timerMaze = new TimerMaze(/*timerPath, */gameCanvas, mazeAlgorithm, /*pathfinder, */doSolve, doShowPathfinding);
+        
+        var timerPath = new TimerPath(pathfinder, gameCanvas);
+        var timerMaze = new TimerMaze(timerPath, gameCanvas, mazeAlgorithm, pathfinder, doSolve, doShowPathfinding);
         
         /*if (doShowMazeGen) timerMaze.start();
         else
@@ -182,7 +186,10 @@ public class Controller
         else
         {
             mazeAlgorithm.instantSolve();
-            gameCanvas.draw(mazeAlgorithm.getNodes());
+            gameCanvas.drawMaze(mazeAlgorithm.getNodes());
+            
+            if (doSolve)
+                timerPath.start();
         }
         
         stage.setOpacity(1);

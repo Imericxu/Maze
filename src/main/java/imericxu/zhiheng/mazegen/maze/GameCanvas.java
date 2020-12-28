@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link MazeSquare orthogonal} mazes
@@ -21,11 +22,6 @@ public class GameCanvas extends Canvas
     private final double cellSize;
     private final double wallSize;
     
-    /**
-     * Covered in black until algorithm generates paths
-     *
-     * @param maze any subtype of {@link MazeSquare}
-     */
     public GameCanvas(double sceneWidth, double sceneHeight,
                       int rows, int cols, double cellWallRatio)
     {
@@ -70,7 +66,7 @@ public class GameCanvas extends Canvas
      *
      * @param changeList {@link Cell cells} to draw
      */
-    public void draw(Queue<Node> changeList)
+    public void drawMaze(Queue<Node> changeList)
     {
         while (!changeList.isEmpty())
         {
@@ -93,39 +89,42 @@ public class GameCanvas extends Canvas
         }
     }
     
-    public void draw(Node[] nodes)
+    public void drawMaze(Node[] nodes)
     {
         Queue<Node> changeList = new LinkedList<>(Arrays.asList(nodes));
-        draw(changeList);
+        drawMaze(changeList);
     }
     
     private void fillRect(Cell.Rect rect)
     {
         gc.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
-
-    /*
-    public void drawPath(Stack<Cell> pathList)
+    
+    public void drawPath(Stack<Node> pathList)
     {
         if (pathList.isEmpty()) return;
         
-        Cell first = pathList.get(0);
-        double x1 = (wallSize + cellSize) * first.getCol() + wallSize + cellSize / 2.0;
-        double y1 = (wallSize + cellSize) * first.getRow() + wallSize + cellSize / 2.0;
+        Node first = pathList.get(0);
+        int row = first.id / cols;
+        int col = first.id % cols;
+        double x1 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
+        double y1 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
         double x2, y2;
         
         gc.setStroke(Colors.PATH.color);
         gc.setLineWidth(cellSize * 0.5);
         
-        for (Cell cell : pathList.subList(1, pathList.size()))
+        for (Node cell : pathList.subList(1, pathList.size()))
         {
-            x2 = (wallSize + cellSize) * cell.getCol() + wallSize + cellSize / 2.0;
-            y2 = (wallSize + cellSize) * cell.getRow() + wallSize + cellSize / 2.0;
+            row = cell.id / cols;
+            col = cell.id % cols;
+            x2 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
+            y2 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
             gc.strokeLine(x1, y1, x2, y2);
             x1 = x2;
             y1 = y2;
         }
-    }*/
+    }
     
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
