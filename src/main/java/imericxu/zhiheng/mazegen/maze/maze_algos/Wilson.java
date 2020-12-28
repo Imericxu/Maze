@@ -1,142 +1,92 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import imericxu.zhiheng.mazegen.maze.Cell;
-import imericxu.zhiheng.mazegen.maze.Maze;
-
 import java.util.*;
 
-/**
- * Wilson's algorithm is slower but generates a completely unbiased maze
- */
-public class Wilson extends Maze
+public class Wilson extends MazeAlgorithm
 {
-    private final HashSet<Cell> knownCells;
-    private final HashSet<Cell> unknownCells;
-    private final Stack<Cell> currentWalk;
+    private final HashSet<Node> knownNodes = new HashSet<>();
+    private final HashSet<Node> unknownNodes = new HashSet<>();
+    private final Stack<Node> currentWalk = new Stack<>();
     
-    /**
-     * Generates a rectangular maze
-     */
-    public Wilson(int rows, int cols)
+    public Wilson(Node[] nodes)
     {
-        super(rows, cols);
-        knownCells = new HashSet<>();
-        unknownCells = new HashSet<>();
-        currentWalk = new Stack<>();
-        for (var row : grid)
-        {
-            unknownCells.addAll(Arrays.asList(row));
-        }
+        super(nodes);
+        unknownNodes.addAll(Arrays.asList(nodes));
         
-        var begin = unknownCells.iterator().next();
-        unknownCells.remove(begin);
-        knownCells.add(begin);
-        begin.setState(Cell.State.DONE);
-        changeList.push(begin);
-        
-        startNewWalk();
+        Node start = unknownNodes.iterator().next();
+        unknownNodes.remove(start);
+        start.state = Node.State.DONE;
+        changeList.add(start);
     }
     
     @Override
-    public boolean step()
+    public void step()
     {
-        if (!unknownCells.isEmpty())
+        if (unknownNodes.isEmpty()) return;
+        
+        if (currentWalk.isEmpty())
+            startNewWalk();
+        else
         {
-            if (currentWalk.isEmpty())
+            Node current = currentWalk.peek();
+            List<Node> neighbors = current.getNeighbors();
+            if (currentWalk.size() > 1) // Don't go backwards
+                neighbors.remove(currentWalk.get(currentWalk.size() - 2));
+            Node randNeighbor = neighbors.get(rand.nextInt(neighbors.size()));
+            
+            if (currentWalk.contains(randNeighbor) && currentWalk.size() > 4)
             {
-                startNewWalk();
+                deleteLoop(randNeighbor);
+            }
+            else if (knownNodes.contains(randNeighbor))
+            {
+                Node.connect(current, randNeighbor);
+                knownNodes.addAll(currentWalk);
+                unknownNodes.removeAll(currentWalk);
+                
+                currentWalk.forEach(node -> node.state = Node.State.DONE);
+                changeList.addAll(currentWalk);
+                currentWalk.clear();
             }
             else
             {
-                var current = currentWalk.peek();
-                var neighbors = getNeighbors(current);
-                var random = neighbors.get(r.nextInt(neighbors.size()));
-    
-                if (currentWalk.contains(random))
-                {
-                    if (currentWalk.size() > 1) deleteLoop(random);
-                }
-                else if (knownCells.contains(random))
-                {
-                    setWallsBetween(current, random, false);
-                    knownCells.addAll(currentWalk);
-                    unknownCells.removeAll(currentWalk);
-                    for (var cell : currentWalk)
-                    {
-                        cell.setState(Cell.State.DONE);
-                    }
-                    currentWalk.clear();
-                }
-                else
-                {
-                    random.setState(Cell.State.EXPLORE);
-                    setWallsBetween(current, random, false);
-                    changeList.push(random);
-    
-                    currentWalk.push(random);
-                }
-            }
-            return false;
-        }
-        return true;
-    }
-    
-    @Override
-    public void instantSolve()
-    {
-        while (!step())
-        {
-            for (int i = 0; i < 50; ++i)
-            {
-                step();
-                changeList.clear();
+                Node.disconnect(current, randNeighbor);
+                currentWalk.push(randNeighbor);
+                
+                randNeighbor.state = Node.State.EXPLORE;
+                changeList.add(randNeighbor);
             }
         }
-    }
-    
-    @Override
-    public ArrayList<Cell> getNeighbors(Cell current)
-    {
-        var neighbors = super.getNeighbors(current);
-        int size = currentWalk.size();
-        if (size > 1) neighbors.remove(currentWalk.get(size - 2));
-        return neighbors;
-    }
-    
-    private void deleteLoop(Cell random)
-    {
-        var current = currentWalk.pop();
-        current.setState(Cell.State.DEFAULT);
-        
-        if (currentWalk.size() == 1)
-        {
-            setWallsBetween(current, currentWalk.peek(), true);
-            return;
-        }
-        
-        var next = currentWalk.pop();
-        next.setState(Cell.State.DEFAULT);
-        setWallsBetween(current, next, true);
-        
-        Collections.addAll(changeList, current, next);
-        
-        while (currentWalk.size() > 1 && next != random)
-        {
-            current = next;
-            next = currentWalk.pop();
-            next.setState(Cell.State.DEFAULT);
-            setWallsBetween(current, next, true);
-            changeList.push(next);
-        }
-        
-        setWallsBetween(next, currentWalk.peek(), true);
     }
     
     private void startNewWalk()
     {
-        var walkStart = unknownCells.iterator().next();
-        walkStart.setState(Cell.State.EXPLORE);
-        currentWalk.push(walkStart);
-        changeList.push(walkStart);
+        Node start = unknownNodes.iterator().next();
+        currentWalk.push(start);
+        
+        start.state = Node.State.EXPLORE;
+        changeList.add(start);
+    }
+    
+    private void deleteLoop(Node end)
+    {
+        Node current = currentWalk.pop();
+        Node next = currentWalk.pop();
+        Node.disconnect(current, next);
+        
+        current.state = next.state = Node.State.DEFAULT;
+        Collections.addAll(changeList, current, next);
+        
+        while (currentWalk.size() > 1 && next != end)
+        {
+            current = next;
+            next = currentWalk.pop();
+            Node.disconnect(current, next);
+            
+            next.state = Node.State.DEFAULT;
+            changeList.add(next);
+        }
+        
+        Node.disconnect(next, currentWalk.peek());
     }
 }

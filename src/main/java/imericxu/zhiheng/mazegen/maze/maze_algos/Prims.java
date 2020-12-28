@@ -1,87 +1,59 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import imericxu.zhiheng.mazegen.maze.Cell;
-import imericxu.zhiheng.mazegen.maze.Maze;
-
 import java.util.ArrayList;
 
-/**
- * Uses Prim's algorithm to generate orthogonal mazes
- */
-public class Prims extends Maze
+public class Prims extends MazeAlgorithm
 {
-    /**
-     * Cells surrounding the already explored cells
-     */
-    private final ArrayList<Cell> frontiers;
+    private final ArrayList<Node> frontiers = new ArrayList<>();
     
-    /**
-     * Generates a rectangular maze
-     */
-    public Prims(int rows, int cols)
+    public Prims(Node[] nodes)
     {
-        super(rows, cols);
-        frontiers = new ArrayList<>();
+        this(nodes, 0);
+    }
+    
+    public Prims(Node[] nodes, int startIndex)
+    {
+        super(nodes);
+        Node start = nodes[startIndex];
         addFrontiersOf(start);
     }
     
     @Override
-    public boolean step()
+    public void step()
     {
         if (!frontiers.isEmpty())
         {
-            var current = frontiers.remove(r.nextInt(frontiers.size()));
+            Node current = frontiers.remove(rand.nextInt(frontiers.size()));
             addFrontiersOf(current);
-    
-            ArrayList<Cell> choices = getChoices(current);
-            var selected = choices.get(r.nextInt(choices.size()));
-            setWallsBetween(current, selected, false);
-    
-            return false;
+            Node randFrontier = getRandomFrontierOf(current);
+            Node.connect(current, randFrontier);
         }
-        else return true;
     }
     
-    /**
-     * Marks {@code cell} as visited.<br/>
-     * Gets the neighbors of {@code cell} and adds them to
-     * {@link #frontiers} if not already added and the {@link Cell}
-     * has not been visited
-     */
-    private void addFrontiersOf(Cell cell)
+    private void addFrontiersOf(Node node)
     {
-        cell.visited();
-        cell.setState(Cell.State.DONE);
-        changeList.push(cell);
+        node.state = Node.State.DONE;
+        changeList.add(node);
         
-        for (Cell neighbor : getNeighbors(cell))
+        for (final Node neighbor : node.getNeighbors())
         {
-            if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
+            if (neighbor.state == Node.State.DEFAULT && !frontiers.contains(neighbor))
             {
                 frontiers.add(neighbor);
-                neighbor.setState(Cell.State.EXPLORE);
-                changeList.push(neighbor);
+                neighbor.state = Node.State.EXPLORE;
+                changeList.add(neighbor);
             }
         }
     }
     
-    /**
-     * Gets the neighbors of {@code current} and adds if the
-     * {@link Cell} has previously been explored
-     *
-     * @param current the current frontier
-     * @return an ArrayList containing possible {@link Cell}s {@code current} can connect to
-     */
-    private ArrayList<Cell> getChoices(Cell current)
+    private Node getRandomFrontierOf(Node node)
     {
-        var visited = new ArrayList<Cell>();
-        for (Cell cell : getNeighbors(current))
-        {
-            if (cell.getVisited() >= 1)
-            {
-                visited.add(cell);
-            }
-        }
-        return visited;
+        var frontiers = new ArrayList<Node>();
+        
+        for (Node neighbor : node.getNeighbors())
+            if (neighbor.state == Node.State.EXPLORE)
+                frontiers.add(neighbor);
+        
+        return frontiers.get(rand.nextInt(frontiers.size()));
     }
 }

@@ -1,22 +1,21 @@
 package imericxu.zhiheng.mazegen.maze;
 
+import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
-
-import static imericxu.zhiheng.mazegen.maze.Cell.State;
+import java.util.Queue;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
  */
 public class GameCanvas extends Canvas
 {
-    private final Cell[][] grid;
-    private final GraphicsContext gc;
+    private final GraphicsContext gc = getGraphicsContext2D();
+    private final Cell[] cells;
+    private final int rows;
+    private final int cols;
     private final double cellSize;
     private final double wallSize;
     
@@ -25,13 +24,11 @@ public class GameCanvas extends Canvas
      *
      * @param maze any subtype of {@link Maze}
      */
-    public GameCanvas(double sceneWidth, double sceneHeight, Maze maze, double cellWallRatio)
+    public GameCanvas(double sceneWidth, double sceneHeight,
+                      int rows, int cols, double cellWallRatio)
     {
-        grid = maze.getGrid();
-        gc = getGraphicsContext2D();
-        
-        int rows = grid.length;
-        int cols = grid[0].length;
+        this.rows = rows;
+        this.cols = cols;
         
         double screenRatio = sceneWidth / sceneHeight;
         double gridRatio = (double) cols / rows;
@@ -50,6 +47,17 @@ public class GameCanvas extends Canvas
             setHeight(rows * (cellSize + wallSize) + wallSize);
         }
         
+        this.cells = new Cell[rows * cols];
+        for (int row = 0, i = 0; row < rows; ++row)
+        {
+            for (int col = 0; col < cols; ++col, ++i)
+            {
+                final double x = (wallSize + cellSize) * (double) col + wallSize;
+                final double y = (wallSize + cellSize) * (double) row + wallSize;
+                cells[i] = new Cell(x, y);
+            }
+        }
+        
         // drawGrid();
         gc.setFill(Colors.DEFAULT.color);
         gc.fillRect(0, 0, getWidth(), getHeight());
@@ -60,53 +68,46 @@ public class GameCanvas extends Canvas
      *
      * @param changeList {@link Cell cells} to draw
      */
-    public void drawMaze(Stack<Cell> changeList)
+    public void drawMaze(Queue<Node> changeQueue)
     {
-        if (changeList.isEmpty()) return;
-        
-        double x, y;
-        var openCells = new ArrayList<Cell>();
-        
-        while (!changeList.isEmpty())
+        while (!changeQueue.isEmpty())
         {
-            Cell cell = changeList.pop();
-            State state = cell.state;
+            final Node node = changeQueue.poll();
+            gc.setFill(getColor(node.state));
+            final Cell cell = cells[node.id];
+            gc.fillRect(cell.x, cell.y, cellSize, cellSize);
             
-            if (state == State.DONE)
+            for (final Node connection : node.getConnections())
             {
-                openCells.add(cell);
-                continue;
+                if (connection.id == node.id - cols)
+                    fillRect(cell.top);
+                else if (connection.id == node.id + 1)
+                    fillRect(cell.right);
+                else if (connection.id == node.id + cols)
+                    fillRect(cell.bottom);
+                else
+                    fillRect(cell.left);
             }
-            else if (state == State.DEFAULT)
-            {
-                x = (wallSize + cellSize) * cell.getCol();
-                y = (wallSize + cellSize) * cell.getRow();
-                double size = cellSize + 2 * wallSize;
-                gc.setFill(Colors.DEFAULT.color);
-                gc.fillRect(x, y, size, size);
-                continue;
-            }
-            
-            gc.setFill(getColor(state));
-            fillCell(cell);
         }
-        
-        gc.setFill(getColor(State.DONE));
-        openCells.forEach(this::fillCell);
     }
     
-    /**
+    private void fillRect(Cell.Rect rect)
+    {
+        gc.fillRect(rect.x, rect.y, rect.width, rect.height);
+    }
+/*
+    *//**
      * Draws the entire maze
-     */
+     *//*
     public void drawMaze()
     {
         var changeList = new Stack<Cell>();
-        
+
         for (Cell[] row : grid)
         {
             changeList.addAll(Arrays.asList(row));
         }
-        
+
         drawMaze(changeList);
     }
     
@@ -130,96 +131,19 @@ public class GameCanvas extends Canvas
             x1 = x2;
             y1 = y2;
         }
-    }
-    
-    /**
-     * Currently unused method that draws the actual grid
-     */
-    private void drawGrid()
-    {
-        double x, y;
-        
-        // Horizontal walls
-        for (int row = 0; row < grid.length; ++row)
-        {
-            for (int col = 0; col < grid[0].length; ++col)
-            {
-                if (grid[row][col] != null)
-                {
-                    x = (cellSize + wallSize) * col;
-                    y = (cellSize + wallSize) * row;
-                    double longSide = cellSize + 2 * wallSize;
-                    
-                    // Top and left
-                    gc.fillRect(x, y, longSide, wallSize);
-                    gc.fillRect(x, y, wallSize, longSide);
-                    
-                    // Right
-                    double x1 = x + cellSize + wallSize;
-                    gc.fillRect(x1, y, wallSize, longSide);
-                    
-                    // Bottom
-                    double y1 = y + cellSize + wallSize;
-                    gc.fillRect(x, y1, longSide, wallSize);
-                }
-            }
-        }
-    }
+    }*/
     
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */
     
-    /**
-     * Colors the {@code cell} and erases any walls that need to be erased.
-     *
-     * @param cell the {@link Cell} to be filled
-     */
-    private void fillCell(Cell cell)
-    {
-        double x = (wallSize + cellSize) * cell.getCol() + wallSize;
-        double y = (wallSize + cellSize) * cell.getRow() + wallSize;
-        gc.fillRect(x, y, cellSize, cellSize);
-        
-        boolean[] walls = cell.getWalls();
-        eraseWalls(x, y, walls);
-    }
-    
-    /**
-     * If an {@link Cell} doesn't have a wall on a side, fill it with a rectangle
-     * the same color as the {@link Cell}
-     *
-     * @param cellX the x coordinate of the {@link Cell}
-     * @param cellY the y coordinate of the {@link Cell}
-     * @param walls use the {@link Cell#getWalls()} method
-     */
-    private void eraseWalls(double cellX, double cellY, boolean[] walls)
-    {
-        if (!walls[Cell.TOP])
-        {
-            gc.fillRect(cellX, cellY - wallSize, cellSize, wallSize);
-        }
-        if (!walls[Cell.RIGHT])
-        {
-            gc.fillRect(cellX + cellSize, cellY, wallSize, cellSize);
-        }
-        if (!walls[Cell.BOTTOM])
-        {
-            gc.fillRect(cellX, cellY + cellSize, cellSize, wallSize);
-        }
-        if (!walls[Cell.LEFT])
-        {
-            gc.fillRect(cellX - wallSize, cellY, wallSize, cellSize);
-        }
-    }
-    
-    private Color getColor(State state)
+    private Color getColor(Node.State state)
     {
         return switch (state)
                 {
-                    case DEFAULT -> Color.web("0x1C518B");
-                    case EXPLORE -> Color.web("0xADD9FF");
-                    case DONE -> Color.WHITE;
+                    case DEFAULT -> Colors.DEFAULT.color;
+                    case EXPLORE -> Colors.EXPLORE.color;
+                    case DONE -> Colors.DONE.color;
                 };
     }
     
@@ -235,6 +159,42 @@ public class GameCanvas extends Canvas
         Colors(Color color)
         {
             this.color = color;
+        }
+    }
+    
+    private class Cell
+    {
+        public final double x;
+        public final double y;
+        public final Rect top;
+        public final Rect right;
+        public final Rect bottom;
+        public final Rect left;
+        
+        Cell(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+            top = new Rect(x, y - wallSize, cellSize, wallSize);
+            right = new Rect(x + cellSize, y, wallSize, cellSize);
+            bottom = new Rect(x, y + cellSize, cellSize, wallSize);
+            left = new Rect(x - wallSize, y, wallSize, cellSize);
+        }
+        
+        class Rect
+        {
+            public final double x;
+            public final double y;
+            public final double width;
+            public final double height;
+            
+            public Rect(double x, double y, double width, double height)
+            {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
         }
     }
 }

@@ -1,16 +1,9 @@
 package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
-import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
-import imericxu.zhiheng.mazegen.maze.timers.TimerPath;
-import imericxu.zhiheng.mazegen.maze.maze_algos.Backtracker;
 import imericxu.zhiheng.mazegen.maze.Maze;
-import imericxu.zhiheng.mazegen.maze.maze_algos.Prims;
-import imericxu.zhiheng.mazegen.maze.maze_algos.Wilson;
-import imericxu.zhiheng.mazegen.maze.solve_algos.AStar;
-import imericxu.zhiheng.mazegen.maze.solve_algos.BreadthFirstSearch;
-import imericxu.zhiheng.mazegen.maze.Pathfinder;
-import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
+import imericxu.zhiheng.mazegen.maze.maze_algos.*;
+import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -27,6 +20,7 @@ import java.util.function.UnaryOperator;
 
 public class Controller
 {
+    private final Random random = new Random();
     @FXML
     private TextField inputRows;
     @FXML
@@ -43,49 +37,13 @@ public class Controller
     private ComboBox<SolveAlgo> comboSolveAlgo;
     @FXML
     private ToggleSwitch switchShowPathfinding;
-
-    private final Random random = new Random();
-
-    private enum MazeAlgo
-    {
-        PRIM("Prim's Algorithm"),
-        RECURSIVE("Recursive Backtracker"),
-        WILSON("Wilson's Algorithm");
-
-        private final String label;
-
-        MazeAlgo(String label)
-        {
-            this.label = label;
-        }
-
-        @Override
-        public String toString()
-        {
-            return label;
-        }
-    }
-
-    private enum SolveAlgo
-    {
-        TREMAUX("Trémaux"),
-        ASTAR("A*"),
-        BREADTH("Breadth First Search");
-
-        private final String label;
-
-        SolveAlgo(String label)
-        {
-            this.label = label;
-        }
-
-        @Override
-        public String toString()
-        {
-            return label;
-        }
-    }
-
+    private int rows;
+    private int cols;
+    private double cellWallRatio;
+    private boolean doShowMazeGen;
+    private boolean doSolve;
+    private boolean doShowPathfinding;
+    
     @FXML
     public void initialize()
     {
@@ -98,7 +56,7 @@ public class Controller
             }
             return null;
         };
-
+        
         UnaryOperator<TextFormatter.Change> floatFilter = change ->
         {
             String newText = change.getControlNewText();
@@ -108,21 +66,20 @@ public class Controller
             }
             return null;
         };
-
+        
         inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
         inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
         comboMazeAlgo.getItems().addAll(MazeAlgo.values());
         comboSolveAlgo.getItems().addAll(SolveAlgo.values());
     }
-
+    
     /**
      * Attempts to launch the maze after pressing start button
      */
     @FXML
     public void startPressed()
     {
-        int rows;
         try
         {
             rows = Integer.parseInt(inputRows.getText());
@@ -131,8 +88,7 @@ public class Controller
         {
             rows = 20;
         }
-
-        int cols;
+        
         try
         {
             cols = Integer.parseInt(inputCols.getText());
@@ -141,8 +97,7 @@ public class Controller
         {
             cols = 20;
         }
-
-        double cellWallRatio;
+        
         try
         {
             cellWallRatio = Double.parseDouble(inputRatio.getText());
@@ -151,45 +106,44 @@ public class Controller
         {
             cellWallRatio = 2;
         }
-
+        
         MazeAlgo mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
         if (mazeType == null)
             mazeType = randomEnum(MazeAlgo.class);
-
+        
         SolveAlgo pathType = comboSolveAlgo.getSelectionModel().getSelectedItem();
         if (pathType == null)
             pathType = randomEnum(SolveAlgo.class);
-
-        final boolean doShowMazeGen = switchShowMazeGen.isSelected();
-        final boolean doSolve = switchDoSolve.isSelected();
-        final boolean doShowPathfinding = switchShowPathfinding.isSelected();
-
-
-        Maze maze = switch (mazeType)
+        
+        doShowMazeGen = switchShowMazeGen.isSelected();
+        doSolve = switchDoSolve.isSelected();
+        doShowPathfinding = switchShowPathfinding.isSelected();
+        
+        final Node[] nodes = Maze.generate(rows, cols);
+        MazeAlgorithm mazeAlgorithm = switch (mazeType)
                 {
-                    case PRIM -> new Prims(rows, cols);
-                    case WILSON -> new Wilson(rows, cols);
-                    case RECURSIVE -> new Backtracker(rows, cols);
+                    case PRIM -> new Prims(nodes);
+                    case WILSON -> new Wilson(nodes);
+                    case RECURSIVE -> new Backtracker(nodes);
                 };
-
-        Pathfinder pathfinder = switch (pathType)
-                {
-                    case TREMAUX -> new Tremaux();
-                    case ASTAR -> new AStar();
-                    case BREADTH -> new BreadthFirstSearch();
-                };
-
-        launchMaze(cellWallRatio, maze, doShowMazeGen, doSolve, pathfinder, doShowPathfinding);
+        
+//        Pathfinder pathfinder = switch (pathType)
+//                {
+//                    case TREMAUX -> new Tremaux();
+//                    case ASTAR -> new AStar();
+//                    case BREADTH -> new BreadthFirstSearch();
+//                };
+        
+        launchMaze(mazeAlgorithm/*, pathfinder*/);
     }
-
+    
     private <T extends Enum<?>> T randomEnum(Class<T> clazz)
     {
         int x = random.nextInt(clazz.getEnumConstants().length);
         return clazz.getEnumConstants()[x];
     }
-
-    private void launchMaze(double cellWallRatio, Maze maze, boolean doShowMazeGen, boolean doSolve,
-                            Pathfinder pathfinder, boolean doShowPathfinding)
+    
+    private void launchMaze(MazeAlgorithm mazeAlgorithm/*, Pathfinder pathfinder*/)
     {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -199,37 +153,79 @@ public class Controller
         stage.setOpacity(0);
         stage.show();
         stage.setMaximized(true);
-
+        
         stage.setTitle("Maze");
         root.setStyle("-fx-background-color: black");
-
-        GameCanvas gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), maze, cellWallRatio);
-
+        
+        var gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), rows, cols, cellWallRatio);
+        
         root.getChildren().add(gameCanvas);
-
-        var timerPath = new TimerPath(pathfinder, gameCanvas);
-        var timerMaze = new TimerMaze(timerPath, gameCanvas, maze, pathfinder, doSolve, doShowPathfinding);
-
-        if (doShowMazeGen) timerMaze.start();
+        
+//        var timerPath = new TimerPath(pathfinder, gameCanvas);
+        var timerMaze = new TimerMaze(/*timerPath, */gameCanvas, mazeAlgorithm, /*pathfinder, */doSolve, doShowPathfinding);
+        
+        /*if (doShowMazeGen) timerMaze.start();
         else
         {
-            maze.instantSolve();
-            maze.getChangeList().clear();
+            mazeAlgorithm.instantSolve();
+            mazeAlgorithm.getChangeList().clear();
             gameCanvas.drawMaze();
-
+            
             if (doSolve)
             {
-                TimerMaze.solveMaze(timerPath, gameCanvas, maze, pathfinder, doShowPathfinding);
+                TimerMaze.solveMaze(timerPath, gameCanvas, mazeAlgorithm, pathfinder, doShowPathfinding);
             }
-        }
-
+        }*/
+        
+        timerMaze.start();
+        
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work
-
+        
         stage.setOnCloseRequest(windowEvent ->
         {
-            timerPath.stop();
+//            timerPath.stop();
             timerMaze.stop();
         });
+    }
+    
+    private enum MazeAlgo
+    {
+        PRIM("Prim's Algorithm"),
+        RECURSIVE("Recursive Backtracker"),
+        WILSON("Wilson's Algorithm");
+        
+        private final String label;
+        
+        MazeAlgo(String label)
+        {
+            this.label = label;
+        }
+        
+        @Override
+        public String toString()
+        {
+            return label;
+        }
+    }
+    
+    private enum SolveAlgo
+    {
+        TREMAUX("Trémaux"),
+        ASTAR("A*"),
+        BREADTH("Breadth First Search");
+        
+        private final String label;
+        
+        SolveAlgo(String label)
+        {
+            this.label = label;
+        }
+        
+        @Override
+        public String toString()
+        {
+            return label;
+        }
     }
 }
