@@ -214,7 +214,6 @@ public class Controller
         else
         {
             maze.instantSolve();
-            maze.getChangeList().clear();
             gameCanvas.drawMaze();
 
             if (doSolve)

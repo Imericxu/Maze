@@ -30,7 +30,11 @@ public abstract class Orthogonal
         {
             for (int i = 0; i < 100; ++i)
             {
-                if (step()) return;
+                if (step())
+                {
+                    changeList.clear();
+                    return;
+                }
                 changeList.clear();
             }
         }
