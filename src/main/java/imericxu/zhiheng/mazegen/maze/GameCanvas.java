@@ -103,24 +103,8 @@ public class GameCanvas extends Canvas
     {
         gc.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
+
     /*
-     */
-    
-    /**
-     * Draws the entire maze
-     *//*
-    public void drawMaze()
-    {
-        var changeList = new Stack<Cell>();
-
-        for (Cell[] row : grid)
-        {
-            changeList.addAll(Arrays.asList(row));
-        }
-
-        drawMaze(changeList);
-    }
-    
     public void drawPath(Stack<Cell> pathList)
     {
         if (pathList.isEmpty()) return;
@@ -146,6 +130,7 @@ public class GameCanvas extends Canvas
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */
+    
     private Color getColor(Node.State state)
     {
         return switch (state)
