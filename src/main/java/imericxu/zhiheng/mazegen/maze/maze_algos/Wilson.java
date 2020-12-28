@@ -82,19 +82,6 @@ public class Wilson extends Maze
     }
     
     @Override
-    public void instantSolve()
-    {
-        while (!step())
-        {
-            for (int i = 0; i < 50; ++i)
-            {
-                step();
-                changeList.clear();
-            }
-        }
-    }
-    
-    @Override
     public ArrayList<Cell> getNeighbors(Cell current)
     {
         var neighbors = super.getNeighbors(current);
