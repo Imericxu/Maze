@@ -76,7 +76,7 @@ public class Prims extends Maze
         var visited = new ArrayList<Cell>();
         for (Cell cell : getNeighbors(current))
         {
-            if (cell.state == Cell.State.EXPLORE)
+            if (cell.state == Cell.State.DONE)
             {
                 visited.add(cell);
             }
