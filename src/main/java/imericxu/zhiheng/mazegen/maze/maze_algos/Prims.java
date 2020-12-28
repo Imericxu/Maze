@@ -19,15 +19,16 @@ public class Prims extends MazeAlgorithm
     }
     
     @Override
-    public void step()
+    public boolean step()
     {
-        if (!frontiers.isEmpty())
-        {
-            Node current = frontiers.remove(rand.nextInt(frontiers.size()));
-            addFrontiersOf(current);
-            Node randFrontier = selectRandMazeCell(current);
-            Node.connect(current, randFrontier);
-        }
+        if (frontiers.isEmpty()) return false;
+        
+        Node current = frontiers.remove(rand.nextInt(frontiers.size()));
+        addFrontiersOf(current);
+        Node randFrontier = selectRandMazeCell(current);
+        Node.connect(current, randFrontier);
+        
+        return true;
     }
     
     private void addFrontiersOf(Node node)

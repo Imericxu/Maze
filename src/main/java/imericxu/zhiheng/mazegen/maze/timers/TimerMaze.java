@@ -6,15 +6,15 @@ import javafx.animation.AnimationTimer;
 
 public class TimerMaze extends AnimationTimer
 {
-//    private final TimerPath timerPath;
+    //    private final TimerPath timerPath;
     private final GameCanvas gameCanvas;
     private final MazeAlgorithm mazeAlgorithm;
-//    private final Pathfinder pathfinder;
+    //    private final Pathfinder pathfinder;
     private final boolean doSolve;
     private final boolean doShowPathfinding;
     
     public TimerMaze(/*TimerPath timerPath, */GameCanvas gameCanvas, MazeAlgorithm mazeAlgorithm, /*Pathfinder pathfinder,*/
-                     boolean doSolve, boolean doShowPathfinding)
+                                              boolean doSolve, boolean doShowPathfinding)
     {
 //        this.timerPath = timerPath;
         this.gameCanvas = gameCanvas;
@@ -40,9 +40,14 @@ public class TimerMaze extends AnimationTimer
     @Override
     public void handle(long l)
     {
-        mazeAlgorithm.step();
-        if (mazeAlgorithm.changeList.isEmpty()) stop();
-        gameCanvas.drawMaze(mazeAlgorithm.changeList);
+        if (mazeAlgorithm.step())
+        {
+            gameCanvas.drawMaze(mazeAlgorithm.changeList);
+        }
+        else
+        {
+            stop();
+        }
 
 //        if (maze.step())
 //        {

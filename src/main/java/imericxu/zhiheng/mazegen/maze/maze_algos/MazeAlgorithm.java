@@ -13,8 +13,10 @@ public abstract class MazeAlgorithm
     public MazeAlgorithm(Node[] nodes)
     {
         this.nodes = nodes;
-        changeList.add(nodes[0]);
     }
     
-    public abstract void step();
+    /**
+     * @return true if more steps left (maze not done)
+     */
+    public abstract boolean step();
 }

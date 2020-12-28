@@ -20,9 +20,9 @@ public class Wilson extends MazeAlgorithm
     }
     
     @Override
-    public void step()
+    public boolean step()
     {
-        if (unknownNodes.isEmpty()) return;
+        if (unknownNodes.isEmpty()) return false;
         
         if (currentWalk.isEmpty())
             startNewWalk();
@@ -57,6 +57,8 @@ public class Wilson extends MazeAlgorithm
                 changeList.add(randNeighbor);
             }
         }
+        
+        return true;
     }
     
     private void startNewWalk()

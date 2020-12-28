@@ -23,30 +23,31 @@ public class Backtracker extends MazeAlgorithm
     }
     
     @Override
-    public void step()
+    public boolean step()
     {
-        if (!stack.empty())
+        if (stack.empty()) return false;
+        
+        final Node current = stack.pop();
+        
+        final ArrayList<Node> unvisited = getUnvisited(current);
+        
+        if (!unvisited.isEmpty())
         {
-            final Node current = stack.pop();
+            stack.push(current);
             
-            final ArrayList<Node> unvisited = getUnvisited(current);
-            
-            if (!unvisited.isEmpty())
-            {
-                stack.push(current);
-                
-                final Node random = unvisited.get(rand.nextInt(unvisited.size()));
-                Node.connect(current, random);
-                stack.push(random);
-                random.state = Node.State.EXPLORE;
-                changeList.add(random);
-            }
-            else
-            {
-                current.state = Node.State.DONE;
-                changeList.add(current);
-            }
+            final Node random = unvisited.get(rand.nextInt(unvisited.size()));
+            Node.connect(current, random);
+            stack.push(random);
+            random.state = Node.State.EXPLORE;
+            changeList.add(random);
         }
+        else
+        {
+            current.state = Node.State.DONE;
+            changeList.add(current);
+        }
+        
+        return true;
     }
     
     private ArrayList<Node> getUnvisited(Node node)
