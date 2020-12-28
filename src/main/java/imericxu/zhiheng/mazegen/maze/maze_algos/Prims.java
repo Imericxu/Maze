@@ -25,7 +25,7 @@ public class Prims extends MazeAlgorithm
         {
             Node current = frontiers.remove(rand.nextInt(frontiers.size()));
             addFrontiersOf(current);
-            Node randFrontier = getRandomFrontierOf(current);
+            Node randFrontier = selectRandMazeCell(current);
             Node.connect(current, randFrontier);
         }
     }
@@ -46,14 +46,14 @@ public class Prims extends MazeAlgorithm
         }
     }
     
-    private Node getRandomFrontierOf(Node node)
+    private Node selectRandMazeCell(Node node)
     {
-        var frontiers = new ArrayList<Node>();
+        var mazeCells = new ArrayList<Node>();
         
         for (Node neighbor : node.getNeighbors())
-            if (neighbor.state == Node.State.EXPLORE)
-                frontiers.add(neighbor);
+            if (neighbor.state == Node.State.DONE)
+                mazeCells.add(neighbor);
         
-        return frontiers.get(rand.nextInt(frontiers.size()));
+        return mazeCells.get(rand.nextInt(mazeCells.size()));
     }
 }
