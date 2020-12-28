@@ -28,9 +28,7 @@ public class BreadthFirstSearch extends Pathfinder
     {
         super.setMaze(maze);
         grid = maze.getGrid();
-        clearVisited(grid);
         queue.add(start);
-        start.visited();
         start.setState(Cell.State.EXPLORE);
         changeList.add(start);
     }
@@ -44,7 +42,7 @@ public class BreadthFirstSearch extends Pathfinder
             
             for (var neighbor : getNeighbors(current, grid))
             {
-                if (neighbor.getVisited() == 0)
+                if (neighbor.state == Cell.State.DONE)
                 {
                     neighbor.setState(Cell.State.EXPLORE);
                     changeList.add(neighbor);
@@ -57,7 +55,7 @@ public class BreadthFirstSearch extends Pathfinder
                     }
     
                     queue.add(neighbor);
-                    neighbor.visited();
+                    neighbor.state = Cell.State.EXPLORE;
                 }
             }
             return false;

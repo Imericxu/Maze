@@ -50,13 +50,12 @@ public class Prims extends Maze
      */
     private void addFrontiersOf(Cell cell)
     {
-        cell.visited();
         cell.setState(Cell.State.DONE);
         queueUpdate(cell);
         
         for (Cell neighbor : getNeighbors(cell))
         {
-            if (!frontiers.contains(neighbor) && neighbor.getVisited() == 0)
+            if (!frontiers.contains(neighbor) && neighbor.state == Cell.State.DEFAULT)
             {
                 frontiers.add(neighbor);
                 neighbor.setState(Cell.State.EXPLORE);
@@ -77,7 +76,7 @@ public class Prims extends Maze
         var visited = new ArrayList<Cell>();
         for (Cell cell : getNeighbors(current))
         {
-            if (cell.getVisited() >= 1)
+            if (cell.state == Cell.State.EXPLORE)
             {
                 visited.add(cell);
             }

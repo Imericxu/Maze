@@ -20,17 +20,6 @@ public abstract class Pathfinder extends Orthogonal
         return path;
     }
     
-    protected void clearVisited(Cell[][] grid)
-    {
-        for (var row : grid)
-        {
-            for (var cell : row)
-            {
-                cell.clearVisited();
-            }
-        }
-    }
-    
     protected ArrayList<Cell> getNeighbors(Cell current, Cell[][] grid)
     {
         var neighbors = new ArrayList<Cell>();

@@ -23,9 +23,8 @@ public class Tremaux extends Pathfinder
     {
         super.setMaze(maze);
         grid = maze.getGrid();
-        clearVisited(grid);
         path.push(start);
-        start.visited();
+        start.setState(Cell.State.EXPLORE);
     }
     
     public boolean step()
@@ -37,7 +36,6 @@ public class Tremaux extends Pathfinder
         {
             var selected = choices.get(r.nextInt(choices.size()));
             selected.setState(Cell.State.EXPLORE);
-            selected.visited();
             path.push(selected);
             return selected == end;
         }
@@ -45,7 +43,7 @@ public class Tremaux extends Pathfinder
         {
             path.pop();
         }
-    
+        
         return false;
     }
     
@@ -53,37 +51,37 @@ public class Tremaux extends Pathfinder
     {
         current.setState(Cell.State.EXPLORE);
         changeList.add(current);
-    
+        
         var unvisited = new ArrayList<Cell>();
         int row = current.getRow();
         int col = current.getCol();
         var walls = current.getWalls();
-    
+        
         var previous = path.size() < 2 ? null : path.get(path.size() - 2);
-    
+        
         if (!walls[Cell.TOP] && row > 0)
         {
             var cell = grid[row - 1][col];
             if (cell != previous) changeList.add(cell);
-            if (cell.getVisited() == 0) unvisited.add(cell);
+            if (cell.state == Cell.State.DONE) unvisited.add(cell);
         }
         if (!walls[Cell.RIGHT] && col < grid[0].length - 1)
         {
             var cell = grid[row][col + 1];
             if (cell != previous) changeList.add(cell);
-            if (cell.getVisited() == 0) unvisited.add(cell);
+            if (cell.state == Cell.State.DONE) unvisited.add(cell);
         }
         if (!walls[Cell.BOTTOM] && row < grid.length - 1)
         {
             var cell = grid[row + 1][col];
             if (cell != previous) changeList.add(cell);
-            if (cell.getVisited() == 0) unvisited.add(cell);
+            if (cell.state == Cell.State.DONE) unvisited.add(cell);
         }
         if (!walls[Cell.LEFT] && col > 0)
         {
             var cell = grid[row][col - 1];
             if (cell != previous) changeList.add(cell);
-            if (cell.getVisited() == 0) unvisited.add(cell);
+            if (cell.state == Cell.State.DONE) unvisited.add(cell);
         }
         
         return unvisited;

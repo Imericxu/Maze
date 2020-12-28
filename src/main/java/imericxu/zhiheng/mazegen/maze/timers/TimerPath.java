@@ -21,11 +21,12 @@ public class TimerPath extends AnimationTimer
     {
         if (pathfinder.step())
         {
-            gameCanvas.drawPath(pathfinder.getPath());
+//            gameCanvas.drawPath(pathfinder.getPath());
             gameCanvas.drawMaze();
             gameCanvas.drawPath(pathfinder.getPath());
             stop();
         }
+//        gameCanvas.drawMaze();
         gameCanvas.drawMaze(pathfinder.getChangeList());
         gameCanvas.drawPath(pathfinder.getPath());
     }

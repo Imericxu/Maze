@@ -21,7 +21,6 @@ public class Backtracker extends Maze
         super(rows, cols);
         stack = new Stack<>();
         stack.push(start);
-        start.visited();
         start.setState(Cell.State.EXPLORE);
         queueUpdate(start);
     }
@@ -39,7 +38,6 @@ public class Backtracker extends Maze
                 stack.push(current);
                 
                 Cell selected = unvisited.get(r.nextInt(unvisited.size()));
-                selected.visited();
                 selected.setState(Cell.State.EXPLORE);
                 queueUpdate(selected);
                 stack.push(selected);
@@ -66,7 +64,7 @@ public class Backtracker extends Maze
         ArrayList<Cell> unvisited = new ArrayList<>();
         for (Cell neighbor : getNeighbors(current))
         {
-            if (neighbor.getVisited() == 0)
+            if (neighbor.state == Cell.State.DEFAULT)
             {
                 unvisited.add(neighbor);
             }
