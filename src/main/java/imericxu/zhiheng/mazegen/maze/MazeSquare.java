@@ -4,7 +4,7 @@ import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
 
 import java.util.ArrayList;
 
-public class Maze
+public class MazeSquare
 {
     public static Node[] generate(int rows, int cols)
     {

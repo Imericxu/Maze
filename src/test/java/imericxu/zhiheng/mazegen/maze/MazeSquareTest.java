@@ -3,17 +3,15 @@ package imericxu.zhiheng.mazegen.maze;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MazeTest
+class MazeSquareTest
 {
     @Test
     void generate2x2()
     {
-        var nodes = Maze.generate(2, 2);
+        var nodes = MazeSquare.generate(2, 2);
         assertEquals(4, nodes.length);
         assertTrue(nodes[0].getConnections().isEmpty());
         
@@ -33,7 +31,7 @@ class MazeTest
     @Test
     void generate4x4()
     {
-        var nodes = Maze.generate(4, 4);
+        var nodes = MazeSquare.generate(4, 4);
         assertEquals(16, nodes.length);
         
         var correct = Arrays.asList(nodes[0], nodes[2], nodes[5]);

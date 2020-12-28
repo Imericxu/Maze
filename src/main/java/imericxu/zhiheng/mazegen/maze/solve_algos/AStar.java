@@ -1,7 +1,7 @@
 //package imericxu.zhiheng.mazegen.maze.solve_algos;
 //
 //import imericxu.zhiheng.mazegen.maze.Cell;
-//import imericxu.zhiheng.mazegen.maze.Maze;
+//import imericxu.zhiheng.mazegen.maze.MazeSquare;
 //import imericxu.zhiheng.mazegen.maze.Pathfinder;
 //
 //import java.util.*;
@@ -24,7 +24,7 @@
 //    }
 //
 //    @Override
-//    public void setMaze(Maze maze)
+//    public void setMaze(MazeSquare maze)
 //    {
 //        super.setMaze(maze);
 //        cellGrid = maze.getGrid();
@@ -127,7 +127,7 @@
 //    }
 //
 //    /**
-//     * Goes through the {@link Maze#getGrid() grid} and uses the copy constructor to
+//     * Goes through the {@link MazeSquare#getGrid() grid} and uses the copy constructor to
 //     * create new {@link Node PCells}
 //     */
 //    private void convertToNodes()

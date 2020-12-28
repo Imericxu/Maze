@@ -19,4 +19,22 @@ public abstract class MazeAlgorithm
      * @return true if more steps left (maze not done)
      */
     public abstract boolean step();
+    
+    public void instantSolve()
+    {
+        while (true)
+        {
+            for (int i = 0; i < 50; ++i)
+            {
+                if (!step())
+                    return;
+                changeList.clear();
+            }
+        }
+    }
+    
+    public Node[] getNodes()
+    {
+        return nodes.clone();
+    }
 }

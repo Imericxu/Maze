@@ -5,10 +5,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link Maze orthogonal} mazes
+ * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link MazeSquare orthogonal} mazes
  */
 public class GameCanvas extends Canvas
 {
@@ -22,7 +24,7 @@ public class GameCanvas extends Canvas
     /**
      * Covered in black until algorithm generates paths
      *
-     * @param maze any subtype of {@link Maze}
+     * @param maze any subtype of {@link MazeSquare}
      */
     public GameCanvas(double sceneWidth, double sceneHeight,
                       int rows, int cols, double cellWallRatio)
@@ -68,11 +70,11 @@ public class GameCanvas extends Canvas
      *
      * @param changeList {@link Cell cells} to draw
      */
-    public void drawMaze(Queue<Node> changeQueue)
+    public void draw(Queue<Node> changeList)
     {
-        while (!changeQueue.isEmpty())
+        while (!changeList.isEmpty())
         {
-            final Node node = changeQueue.poll();
+            final Node node = changeList.poll();
             gc.setFill(getColor(node.state));
             final Cell cell = cells[node.id];
             gc.fillRect(cell.x, cell.y, cellSize, cellSize);
@@ -91,12 +93,20 @@ public class GameCanvas extends Canvas
         }
     }
     
+    public void draw(Node[] nodes)
+    {
+        Queue<Node> changeList = new LinkedList<>(Arrays.asList(nodes));
+        draw(changeList);
+    }
+    
     private void fillRect(Cell.Rect rect)
     {
         gc.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
-/*
-    *//**
+    /*
+     */
+    
+    /**
      * Draws the entire maze
      *//*
     public void drawMaze()
@@ -136,7 +146,6 @@ public class GameCanvas extends Canvas
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */
-    
     private Color getColor(Node.State state)
     {
         return switch (state)

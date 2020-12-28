@@ -12,7 +12,7 @@
 //        path = new Stack<>();
 //    }
 //
-//    public void setMaze(Maze maze)
+//    public void setMaze(MazeSquare maze)
 //    {
 //        start = maze.getStart();
 //        end = maze.getEnd();

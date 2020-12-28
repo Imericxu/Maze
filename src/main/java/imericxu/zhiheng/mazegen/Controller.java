@@ -1,7 +1,7 @@
 package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
-import imericxu.zhiheng.mazegen.maze.Maze;
+import imericxu.zhiheng.mazegen.maze.MazeSquare;
 import imericxu.zhiheng.mazegen.maze.maze_algos.*;
 import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
 import javafx.fxml.FXML;
@@ -119,14 +119,14 @@ public class Controller
         doSolve = switchDoSolve.isSelected();
         doShowPathfinding = switchShowPathfinding.isSelected();
         
-        final Node[] nodes = Maze.generate(rows, cols);
+        final Node[] nodes = MazeSquare.generate(rows, cols);
         MazeAlgorithm mazeAlgorithm = switch (mazeType)
                 {
                     case PRIM -> new Prims(nodes);
                     case WILSON -> new Wilson(nodes);
                     case RECURSIVE -> new Backtracker(nodes);
                 };
-        
+
 //        Pathfinder pathfinder = switch (pathType)
 //                {
 //                    case TREMAUX -> new Tremaux();
@@ -154,13 +154,13 @@ public class Controller
         stage.show();
         stage.setMaximized(true);
         
-        stage.setTitle("Maze");
+        stage.setTitle("MazeSquare");
         root.setStyle("-fx-background-color: black");
         
         var gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), rows, cols, cellWallRatio);
         
         root.getChildren().add(gameCanvas);
-        
+
 //        var timerPath = new TimerPath(pathfinder, gameCanvas);
         var timerMaze = new TimerMaze(/*timerPath, */gameCanvas, mazeAlgorithm, /*pathfinder, */doSolve, doShowPathfinding);
         
@@ -177,7 +177,13 @@ public class Controller
             }
         }*/
         
-        timerMaze.start();
+        if (doShowMazeGen)
+            timerMaze.start();
+        else
+        {
+            mazeAlgorithm.instantSolve();
+            gameCanvas.draw(mazeAlgorithm.getNodes());
+        }
         
         stage.setOpacity(1);
         stage.setResizable(false); // Must come after stage.show() to work

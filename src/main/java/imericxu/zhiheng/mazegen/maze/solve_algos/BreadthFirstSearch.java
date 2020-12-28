@@ -1,7 +1,7 @@
 //package imericxu.zhiheng.mazegen.maze.solve_algos;
 //
 //import imericxu.zhiheng.mazegen.maze.Cell;
-//import imericxu.zhiheng.mazegen.maze.Maze;
+//import imericxu.zhiheng.mazegen.maze.MazeSquare;
 //import imericxu.zhiheng.mazegen.maze.Pathfinder;
 //
 //import java.util.HashMap;
@@ -24,7 +24,7 @@
 //    }
 //
 //    @Override
-//    public void setMaze(Maze maze)
+//    public void setMaze(MazeSquare maze)
 //    {
 //        super.setMaze(maze);
 //        grid = maze.getGrid();

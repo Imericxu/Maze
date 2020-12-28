@@ -20,7 +20,7 @@ public class Main extends Application
     {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Maze Generator");
+        primaryStage.setTitle("MazeSquare Generator");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

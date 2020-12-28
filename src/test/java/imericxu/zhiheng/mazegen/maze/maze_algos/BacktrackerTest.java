@@ -1,6 +1,6 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import imericxu.zhiheng.mazegen.maze.Maze;
+import imericxu.zhiheng.mazegen.maze.MazeSquare;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +16,8 @@ class BacktrackerTest
     @BeforeEach
     void setUp()
     {
-        maze1 = new Backtracker(Maze.generate(2, 2));
-        maze2 = new Backtracker(Maze.generate(5, 5));
+        maze1 = new Backtracker(MazeSquare.generate(2, 2));
+        maze2 = new Backtracker(MazeSquare.generate(5, 5));
     }
     
     @Test
