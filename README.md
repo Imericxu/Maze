@@ -12,10 +12,10 @@ Maze Generator is a JavaFX application that can generate rectangular mazes of an
 * Breadth First Search
 
 ## Examples
-<img alt="Main Window" src="../assets/Main%20Window.png?raw=true" width="400" />
+<img alt="Main Window" src="https://raw.githubusercontent.com/Imericxu/Maze/assets/Main%20Window.png" width="400" />
 <p float="left">
-  <img alt="Generated Maze" src="../assets/Generated%20Maze.png?raw=true" width="400" />
-  <img alt="Generated Maze with Solution" src="../assets/Generated%20Maze%20with%20Solution.png?raw=true" width="400" />
+  <img alt="Generated Maze" src="https://raw.githubusercontent.com/Imericxu/Maze/assets/Generated%20Maze.png" width="400" />
+  <img alt="Generated Maze with Solution" src="https://raw.githubusercontent.com/Imericxu/Maze/assets/Generated%20Maze%20with%20Solution.png" width="400" />
 </p>
 
 ## Execution
