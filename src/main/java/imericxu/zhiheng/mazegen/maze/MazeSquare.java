@@ -31,7 +31,7 @@ public class MazeSquare
                 // Left
                 if (col > 0) neighbors.add(nodes[index - 1]);
                 
-                nodes[index].init(neighbors);
+                nodes[index].setNeighbors(neighbors);
             }
         }
         

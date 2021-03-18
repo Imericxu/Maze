@@ -32,7 +32,7 @@ public class Node
         b.connections.remove(a);
     }
     
-    public void init(List<Node> neighbors)
+    public void setNeighbors(List<Node> neighbors)
     {
         assert this.neighbors == null && neighbors != null;
         this.neighbors = neighbors;

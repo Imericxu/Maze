@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,10 +19,10 @@ class NodeTest
         node1 = new Node(0);
         node2 = new Node(1);
         node3 = new Node(2);
-        
-        node1.init(Arrays.asList(node2, node3));
-        node2.init(Arrays.asList(node1, node3));
-        node3.init(Arrays.asList(node1, node2));
+    
+        node1.setNeighbors(Arrays.asList(node2, node3));
+        node2.setNeighbors(Arrays.asList(node1, node3));
+        node3.setNeighbors(Arrays.asList(node1, node2));
     }
     
     @Test
