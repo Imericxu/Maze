@@ -16,6 +16,10 @@ public class Node
         this.id = id;
     }
     
+    /**
+     * pre: a and b must not be already connected<br>
+     * Adds each node to the other's connections list
+     */
     public static void connect(Node a, Node b)
     {
         assert a.neighbors.contains(b) && b.neighbors.contains(a);
@@ -24,6 +28,10 @@ public class Node
         b.connections.add(a);
     }
     
+    /**
+     * pre: a and b must be connected<br>
+     * Removes each node from the other's connections list
+     */
     public static void disconnect(Node a, Node b)
     {
         assert a.neighbors.contains(b) && b.neighbors.contains(a);
