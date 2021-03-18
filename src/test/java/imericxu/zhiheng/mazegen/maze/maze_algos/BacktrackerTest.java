@@ -4,9 +4,10 @@ import imericxu.zhiheng.mazegen.maze.MazeSquare;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BacktrackerTest
 {
@@ -24,7 +25,7 @@ class BacktrackerTest
     void constructor()
     {
         var nodes = maze1.nodes;
-        var correct = Arrays.asList(nodes[0], nodes[0]);
+        var correct = Collections.singletonList(nodes[0]);
         assertEquals(correct, maze1.changeList);
         assertEquals(Node.State.EXPLORE, nodes[0].state);
         assertEquals(Node.State.DEFAULT, nodes[1].state);
