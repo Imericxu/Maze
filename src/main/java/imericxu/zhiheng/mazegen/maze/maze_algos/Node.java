@@ -17,7 +17,7 @@ public class Node
 	}
 	
 	/**
-	 * pre: a and b must not be already connected<br>
+	 * Pre: a and b must not be already connected<br>
 	 * Adds each node to the other's connections list
 	 */
 	public static void connect(Node a, Node b)
@@ -29,7 +29,7 @@ public class Node
 	}
 	
 	/**
-	 * pre: a and b must be connected<br>
+	 * Pre: a and b must be connected<br>
 	 * Removes each node from the other's connections list
 	 */
 	public static void disconnect(Node a, Node b)
