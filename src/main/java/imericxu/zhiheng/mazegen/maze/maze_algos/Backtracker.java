@@ -1,61 +1,48 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import java.util.ArrayList;
+import imericxu.zhiheng.mazegen.maze.Node;
+import imericxu.zhiheng.mazegen.maze.State;
+
+import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 
 public class Backtracker extends MazeAlgorithm
 {
-	private final Stack<Node> stack = new Stack<>();
+	private final Stack<Integer> exploreStack = new Stack<>();
 	
 	public Backtracker(Node[] nodes)
 	{
-		this(nodes, 0);
-	}
-	
-	public Backtracker(Node[] nodes, int startIndex)
-	{
 		super(nodes);
-		Node start = nodes[startIndex];
-		stack.push(start);
-		start.state = Node.State.EXPLORE;
-		changeList.add(start);
+		final int startId = rand.nextInt(nodes.length);
+		exploreStack.push(startId);
+		changeState(startId, State.EXPLORE);
 	}
 	
 	@Override
-	public boolean step()
+	public void loopOnce()
 	{
-		if (stack.empty()) return false;
+		if (exploreStack.empty()) return;
 		
-		final Node current = stack.pop();
+		final int currentId = exploreStack.pop();
+		final List<Integer> unvisitedNeighbors = nodes[currentId].getNeighbors()
+		                                                         .stream()
+		                                                         .filter(id -> states[id] == State.DEFAULT)
+		                                                         .collect(Collectors.toUnmodifiableList());
 		
-		final ArrayList<Node> unvisited = getUnvisited(current);
-		
-		if (!unvisited.isEmpty())
+		if (unvisitedNeighbors.isEmpty())
 		{
-			stack.push(current);
-			
-			final Node random = unvisited.get(rand.nextInt(unvisited.size()));
-			Node.connect(current, random);
-			stack.push(random);
-			random.state = Node.State.EXPLORE;
-			changeList.add(random);
-		}
-		else
-		{
-			current.state = Node.State.DONE;
-			changeList.add(current);
+			changeState(currentId, State.DONE);
+			return;
 		}
 		
-		return true;
-	}
-	
-	private ArrayList<Node> getUnvisited(Node node)
-	{
-		final var unvisited = new ArrayList<Node>();
-		for (final Node neighbor : node.getNeighbors())
-			if (neighbor.state == Node.State.DEFAULT)
-				unvisited.add(neighbor);
-		return unvisited;
+		exploreStack.push(currentId);
+		
+		final int index = rand.nextInt(unvisitedNeighbors.size());
+		final int randomId = unvisitedNeighbors.get(index);
+		Node.connect(nodes[currentId], nodes[randomId]);
+		changeState(randomId, State.EXPLORE);
+		exploreStack.push(randomId);
 	}
 }

@@ -2,8 +2,12 @@ package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
 import imericxu.zhiheng.mazegen.maze.MazeSquare;
+import imericxu.zhiheng.mazegen.maze.Node;
 import imericxu.zhiheng.mazegen.maze.Pathfinder;
-import imericxu.zhiheng.mazegen.maze.maze_algos.*;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Backtracker;
+import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Prims;
+import imericxu.zhiheng.mazegen.maze.maze_algos.Wilson;
 import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
 import imericxu.zhiheng.mazegen.maze.timers.TimerPath;
@@ -181,25 +185,26 @@ public class Controller
             }
         }*/
 		
-		if (doShowMazeGen)
-			timerMaze.start();
-		else
-		{
-			mazeAlgorithm.instantSolve();
-			gameCanvas.drawMaze(mazeAlgorithm.getNodes());
-			
-			if (doSolve)
-				timerPath.start();
-		}
+		timerMaze.start();
+//		if (doShowMazeGen)
+//			timerMaze.start();
+//		else
+//		{
+//			mazeAlgorithm.instantSolve();
+//			gameCanvas.drawMaze(mazeAlgorithm.nodes);
+//
+//			if (doSolve)
+//				timerPath.start();
+//		}
 		
 		stage.setOpacity(1);
 		stage.setResizable(false); // Must come after stage.show() to work
 		
 		stage.setOnCloseRequest(windowEvent ->
-		{
+		                        {
 //            timerPath.stop();
-			timerMaze.stop();
-		});
+			                        timerMaze.stop();
+		                        });
 	}
 	
 	private enum MazeAlgo

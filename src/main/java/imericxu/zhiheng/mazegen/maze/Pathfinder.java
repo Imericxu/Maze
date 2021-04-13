@@ -1,7 +1,6 @@
 package imericxu.zhiheng.mazegen.maze;
 
 import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
-import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,18 +10,18 @@ public abstract class Pathfinder
 {
 	public final Queue<Node> changeList = new LinkedList<>();
 	protected final Node[] nodes;
-	protected final Node start;
-	protected final Node end;
+	//	protected final Node start;
+//	protected final Node end;
 	protected Stack<Node> path;
 	
 	public Pathfinder(MazeAlgorithm mazeAlgorithm)
 	{
 		path = new Stack<>();
-		nodes = mazeAlgorithm.getNodes();
-		start = mazeAlgorithm.getStart();
-		end = mazeAlgorithm.getEnd();
-		
-		path.push(start);
+		nodes = mazeAlgorithm.nodes;
+//		start = mazeAlgorithm.getStart();
+//		end = mazeAlgorithm.getEnd();
+
+//		path.push(start);
 	}
 	
 	public abstract boolean step();

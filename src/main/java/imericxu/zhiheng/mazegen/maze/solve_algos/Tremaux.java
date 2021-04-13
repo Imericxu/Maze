@@ -1,8 +1,8 @@
 package imericxu.zhiheng.mazegen.maze.solve_algos;
 
+import imericxu.zhiheng.mazegen.maze.Node;
 import imericxu.zhiheng.mazegen.maze.Pathfinder;
 import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
-import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +20,7 @@ public class Tremaux extends Pathfinder
 	public boolean step()
 	{
 		var current = path.peek();
-		current.state = Node.State.EXPLORE;
+//		current.state = Node.State.EXPLORE;
 		queueUpdate(current);
 		
 		var choices = getUnvisited(current);
@@ -29,11 +29,11 @@ public class Tremaux extends Pathfinder
 		{
 			var selected = choices.get(rand.nextInt(choices.size()));
 			path.push(selected);
-			
-			selected.state = Node.State.EXPLORE;
+
+//			selected.state = Node.State.EXPLORE;
 			queueUpdate(selected);
-			
-			return selected != end;
+
+//			return selected != end;
 		}
 		else
 		{
@@ -48,10 +48,10 @@ public class Tremaux extends Pathfinder
 		var unvisited = new ArrayList<Node>();
 		
 		var previous = path.size() < 2 ? null : path.get(path.size() - 2);
-		
-		for (final Node neighbor : node.getConnections())
-			if (neighbor.state == Node.State.DONE)
-				unvisited.add(neighbor);
+
+//		for (final Node neighbor : node.getConnections())
+//			if (neighbor.state == Node.State.DONE)
+//				unvisited.add(neighbor);
 		
 		return unvisited;
 	}

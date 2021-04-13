@@ -24,7 +24,7 @@ public class TimerMaze extends AnimationTimer
 		this.doSolve = doSolve;
 		this.doShowPathfinding = doShowPathfinding;
 	}
-    
+  
   /*  public static void solveMaze(TimerPath timerPath, GameCanvas gameCanvas, MazeSquare maze, Pathfinder pathfinder,
                                  boolean doShowPathfinding)
     {
@@ -41,15 +41,11 @@ public class TimerMaze extends AnimationTimer
 	@Override
 	public void handle(long l)
 	{
-		if (mazeAlgorithm.step())
-		{
-			gameCanvas.drawMaze(mazeAlgorithm.changeList);
-		}
-		else
-		{
-			if (doSolve)
-				timerPath.start();
+		if (mazeAlgorithm.changeList.isEmpty())
 			stop();
-		}
+		gameCanvas.drawMaze(mazeAlgorithm.nodes,
+		                    mazeAlgorithm.states,
+		                    mazeAlgorithm.changeList);
+		mazeAlgorithm.loopOnce();
 	}
 }

@@ -1,60 +1,61 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
-import java.util.ArrayList;
+import imericxu.zhiheng.mazegen.maze.Node;
+import imericxu.zhiheng.mazegen.maze.State;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Prims extends MazeAlgorithm
 {
-	private final ArrayList<Node> frontiers = new ArrayList<>();
+	private final Set<Integer> frontiers = new HashSet<>();
 	
 	public Prims(Node[] nodes)
 	{
-		this(nodes, 0);
-	}
-	
-	public Prims(Node[] nodes, int startIndex)
-	{
 		super(nodes);
-		Node start = nodes[startIndex];
-		addFrontiersOf(start);
-	}
-	
-	@Override
-	public boolean step()
-	{
-		if (frontiers.isEmpty()) return false;
-		
-		Node current = frontiers.remove(rand.nextInt(frontiers.size()));
-		addFrontiersOf(current);
-		Node randFrontier = selectRandMazeCell(current);
-		Node.connect(current, randFrontier);
-		
-		return true;
-	}
-	
-	private void addFrontiersOf(Node node)
-	{
-		node.state = Node.State.DONE;
-		changeList.add(node);
-		
-		for (final Node neighbor : node.getNeighbors())
+		Node start = nodes[rand.nextInt(nodes.length)];
+		changeState(start, State.DONE);
+		for (Integer neighbor : start.getNeighbors())
 		{
-			if (neighbor.state == Node.State.DEFAULT && !frontiers.contains(neighbor))
-			{
-				frontiers.add(neighbor);
-				neighbor.state = Node.State.EXPLORE;
-				changeList.add(neighbor);
-			}
+			frontiers.add(neighbor);
+			changeState(neighbor, State.EXPLORE);
 		}
 	}
 	
-	private Node selectRandMazeCell(Node node)
+	@Override
+	public void loopOnce()
 	{
-		var mazeCells = new ArrayList<Node>();
+		if (frontiers.isEmpty()) return;
 		
-		for (Node neighbor : node.getNeighbors())
-			if (neighbor.state == Node.State.DONE)
-				mazeCells.add(neighbor);
+		final int index = rand.nextInt(frontiers.size());
+		final int currentId = frontiers.stream().skip(index).findFirst().orElseThrow();
+		frontiers.remove(currentId);
+		addFrontiersOf(currentId);
+		connectRandMazeCell(currentId);
+	}
+	
+	private void addFrontiersOf(int nodeId)
+	{
+		changeState(nodeId, State.DONE);
 		
-		return mazeCells.get(rand.nextInt(mazeCells.size()));
+		nodes[nodeId].getNeighbors()
+		             .stream()
+		             .filter(id -> states[id] == State.DEFAULT && !frontiers.contains(id))
+		             .forEach(id -> {
+			             frontiers.add(id);
+			             changeState(id, State.EXPLORE);
+		             });
+	}
+	
+	private void connectRandMazeCell(int nodeId)
+	{
+		final var connectedMazeCells = nodes[nodeId].getNeighbors()
+		                                            .stream()
+		                                            .filter(id -> states[id] == State.DONE)
+		                                            .collect(Collectors.toUnmodifiableList());
+		final int index = rand.nextInt(connectedMazeCells.size());
+		final int randomId = connectedMazeCells.get(index);
+		Node.connect(nodes[nodeId], nodes[randomId]);
 	}
 }

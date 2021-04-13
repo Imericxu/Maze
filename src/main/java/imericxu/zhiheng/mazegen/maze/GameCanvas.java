@@ -1,12 +1,9 @@
 package imericxu.zhiheng.mazegen.maze;
 
-import imericxu.zhiheng.mazegen.maze.maze_algos.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -66,34 +63,43 @@ public class GameCanvas extends Canvas
 	 *
 	 * @param changeList {@link Cell cells} to draw
 	 */
-	public void drawMaze(Queue<Node> changeList)
+	public void drawMaze(Node[] nodes, State[] states, Queue<Integer> changeList)
 	{
 		while (!changeList.isEmpty())
 		{
-			final Node node = changeList.poll();
-			gc.setFill(getColor(node.state));
-			final Cell cell = cells[node.id];
+			final int nodeId = changeList.poll();
+			final Cell cell = cells[nodeId];
+			
+			if (states[nodeId] == State.DEFAULT)
+			{
+				gc.setFill(getColor(State.DEFAULT));
+				gc.fillRect(cell.x - wallSize, cell.y - wallSize,
+				            cellSize + 2 * wallSize, cellSize + 2 * wallSize);
+				continue;
+			}
+			
+			gc.setFill(getColor(states[nodeId]));
 			gc.fillRect(cell.x, cell.y, cellSize, cellSize);
 			
-			for (final Node connection : node.getConnections())
+			for (final int connectionId : nodes[nodeId].getConnections())
 			{
-				if (connection.id == node.id - cols)
+				if (connectionId == nodeId - cols)
 					fillRect(cell.top);
-				else if (connection.id == node.id + 1)
+				else if (connectionId == nodeId + 1)
 					fillRect(cell.right);
-				else if (connection.id == node.id + cols)
+				else if (connectionId == nodeId + cols)
 					fillRect(cell.bottom);
 				else
 					fillRect(cell.left);
 			}
 		}
 	}
-	
-	public void drawMaze(Node[] nodes)
-	{
-		Queue<Node> changeList = new LinkedList<>(Arrays.asList(nodes));
-		drawMaze(changeList);
-	}
+
+//	public void drawMaze(Node[] nodes)
+//	{
+//		Queue<Node> changeList = new LinkedList<>(Arrays.asList(nodes));
+//		drawMaze(changeList);
+//	}
 	
 	private void fillRect(Cell.Rect rect)
 	{
@@ -130,7 +136,7 @@ public class GameCanvas extends Canvas
     Helper Methods
     * * * * * * * * * * * * * * * * * * * * */
 	
-	private Color getColor(Node.State state)
+	private Color getColor(State state)
 	{
 		return switch (state)
 				{

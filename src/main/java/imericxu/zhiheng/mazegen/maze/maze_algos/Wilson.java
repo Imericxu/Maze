@@ -1,94 +1,94 @@
 package imericxu.zhiheng.mazegen.maze.maze_algos;
 
+import imericxu.zhiheng.mazegen.maze.Node;
+import imericxu.zhiheng.mazegen.maze.State;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Wilson extends MazeAlgorithm
 {
-	private final HashSet<Node> knownNodes = new HashSet<>();
-	private final HashSet<Node> unknownNodes = new HashSet<>();
-	private final Stack<Node> currentWalk = new Stack<>();
+	private final Set<Integer> mazeNodes = new HashSet<>();
+	private final Set<Integer> nonMazeNodes = new HashSet<>();
+	private final Stack<Integer> currentWalk = new Stack<>();
+	private Integer prevId = null;
 	
 	public Wilson(Node[] nodes)
 	{
 		super(nodes);
-		unknownNodes.addAll(Arrays.asList(nodes));
-		
-		Node start = unknownNodes.iterator().next();
-		unknownNodes.remove(start);
-		start.state = Node.State.DONE;
-		changeList.add(start);
+		nonMazeNodes.addAll(Arrays.stream(nodes)
+		                          .map(node -> node.id)
+		                          .collect(Collectors.toSet())
+		                   );
+		final int startId = nonMazeNodes.iterator().next();
+		nonMazeNodes.remove(startId);
+		mazeNodes.add(startId);
+		changeState(startId, State.DONE);
 	}
 	
 	@Override
-	public boolean step()
+	public void loopOnce()
 	{
-		if (unknownNodes.isEmpty()) return false;
-		
+		if (nonMazeNodes.isEmpty()) return;
 		if (currentWalk.isEmpty())
-			startNewWalk();
-		else
 		{
-			Node current = currentWalk.peek();
-			List<Node> neighbors = current.getNeighbors();
-			if (currentWalk.size() > 1) // Don't go backwards
-				neighbors.remove(currentWalk.get(currentWalk.size() - 2));
-			Node randNeighbor = neighbors.get(rand.nextInt(neighbors.size()));
-			
-			if (currentWalk.contains(randNeighbor) && currentWalk.size() > 4)
-			{
-				deleteLoop(randNeighbor);
-			}
-			else if (knownNodes.contains(randNeighbor))
-			{
-				Node.connect(current, randNeighbor);
-				knownNodes.addAll(currentWalk);
-				unknownNodes.removeAll(currentWalk);
-				
-				currentWalk.forEach(node -> node.state = Node.State.DONE);
-				changeList.addAll(currentWalk);
-				currentWalk.clear();
-			}
-			else
-			{
-				Node.disconnect(current, randNeighbor);
-				currentWalk.push(randNeighbor);
-				
-				randNeighbor.state = Node.State.EXPLORE;
-				changeList.add(randNeighbor);
-			}
+			startNewWalk();
+			return;
 		}
 		
-		return true;
+		int currentId = currentWalk.peek();
+		// Select a random neighbor that's not the one right before it in the walk
+		final var options = nodes[currentId].getNeighbors()
+		                                    .stream()
+		                                    .filter(id -> !Objects.equals(id, prevId))
+		                                    .collect(Collectors.toUnmodifiableList());
+		final int randomId = options.get(rand.nextInt(options.size()));
+		
+		if (mazeNodes.contains(randomId))
+		{
+			Node.connect(nodes[currentId], nodes[randomId]);
+			addWalkToMaze();
+		}
+		else if (currentWalk.contains(randomId))
+		{
+			deleteLoop(currentId);
+		}
+		else
+		{
+			currentWalk.push(randomId);
+			Node.connect(nodes[currentId], nodes[randomId]);
+			changeState(randomId, State.EXPLORE);
+		}
+		
+		prevId = currentId;
+	}
+	
+	private void addWalkToMaze()
+	{
+		mazeNodes.addAll(currentWalk);
+		nonMazeNodes.removeAll(currentWalk);
+		currentWalk.forEach(id -> changeState(id, State.DONE));
+		currentWalk.clear();
 	}
 	
 	private void startNewWalk()
 	{
-		Node start = unknownNodes.iterator().next();
-		currentWalk.push(start);
-		
-		start.state = Node.State.EXPLORE;
-		changeList.add(start);
+		final int startId = nonMazeNodes.iterator().next();
+		currentWalk.push(startId);
+		changeState(startId, State.EXPLORE);
 	}
 	
-	private void deleteLoop(Node end)
+	private void deleteLoop(int endId)
 	{
-		Node current = currentWalk.pop();
-		Node next = currentWalk.pop();
-		Node.disconnect(current, next);
-		
-		current.state = next.state = Node.State.DEFAULT;
-		Collections.addAll(changeList, current, next);
-		
-		while (currentWalk.size() > 1 && next != end)
+		int prevId, currentId;
+		do
 		{
-			current = next;
-			next = currentWalk.pop();
-			Node.disconnect(current, next);
-			
-			next.state = Node.State.DEFAULT;
-			changeList.add(next);
-		}
+			prevId = currentWalk.pop();
+			currentId = currentWalk.peek();
+			changeState(prevId, State.DEFAULT);
+			Node.disconnect(nodes[currentId], nodes[prevId]);
+		} while (currentId != endId);
 		
-		Node.disconnect(next, currentWalk.peek());
+		this.prevId = currentWalk.get(currentWalk.size() - 2);
 	}
 }

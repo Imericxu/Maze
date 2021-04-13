@@ -8,7 +8,7 @@ public class TimerPath extends AnimationTimer
 {
 	private final Pathfinder pathfinder;
 	private final GameCanvas gameCanvas;
-	
+
 	public TimerPath(Pathfinder pathfinder, GameCanvas gameCanvas)
 	{
 		
@@ -19,16 +19,16 @@ public class TimerPath extends AnimationTimer
 	@Override
 	public void handle(long l)
 	{
-		if (pathfinder.step())
-		{
-			gameCanvas.drawMaze(pathfinder.changeList);
-			gameCanvas.drawPath(pathfinder.getPath());
-		}
-		else
-		{
-			gameCanvas.drawMaze(pathfinder.changeList);
-			gameCanvas.drawPath(pathfinder.getPath());
-			stop();
-		}
+//		if (pathfinder.step())
+//		{
+//			gameCanvas.drawMaze(pathfinder.changeList);
+//			gameCanvas.drawPath(pathfinder.getPath());
+//		}
+//		else
+//		{
+//			gameCanvas.drawMaze(pathfinder.changeList);
+//			gameCanvas.drawPath(pathfinder.getPath());
+//			stop();
+//		}
 	}
 }
