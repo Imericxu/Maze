@@ -3,14 +3,14 @@ package imericxu.zhiheng.mazegen.maze.maze_algos;
 import imericxu.zhiheng.mazegen.maze.Node;
 import imericxu.zhiheng.mazegen.maze.State;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 import java.util.Random;
 
 public abstract class MazeAlgorithm
 {
-	public final Queue<Integer> changeList = new LinkedList<>();
+	public final List<Integer> changeList = new ArrayList<>();
 	public final Node[] nodes;
 	public final State[] states;
 	protected final Random rand = new Random();
@@ -29,14 +29,17 @@ public abstract class MazeAlgorithm
 	
 	public void instantSolve()
 	{
-		while (!changeList.isEmpty())
+		do
+		{
+			changeList.clear();
 			loopOnce();
+		} while (changeList.isEmpty());
 	}
 	
 	protected void changeState(int index, State state)
 	{
 		states[index] = state;
-		changeList.offer(index);
+		changeList.add(index);
 	}
 	
 	protected void changeState(Node node, State state)

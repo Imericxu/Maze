@@ -46,6 +46,7 @@ public class TimerMaze extends AnimationTimer
 		gameCanvas.drawMaze(mazeAlgorithm.nodes,
 		                    mazeAlgorithm.states,
 		                    mazeAlgorithm.changeList);
+		mazeAlgorithm.changeList.clear();
 		mazeAlgorithm.loopOnce();
 	}
 }

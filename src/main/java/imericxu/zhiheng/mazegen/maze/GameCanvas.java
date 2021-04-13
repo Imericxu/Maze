@@ -4,7 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.Queue;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -63,36 +63,34 @@ public class GameCanvas extends Canvas
 	 *
 	 * @param changeList {@link Cell cells} to draw
 	 */
-	public void drawMaze(Node[] nodes, State[] states, Queue<Integer> changeList)
+	public void drawMaze(Node[] nodes, State[] states, List<Integer> changeList)
 	{
-		while (!changeList.isEmpty())
-		{
-			final int nodeId = changeList.poll();
-			final Cell cell = cells[nodeId];
+		changeList.forEach(id -> {
+			final Cell cell = cells[id];
 			
-			if (states[nodeId] == State.EMPTY)
+			if (states[id] == State.EMPTY)
 			{
 				gc.setFill(getColor(State.EMPTY));
 				gc.fillRect(cell.x - wallSize, cell.y - wallSize,
 				            cellSize + 2 * wallSize, cellSize + 2 * wallSize);
-				continue;
+				return;
 			}
 			
-			gc.setFill(getColor(states[nodeId]));
+			gc.setFill(getColor(states[id]));
 			gc.fillRect(cell.x, cell.y, cellSize, cellSize);
 			
-			for (final int connectionId : nodes[nodeId].getConnections())
+			for (final int connectionId : nodes[id].getConnections())
 			{
-				if (connectionId == nodeId - cols)
+				if (connectionId == id - cols)
 					fillRect(cell.top);
-				else if (connectionId == nodeId + 1)
+				else if (connectionId == id + 1)
 					fillRect(cell.right);
-				else if (connectionId == nodeId + cols)
+				else if (connectionId == id + cols)
 					fillRect(cell.bottom);
 				else
 					fillRect(cell.left);
 			}
-		}
+		});
 	}
 
 //	public void drawMaze(Node[] nodes)
