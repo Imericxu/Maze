@@ -17,7 +17,7 @@ public class Backtracker extends MazeAlgorithm
 		super(nodes);
 		final int startId = rand.nextInt(nodes.length);
 		exploreStack.push(startId);
-		changeState(startId, State.EXPLORE);
+		changeState(startId, State.PARTIAL);
 	}
 	
 	@Override
@@ -28,12 +28,12 @@ public class Backtracker extends MazeAlgorithm
 		final int currentId = exploreStack.pop();
 		final List<Integer> unvisitedNeighbors = nodes[currentId].getNeighbors()
 		                                                         .stream()
-		                                                         .filter(id -> states[id] == State.DEFAULT)
+		                                                         .filter(id -> states[id] == State.EMPTY)
 		                                                         .collect(Collectors.toUnmodifiableList());
 		
 		if (unvisitedNeighbors.isEmpty())
 		{
-			changeState(currentId, State.DONE);
+			changeState(currentId, State.SOLID);
 			return;
 		}
 		
@@ -42,7 +42,7 @@ public class Backtracker extends MazeAlgorithm
 		final int index = rand.nextInt(unvisitedNeighbors.size());
 		final int randomId = unvisitedNeighbors.get(index);
 		Node.connect(nodes[currentId], nodes[randomId]);
-		changeState(randomId, State.EXPLORE);
+		changeState(randomId, State.PARTIAL);
 		exploreStack.push(randomId);
 	}
 }

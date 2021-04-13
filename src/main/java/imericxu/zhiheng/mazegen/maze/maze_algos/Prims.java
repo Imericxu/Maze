@@ -15,11 +15,11 @@ public class Prims extends MazeAlgorithm
 	{
 		super(nodes);
 		Node start = nodes[rand.nextInt(nodes.length)];
-		changeState(start, State.DONE);
+		changeState(start, State.SOLID);
 		for (Integer neighbor : start.getNeighbors())
 		{
 			frontiers.add(neighbor);
-			changeState(neighbor, State.EXPLORE);
+			changeState(neighbor, State.PARTIAL);
 		}
 	}
 	
@@ -37,14 +37,14 @@ public class Prims extends MazeAlgorithm
 	
 	private void addFrontiersOf(int nodeId)
 	{
-		changeState(nodeId, State.DONE);
+		changeState(nodeId, State.SOLID);
 		
 		nodes[nodeId].getNeighbors()
 		             .stream()
-		             .filter(id -> states[id] == State.DEFAULT && !frontiers.contains(id))
+		             .filter(id -> states[id] == State.EMPTY && !frontiers.contains(id))
 		             .forEach(id -> {
 			             frontiers.add(id);
-			             changeState(id, State.EXPLORE);
+			             changeState(id, State.PARTIAL);
 		             });
 	}
 	
@@ -52,7 +52,7 @@ public class Prims extends MazeAlgorithm
 	{
 		final var connectedMazeCells = nodes[nodeId].getNeighbors()
 		                                            .stream()
-		                                            .filter(id -> states[id] == State.DONE)
+		                                            .filter(id -> states[id] == State.SOLID)
 		                                            .collect(Collectors.toUnmodifiableList());
 		final int index = rand.nextInt(connectedMazeCells.size());
 		final int randomId = connectedMazeCells.get(index);

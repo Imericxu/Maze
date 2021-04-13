@@ -70,9 +70,9 @@ public class GameCanvas extends Canvas
 			final int nodeId = changeList.poll();
 			final Cell cell = cells[nodeId];
 			
-			if (states[nodeId] == State.DEFAULT)
+			if (states[nodeId] == State.EMPTY)
 			{
-				gc.setFill(getColor(State.DEFAULT));
+				gc.setFill(getColor(State.EMPTY));
 				gc.fillRect(cell.x - wallSize, cell.y - wallSize,
 				            cellSize + 2 * wallSize, cellSize + 2 * wallSize);
 				continue;
@@ -140,9 +140,9 @@ public class GameCanvas extends Canvas
 	{
 		return switch (state)
 				{
-					case DEFAULT -> Colors.DEFAULT.color;
-					case EXPLORE -> Colors.EXPLORE.color;
-					case DONE -> Colors.DONE.color;
+					case EMPTY -> Colors.DEFAULT.color;
+					case PARTIAL -> Colors.EXPLORE.color;
+					case SOLID -> Colors.DONE.color;
 				};
 	}
 	

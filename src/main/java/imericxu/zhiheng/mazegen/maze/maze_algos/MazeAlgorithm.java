@@ -19,7 +19,7 @@ public abstract class MazeAlgorithm
 	{
 		this.nodes = nodes;
 		states = new State[nodes.length];
-		Arrays.fill(states, State.DEFAULT);
+		Arrays.fill(states, State.EMPTY);
 	}
 	
 	/**
