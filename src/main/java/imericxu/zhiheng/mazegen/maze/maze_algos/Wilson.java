@@ -31,7 +31,6 @@ public class Wilson extends MazeAlgorithm
 	@Override
 	public boolean loopOnceImpl()
 	{
-		if (nonMazeNodes.isEmpty()) return true;
 		if (currentWalk.isEmpty())
 		{
 			startNewWalk();
@@ -61,7 +60,7 @@ public class Wilson extends MazeAlgorithm
 			changeState(randomId, State.PARTIAL);
 		}
 		
-		return false;
+		return nonMazeNodes.isEmpty();
 	}
 	
 	private void startNewWalk()

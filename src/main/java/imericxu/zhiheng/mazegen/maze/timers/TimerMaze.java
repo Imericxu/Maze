@@ -27,8 +27,9 @@ public class TimerMaze extends AnimationTimer
 		mazeAlgorithm.changeList.clear();
 		if (mazeAlgorithm.isFinished())
 		{
-//			if (doSolve) timerPath.start();
+			if (doSolve) timerPath.start();
 			stop();
+			return;
 		}
 		mazeAlgorithm.loopOnce();
 	}

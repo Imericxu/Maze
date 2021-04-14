@@ -22,8 +22,6 @@ public class Backtracker extends MazeAlgorithm
 	@Override
 	public boolean loopOnceImpl()
 	{
-		if (exploreStack.isEmpty()) return true;
-		
 		final Node current = nodes[exploreStack.peek()];
 		final Node randomNeighbor = selectRandomUnvisitedNeighbor(current);
 		
@@ -39,7 +37,7 @@ public class Backtracker extends MazeAlgorithm
 			changeState(current.id, State.SOLID);
 		}
 		
-		return false;
+		return exploreStack.isEmpty();
 	}
 	
 	private Node selectRandomUnvisitedNeighbor(Node node)

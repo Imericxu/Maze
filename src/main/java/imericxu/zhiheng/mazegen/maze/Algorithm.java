@@ -21,6 +21,7 @@ public abstract class Algorithm
 	
 	public void loopOnce()
 	{
+		assert !finished;
 		finished = loopOnceImpl();
 	}
 	
