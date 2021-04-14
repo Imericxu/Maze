@@ -24,15 +24,17 @@ public class Prims extends MazeAlgorithm
 	}
 	
 	@Override
-	public void loopOnce()
+	public boolean loopOnceImpl()
 	{
-		if (frontiers.isEmpty()) return;
+		if (frontiers.isEmpty()) return true;
 		
 		final int index = rand.nextInt(frontiers.size());
 		final int currentId = frontiers.stream().skip(index).findFirst().orElseThrow();
 		frontiers.remove(currentId);
 		addFrontiersOf(currentId);
 		connectRandMazeCell(currentId);
+		
+		return false;
 	}
 	
 	private void addFrontiersOf(int nodeId)

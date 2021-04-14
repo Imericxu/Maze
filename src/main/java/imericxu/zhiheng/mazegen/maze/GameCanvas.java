@@ -5,7 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.List;
-import java.util.Stack;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link MazeSquare orthogonal} mazes
@@ -61,14 +60,14 @@ public class GameCanvas extends Canvas
 	/**
 	 * Draws sections of the maze as requests come in
 	 *
-	 * @param changeList {@link Cell cells} to draw
+	 * @param algorithm
 	 */
-	public void drawMaze(Node[] nodes, State[] states, List<Integer> changeList)
+	public void drawMaze(Algorithm algorithm)
 	{
-		changeList.forEach(id -> {
+		algorithm.changeList.forEach(id -> {
 			final Cell cell = cells[id];
 			
-			if (states[id] == State.EMPTY)
+			if (algorithm.getState(id) == State.EMPTY)
 			{
 				gc.setFill(getColor(State.EMPTY));
 				gc.fillRect(cell.x - wallSize, cell.y - wallSize,
@@ -76,10 +75,10 @@ public class GameCanvas extends Canvas
 				return;
 			}
 			
-			gc.setFill(getColor(states[id]));
+			gc.setFill(getColor(algorithm.getState(id)));
 			gc.fillRect(cell.x, cell.y, cellSize, cellSize);
 			
-			for (final int connectionId : nodes[id].getConnections())
+			for (final int connectionId : algorithm.getConnectionsOf(id))
 			{
 				if (connectionId == id - cols)
 					fillRect(cell.top);
@@ -104,13 +103,13 @@ public class GameCanvas extends Canvas
 		gc.fillRect(rect.x, rect.y, rect.width, rect.height);
 	}
 	
-	public void drawPath(Stack<Node> pathList)
+	public void drawPath(List<Integer> pathList)
 	{
 		if (pathList.isEmpty()) return;
 		
-		Node first = pathList.get(0);
-		int row = first.id / cols;
-		int col = first.id % cols;
+		int first = pathList.get(0);
+		int row = first / cols;
+		int col = first % cols;
 		double x1 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
 		double y1 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
 		double x2, y2;
@@ -118,10 +117,10 @@ public class GameCanvas extends Canvas
 		gc.setStroke(Colors.PATH.color);
 		gc.setLineWidth(cellSize * 0.5);
 		
-		for (Node cell : pathList.subList(1, pathList.size()))
+		for (int id : pathList.subList(1, pathList.size()))
 		{
-			row = cell.id / cols;
-			col = cell.id % cols;
+			row = id / cols;
+			col = id % cols;
 			x2 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
 			y2 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
 			gc.strokeLine(x1, y1, x2, y2);

@@ -29,13 +29,13 @@ public class Wilson extends MazeAlgorithm
 	}
 	
 	@Override
-	public void loopOnce()
+	public boolean loopOnceImpl()
 	{
-		if (nonMazeNodes.isEmpty()) return;
+		if (nonMazeNodes.isEmpty()) return true;
 		if (currentWalk.isEmpty())
 		{
 			startNewWalk();
-			return;
+			return false;
 		}
 		
 		int currentId = currentWalk.peek();
@@ -60,6 +60,8 @@ public class Wilson extends MazeAlgorithm
 			Node.connect(nodes[currentId], nodes[randomId]);
 			changeState(randomId, State.PARTIAL);
 		}
+		
+		return false;
 	}
 	
 	private void startNewWalk()

@@ -3,7 +3,6 @@ package imericxu.zhiheng.mazegen.maze.maze_algos;
 import imericxu.zhiheng.mazegen.maze.Node;
 import imericxu.zhiheng.mazegen.maze.State;
 
-import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -21,28 +20,37 @@ public class Backtracker extends MazeAlgorithm
 	}
 	
 	@Override
-	public void loopOnce()
+	public boolean loopOnceImpl()
 	{
-		if (exploreStack.empty()) return;
+		if (exploreStack.isEmpty()) return true;
 		
-		final int currentId = exploreStack.pop();
-		final List<Integer> unvisitedNeighbors = nodes[currentId].getNeighbors()
-		                                                         .stream()
-		                                                         .filter(id -> states[id] == State.EMPTY)
-		                                                         .collect(Collectors.toUnmodifiableList());
+		final Node current = nodes[exploreStack.peek()];
+		final Node randomNeighbor = selectRandomUnvisitedNeighbor(current);
 		
-		if (unvisitedNeighbors.isEmpty())
+		if (randomNeighbor != null)
 		{
-			changeState(currentId, State.SOLID);
-			return;
+			Node.connect(current, randomNeighbor);
+			changeState(randomNeighbor, State.PARTIAL);
+			exploreStack.push(randomNeighbor.id);
+		}
+		else
+		{
+			exploreStack.pop();
+			changeState(current.id, State.SOLID);
 		}
 		
-		exploreStack.push(currentId);
+		return false;
+	}
+	
+	private Node selectRandomUnvisitedNeighbor(Node node)
+	{
+		final var unvisitedNeighbors = node.getNeighbors().stream()
+		                                   .filter(id -> states[id] == State.EMPTY)
+		                                   .collect(Collectors.toUnmodifiableList());
+		
+		if (unvisitedNeighbors.isEmpty()) return null;
 		
 		final int index = rand.nextInt(unvisitedNeighbors.size());
-		final int randomId = unvisitedNeighbors.get(index);
-		Node.connect(nodes[currentId], nodes[randomId]);
-		changeState(randomId, State.PARTIAL);
-		exploreStack.push(randomId);
+		return nodes[unvisitedNeighbors.get(index)];
 	}
 }

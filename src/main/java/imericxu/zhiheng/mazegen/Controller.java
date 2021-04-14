@@ -2,13 +2,9 @@ package imericxu.zhiheng.mazegen;
 
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
 import imericxu.zhiheng.mazegen.maze.MazeSquare;
-import imericxu.zhiheng.mazegen.maze.Node;
-import imericxu.zhiheng.mazegen.maze.Pathfinder;
 import imericxu.zhiheng.mazegen.maze.maze_algos.Backtracker;
-import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
 import imericxu.zhiheng.mazegen.maze.maze_algos.Prims;
 import imericxu.zhiheng.mazegen.maze.maze_algos.Wilson;
-import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import imericxu.zhiheng.mazegen.maze.timers.TimerMaze;
 import imericxu.zhiheng.mazegen.maze.timers.TimerPath;
 import javafx.fxml.FXML;
@@ -35,21 +31,15 @@ public class Controller
 	@FXML
 	private TextField inputRatio;
 	@FXML
-	private ComboBox<MazeAlgo> comboMazeAlgo;
+	private ComboBox<MazeType> comboMazeAlgo;
 	@FXML
 	private ToggleSwitch switchShowMazeGen;
 	@FXML
 	private ToggleSwitch switchDoSolve;
 	@FXML
-	private ComboBox<SolveAlgo> comboSolveAlgo;
+	private ComboBox<SolveType> comboSolveAlgo;
 	@FXML
 	private ToggleSwitch switchShowPathfinding;
-	private int rows;
-	private int cols;
-	private double cellWallRatio;
-	private boolean doShowMazeGen;
-	private boolean doSolve;
-	private boolean doShowPathfinding;
 	
 	@FXML
 	public void initialize()
@@ -77,8 +67,8 @@ public class Controller
 		inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
 		inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
 		inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
-		comboMazeAlgo.getItems().addAll(MazeAlgo.values());
-		comboSolveAlgo.getItems().addAll(SolveAlgo.values());
+		comboMazeAlgo.getItems().addAll(MazeType.values());
+		comboSolveAlgo.getItems().addAll(SolveType.values());
 	}
 	
 	/**
@@ -87,6 +77,8 @@ public class Controller
 	@FXML
 	public void startPressed()
 	{
+		int rows, cols;
+		
 		try
 		{
 			rows = Integer.parseInt(inputRows.getText());
@@ -105,6 +97,8 @@ public class Controller
 			cols = 20;
 		}
 		
+		double cellWallRatio;
+		
 		try
 		{
 			cellWallRatio = Double.parseDouble(inputRatio.getText());
@@ -114,35 +108,24 @@ public class Controller
 			cellWallRatio = 2;
 		}
 		
-		MazeAlgo mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
+		MazeType mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
 		if (mazeType == null)
-			mazeType = randomEnum(MazeAlgo.class);
+			mazeType = randomEnum(MazeType.class);
 		
-		SolveAlgo pathType = comboSolveAlgo.getSelectionModel().getSelectedItem();
+		SolveType pathType = comboSolveAlgo.getSelectionModel().getSelectedItem();
 		if (pathType == null)
-			pathType = randomEnum(SolveAlgo.class);
+			pathType = randomEnum(SolveType.class);
 		
-		doShowMazeGen = switchShowMazeGen.isSelected();
-		doSolve = switchDoSolve.isSelected();
-		doShowPathfinding = switchShowPathfinding.isSelected();
+		final boolean doAnimateMaze = switchShowMazeGen.isSelected();
+		final boolean doSolve = switchDoSolve.isSelected();
+		final boolean doAnimateSolve = switchShowPathfinding.isSelected();
 		
-		final Node[] nodes = MazeSquare.generate(rows, cols);
-		MazeAlgorithm mazeAlgorithm = switch (mazeType)
-				{
-					case PRIM -> new Prims(nodes);
-					case WILSON -> new Wilson(nodes);
-					case RECURSIVE -> new Backtracker(nodes);
-				};
+		SquareMazeOptions options = new SquareMazeOptions(mazeType, pathType,
+		                                                  rows, cols, cellWallRatio,
+		                                                  doAnimateMaze,
+		                                                  doSolve, doAnimateSolve);
 		
-		Pathfinder pathfinder = new Tremaux(mazeAlgorithm);
-//        Pathfinder pathfinder = switch (pathType)
-//                {
-//                    case TREMAUX -> new Tremaux(mazeAlgorithm);
-//                    case ASTAR -> new AStar(mazeAlgorithm);
-//                    case BREADTH -> new BreadthFirstSearch(mazeAlgorithm);
-//                };
-		
-		launchMaze(mazeAlgorithm, pathfinder);
+		launchMaze(options);
 	}
 	
 	private <T extends Enum<?>> T randomEnum(Class<T> clazz)
@@ -151,63 +134,33 @@ public class Controller
 		return clazz.getEnumConstants()[x];
 	}
 	
-	private void launchMaze(MazeAlgorithm mazeAlgorithm, Pathfinder pathfinder)
+	private void launchMaze(SquareMazeOptions options)
 	{
-		Stage stage = new Stage();
-		StackPane root = new StackPane();
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		// Need to show stage to actually maximize
-		stage.setOpacity(0);
-		stage.show();
-		stage.setMaximized(true);
+		MazeGeneratorStage stage = new MazeGeneratorStage(options);
 		
-		stage.setTitle("MazeSquare");
-		root.setStyle("-fx-background-color: black");
+		final var nodes = MazeSquare.generate(options.rows, options.cols);
+		final var mazeAlgorithm = switch (options.mazeType)
+				{
+					case PRIM -> new Prims(nodes);
+					case RECURSIVE -> new Backtracker(nodes);
+					case WILSON -> new Wilson(nodes);
+				};
 		
-		var gameCanvas = new GameCanvas(scene.getWidth(), scene.getHeight(), rows, cols, cellWallRatio);
-		
-		root.getChildren().add(gameCanvas);
-		
-		var timerPath = new TimerPath(pathfinder, gameCanvas);
-		var timerMaze = new TimerMaze(timerPath, gameCanvas, mazeAlgorithm, pathfinder, doSolve, doShowPathfinding);
-        
-        /*if (doShowMazeGen) timerMaze.start();
-        else
-        {
-            mazeAlgorithm.instantSolve();
-            mazeAlgorithm.getChangeList().clear();
-            gameCanvas.drawMaze();
-            
-            if (doSolve)
-            {
-                TimerMaze.solveMaze(timerPath, gameCanvas, mazeAlgorithm, pathfinder, doShowPathfinding);
-            }
-        }*/
+		final var timerPath = new TimerPath(options, mazeAlgorithm, stage.canvas);
+		final var timerMaze = new TimerMaze(timerPath, stage.canvas, mazeAlgorithm, options.doSolve);
 		
 		timerMaze.start();
-//		if (doShowMazeGen)
-//			timerMaze.start();
-//		else
-//		{
-//			mazeAlgorithm.instantSolve();
-//			gameCanvas.drawMaze(mazeAlgorithm.nodes);
-//
-//			if (doSolve)
-//				timerPath.start();
-//		}
 		
 		stage.setOpacity(1);
 		stage.setResizable(false); // Must come after stage.show() to work
 		
-		stage.setOnCloseRequest(windowEvent ->
-		                        {
-//            timerPath.stop();
-			                        timerMaze.stop();
-		                        });
+		stage.setOnCloseRequest(windowEvent -> {
+//			timerPath.stop();
+//			timerMaze.stop();
+		});
 	}
 	
-	private enum MazeAlgo
+	public enum MazeType
 	{
 		PRIM("Prim's Algorithm"),
 		RECURSIVE("Recursive Backtracker"),
@@ -215,7 +168,7 @@ public class Controller
 		
 		private final String label;
 		
-		MazeAlgo(String label)
+		MazeType(String label)
 		{
 			this.label = label;
 		}
@@ -227,7 +180,7 @@ public class Controller
 		}
 	}
 	
-	private enum SolveAlgo
+	public enum SolveType
 	{
 		TREMAUX("Trémaux"),
 		ASTAR("A*"),
@@ -235,7 +188,7 @@ public class Controller
 		
 		private final String label;
 		
-		SolveAlgo(String label)
+		SolveType(String label)
 		{
 			this.label = label;
 		}
@@ -244,6 +197,30 @@ public class Controller
 		public String toString()
 		{
 			return label;
+		}
+	}
+	
+	private static class MazeGeneratorStage extends Stage
+	{
+		public final GameCanvas canvas;
+		
+		public MazeGeneratorStage(SquareMazeOptions squareMazeOptions)
+		{
+			StackPane root = new StackPane();
+			Scene scene = new Scene(root);
+			setScene(scene);
+			// Need to show stage to actually maximize
+			setOpacity(0);
+			show();
+			setMaximized(true);
+			
+			setTitle("Maze Generator");
+			root.setStyle("-fx-background-color: black");
+			
+			canvas = new GameCanvas(scene.getWidth(), scene.getHeight(),
+			                        squareMazeOptions.rows, squareMazeOptions.cols,
+			                        squareMazeOptions.cellWallRatio);
+			root.getChildren().add(canvas);
 		}
 	}
 }
