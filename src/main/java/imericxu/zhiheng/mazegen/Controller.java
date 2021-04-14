@@ -149,14 +149,14 @@ public class Controller
 		final var timerPath = new TimerPath(options, mazeAlgorithm, stage.canvas);
 		final var timerMaze = new TimerMaze(timerPath, stage.canvas, mazeAlgorithm, options.doSolve);
 		
-		timerMaze.start();
-		
 		stage.setOpacity(1);
 		stage.setResizable(false); // Must come after stage.show() to work
 		
+		timerMaze.start();
+		
 		stage.setOnCloseRequest(windowEvent -> {
-//			timerPath.stop();
-//			timerMaze.stop();
+			timerPath.stop();
+			timerMaze.stop();
 		});
 	}
 	
