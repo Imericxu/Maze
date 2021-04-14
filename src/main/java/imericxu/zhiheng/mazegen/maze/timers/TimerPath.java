@@ -4,6 +4,7 @@ import imericxu.zhiheng.mazegen.SquareMazeOptions;
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
 import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
 import imericxu.zhiheng.mazegen.maze.solve_algos.AStar;
+import imericxu.zhiheng.mazegen.maze.solve_algos.BreadthFirstSearch;
 import imericxu.zhiheng.mazegen.maze.solve_algos.PathAlgorithm;
 import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import javafx.animation.AnimationTimer;
@@ -25,7 +26,7 @@ public class TimerPath extends AnimationTimer
 						final int endCol = end % options.cols;
 						return Math.hypot(endCol - startCol, endRow - startRow);
 					});
-					case BREADTH -> null;
+					case BREADTH -> new BreadthFirstSearch(nodes, 0, nodes.length - 1);
 					case TREMAUX -> new Tremaux(nodes, 0, nodes.length - 1);
 				};
 		gameCanvas = canvas;
