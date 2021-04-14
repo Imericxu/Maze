@@ -4,11 +4,12 @@ import imericxu.zhiheng.mazegen.MazeOptions;
 import imericxu.zhiheng.mazegen.maze.GameCanvas;
 import imericxu.zhiheng.mazegen.maze.maze_algos.MazeAlgorithm;
 import imericxu.zhiheng.mazegen.maze.solve_algos.PathAlgorithm;
+import imericxu.zhiheng.mazegen.maze.solve_algos.Tremaux;
 import javafx.animation.AnimationTimer;
 
 public class TimerPath extends AnimationTimer
 {
-	private final Pathfinder pathfinder;
+	private final PathAlgorithm pathAlgo;
 	private final GameCanvas gameCanvas;
 	
 	public TimerPath(MazeOptions options, MazeAlgorithm mazeAlgo, GameCanvas canvas)
@@ -16,9 +17,8 @@ public class TimerPath extends AnimationTimer
 		final var nodes = mazeAlgo.getNodesCopy();
 		pathAlgo = switch (options.solveType)
 				{
-					case ASTAR -> null;
-					case BREADTH -> null;
-					case TREMAUX -> null;
+					case ASTAR, BREADTH -> throw new RuntimeException();
+					case TREMAUX -> new Tremaux(nodes, 0, nodes.length - 1);
 				};
 		gameCanvas = canvas;
 	}
@@ -26,16 +26,14 @@ public class TimerPath extends AnimationTimer
 	@Override
 	public void handle(long l)
 	{
-//		if (pathfinder.step())
-//		{
-//			gameCanvas.drawMaze(pathfinder.changeList);
-//			gameCanvas.drawPath(pathfinder.getPath());
-//		}
-//		else
-//		{
-//			gameCanvas.drawMaze(pathfinder.changeList);
-//			gameCanvas.drawPath(pathfinder.getPath());
-//			stop();
-//		}
+		gameCanvas.drawMaze(pathAlgo);
+		gameCanvas.drawPath(pathAlgo.getPath());
+		pathAlgo.changeList.clear();
+		if (pathAlgo.isFinished())
+		{
+			stop();
+			return;
+		}
+		pathAlgo.loopOnce();
 	}
 }
