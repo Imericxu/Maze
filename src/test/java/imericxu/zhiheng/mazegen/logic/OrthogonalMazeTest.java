@@ -1,5 +1,6 @@
-package imericxu.zhiheng.mazegen.maze;
+package imericxu.zhiheng.mazegen.logic;
 
+import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,49 +8,44 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-class MazeSquareTest
-{
+class OrthogonalMazeTest {
 	@Test
-	void generate1x1()
-	{
-		final var nodes = MazeSquare.generate(1, 1);
+	void generate1x1() {
+		final var nodes = OrthogonalMaze.generateNodes(1, 1);
 		Assertions.assertEquals(1, nodes.length);
 		Assertions.assertTrue(nodes[0].getNeighbors().isEmpty());
 		Assertions.assertTrue(nodes[0].getConnections().isEmpty());
 	}
-	
+
 	@Test
-	void generate1x5()
-	{
-		final var nodes = MazeSquare.generate(1, 5);
+	void generate1x5() {
+		final var nodes = OrthogonalMaze.generateNodes(1, 5);
 		Assertions.assertEquals(5, nodes.length);
 		Assertions.assertEquals(Set.of(1), nodes[0].getNeighbors());
 		Assertions.assertEquals(Set.of(2, 4), nodes[3].getNeighbors());
 		Assertions.assertEquals(Set.of(3), nodes[4].getNeighbors());
 	}
-	
+
 	@Test
-	void generate5x1()
-	{
-		final var nodes = MazeSquare.generate(5, 1);
+	void generate5x1() {
+		final var nodes = OrthogonalMaze.generateNodes(5, 1);
 		Assertions.assertEquals(5, nodes.length);
 		Assertions.assertEquals(Set.of(1), nodes[0].getNeighbors());
 		Assertions.assertEquals(Set.of(2, 4), nodes[3].getNeighbors());
 		Assertions.assertEquals(Set.of(3), nodes[4].getNeighbors());
 	}
-	
+
 	@Test
-	void generate5x5()
-	{
-		final var nodes = MazeSquare.generate(5, 5);
+	void generate5x5() {
+		final var nodes = OrthogonalMaze.generateNodes(5, 5);
 		Assertions.assertEquals(25, nodes.length);
-		
+
 		// Test the 4 corners
 		Assertions.assertEquals(Set.of(1, 5), nodes[0].getNeighbors());
 		Assertions.assertEquals(Set.of(3, 9), nodes[4].getNeighbors());
 		Assertions.assertEquals(Set.of(15, 21), nodes[20].getNeighbors());
 		Assertions.assertEquals(Set.of(19, 23), nodes[24].getNeighbors());
-		
+
 		// Test 10 random neighbors of nodes in the middle
 		final var rand = new Random();
 		IntStream.range(0, 10).parallel().forEach(i -> {
@@ -59,7 +55,7 @@ class MazeSquareTest
 			Assertions.assertEquals(Set.of(id - 5, id + 1, id + 5, id - 1),
 			                        nodes[id].getNeighbors());
 		});
-		
+
 		// Test a couple edges
 		Assertions.assertEquals(Set.of(2, 4, 8), nodes[3].getNeighbors());
 		Assertions.assertEquals(Set.of(4, 8, 14), nodes[9].getNeighbors());
