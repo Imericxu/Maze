@@ -34,5 +34,5 @@ Use Maven to build and run the project.
 * Add new algorithms
 * Implement different-shaped mazes (i.g., delta, sigma)
 * Implement zooming in and out
-* Fix messy code
+* Add options to animation window
 * Document code
