@@ -1,6 +1,5 @@
-package imericxu.zhiheng.mazegen.logic;
+package imericxu.mazegen.logic;
 
-import imericxu.mazegen.logic.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
