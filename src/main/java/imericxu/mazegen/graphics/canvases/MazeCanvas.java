@@ -12,12 +12,26 @@ import java.util.List;
 public abstract class MazeCanvas extends Canvas {
 	protected final GraphicsContext gc = getGraphicsContext2D();
 
+	/**
+	 * Draws everything currently in the changelist of an algorithm
+	 */
 	public abstract void drawUpdates(Algorithm algorithm);
 
+	/**
+	 * Draws a path connecting the respective nodes in the list
+	 *
+	 * @param path a list of connected node ids
+	 */
 	public abstract void drawPath(List<Integer> path);
 
+	/**
+	 * Draws a complete maze based on connections of each node
+	 */
 	public abstract void drawMaze(Node[] nodes);
 
+	/**
+	 * Fills the canvas with the set color of {@link State State}{@code .EMPTY}
+	 */
 	public void drawBlank() {
 		gc.setFill(getColor(State.EMPTY));
 		gc.fillRect(0, 0, getWidth(), getHeight());
@@ -25,9 +39,9 @@ public abstract class MazeCanvas extends Canvas {
 
 	public Color getColor(State state) {
 		return switch (state) {
-			case EMPTY -> OrthogonalCanvas.Colors.EMPTY.color;
-			case PARTIAL -> OrthogonalCanvas.Colors.PARTIAL.color;
-			case SOLID -> OrthogonalCanvas.Colors.SOLID.color;
+			case EMPTY -> Colors.EMPTY.color;
+			case PARTIAL -> Colors.PARTIAL.color;
+			case SOLID -> Colors.SOLID.color;
 		};
 	}
 
@@ -37,7 +51,7 @@ public abstract class MazeCanvas extends Canvas {
 		SOLID(Color.WHITE),
 		PATH(Color.web("0xAD360B"));
 
-		public Color color;
+		public final Color color;
 
 		Colors(Color color) {
 			this.color = color;
