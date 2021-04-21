@@ -1,16 +1,18 @@
 package imericxu.mazegen.logic.maze_types;
 
-import imericxu.mazegen.user_input.OrthoMazeOptions;
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
-import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.graphics.canvases.OrthogonalCanvas;
+import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.solve_algos.AStar;
-import org.jetbrains.annotations.NotNull;
+import imericxu.mazegen.user_input.OrthoMazeOptions;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+/**
+ * A rectangular/square maze
+ */
 public class OrthogonalMaze extends Maze {
 	private final int rows;
 	private final int cols;
@@ -21,7 +23,6 @@ public class OrthogonalMaze extends Maze {
 		cols = options.cols;
 	}
 
-	@NotNull
 	public static Node[] generateNodes(int rows, int cols) {
 		assert rows > 0 && cols > 0;
 		Node[] nodes = new Node[rows * cols];

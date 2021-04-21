@@ -15,7 +15,6 @@ import imericxu.mazegen.logic.solve_algos.BreadthFirstSearch;
 import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
 import imericxu.mazegen.logic.solve_algos.Tremaux;
 import imericxu.mazegen.user_input.MazeOptions;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class Maze {
 	private final MazeStage stage;
@@ -28,7 +27,7 @@ public abstract class Maze {
 	private final boolean doAnimateSolve;
 	protected double cellWallRatio;
 
-	public Maze(@NotNull MazeOptions options) {
+	public Maze(MazeOptions options) {
 		stage = new MazeStage();
 		aStarHeuristic = getAStarHeuristic();
 		mazeListener = this::solve;
@@ -66,6 +65,7 @@ public abstract class Maze {
 
 	/**
 	 * Solves the given maze. Whether it’s animated depends on the options.
+	 *
 	 * @param nodes a list of nodes representing a maze
 	 */
 	public void solve(Node[] nodes) {
@@ -105,7 +105,7 @@ public abstract class Maze {
 	 * @param nodes the maze to be solved
 	 * @return a runnable solve algorithm based on the type enum
 	 */
-	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, @NotNull Node[] nodes) {
+	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, Node[] nodes) {
 		final int start = 0;
 		final int end = nodes.length - 1;
 
@@ -128,6 +128,9 @@ public abstract class Maze {
 	protected abstract Node[] generateNodes();
 
 	public interface MazeListener {
+		/**
+		 * @param nodes finished maze
+		 */
 		void onFinishMazeGeneration(Node[] nodes);
 	}
 }
