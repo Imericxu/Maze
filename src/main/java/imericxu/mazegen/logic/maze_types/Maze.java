@@ -1,6 +1,8 @@
 package imericxu.mazegen.logic.maze_types;
 
 import imericxu.mazegen.Controller;
+import imericxu.mazegen.graphics.MazeStage;
+import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.logic.Node;
@@ -13,8 +15,6 @@ import imericxu.mazegen.logic.solve_algos.BreadthFirstSearch;
 import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
 import imericxu.mazegen.logic.solve_algos.Tremaux;
 import imericxu.mazegen.user_input.MazeOptions;
-import imericxu.mazegen.graphics.MazeStage;
-import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Maze {
@@ -40,6 +40,12 @@ public abstract class Maze {
 		doAnimateSolve = options.doAnimateSolve;
 	}
 
+	/**
+	 * Launches a canvas to generate the maze.<br>
+	 * Affected by a number of options.
+	 *
+	 * @see MazeOptions
+	 */
 	public void generate() {
 		final var canvas = makeCanvas(stage.getSceneWidth(), stage.getSceneHeight());
 		stage.setCanvas(canvas);
@@ -58,6 +64,10 @@ public abstract class Maze {
 		}
 	}
 
+	/**
+	 * Solves the given maze. Whether it’s animated depends on the options.
+	 * @param nodes a list of nodes representing a maze
+	 */
 	public void solve(Node[] nodes) {
 		if (!doSolve) return;
 
@@ -74,8 +84,14 @@ public abstract class Maze {
 		}
 	}
 
+	/**
+	 * All derived classes must implement their own canvas
+	 */
 	protected abstract MazeCanvas makeCanvas(double maxWidth, double maxHeight);
 
+	/**
+	 * @return a runnable maze algorithm based on the type enum
+	 */
 	private MazeAlgorithm makeMazeAlgorithm(Controller.MazeType type) {
 		final var nodes = generateNodes();
 		return switch (type) {
@@ -85,6 +101,10 @@ public abstract class Maze {
 		};
 	}
 
+	/**
+	 * @param nodes the maze to be solved
+	 * @return a runnable solve algorithm based on the type enum
+	 */
 	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, @NotNull Node[] nodes) {
 		final int start = 0;
 		final int end = nodes.length - 1;
@@ -96,8 +116,15 @@ public abstract class Maze {
 		};
 	}
 
+	/**
+	 * Since maze shapes are all different, each derived class must implement
+	 * their own heuristic for the {@link AStar A*} pathfinding algorithm
+	 */
 	protected abstract AStar.Heuristic getAStarHeuristic();
 
+	/**
+	 * @return a template of nodes with neighbors based on the shape of the maze
+	 */
 	protected abstract Node[] generateNodes();
 
 	public interface MazeListener {
