@@ -1,7 +1,7 @@
 package imericxu.mazegen.logic.solve_algos;
 
-import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.Algorithm;
+import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.State;
 
 import java.util.Arrays;

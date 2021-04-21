@@ -1,7 +1,5 @@
 package imericxu.mazegen.logic;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +25,7 @@ public class Node {
 	 * Pre: a and b must not be already connected<br>
 	 * Adds each node to the other's connections list
 	 */
-	public static void connect(@NotNull Node a, @NotNull Node b) {
+	public static void connect(Node a, Node b) {
 		assert a.neighbors.contains(b.id) && b.neighbors.contains(a.id);
 		assert !a.connections.contains(b.id) && !b.connections.contains(a.id);
 		a.connections.add(b.id);
@@ -38,7 +36,7 @@ public class Node {
 	 * Pre: a and b must be connected<br>
 	 * Removes each node from the other's connections list
 	 */
-	public static void disconnect(@NotNull Node a, @NotNull Node b) {
+	public static void disconnect(Node a, Node b) {
 		assert a.neighbors.contains(b.id) && b.neighbors.contains(a.id);
 		assert a.connections.contains(b.id) && b.connections.contains(a.id);
 		a.connections.remove(b.id);

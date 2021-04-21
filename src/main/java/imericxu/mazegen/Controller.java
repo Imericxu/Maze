@@ -1,8 +1,8 @@
 package imericxu.mazegen;
 
+import imericxu.mazegen.logic.maze_types.Maze;
 import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
 import imericxu.mazegen.user_input.OrthoMazeOptions;
-import imericxu.mazegen.logic.maze_types.Maze;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -10,7 +10,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.ToggleSwitch;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.function.UnaryOperator;
@@ -70,7 +69,6 @@ public class Controller {
 		maze.generate();
 	}
 
-	@NotNull
 	private OrthoMazeOptions parseOrthogonalInput() {
 		int rows;
 		try {
@@ -110,7 +108,7 @@ public class Controller {
 		                            doAnimateMaze, doSolve, doAnimateSolve);
 	}
 
-	private <T extends Enum<?>> T randomEnum(@NotNull Class<T> clazz) {
+	private <T extends Enum<?>> T randomEnum(Class<T> clazz) {
 		int x = random.nextInt(clazz.getEnumConstants().length);
 		return clazz.getEnumConstants()[x];
 	}

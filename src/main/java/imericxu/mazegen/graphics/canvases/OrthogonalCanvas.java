@@ -1,9 +1,9 @@
 package imericxu.mazegen.graphics.canvases;
 
-import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
 import imericxu.mazegen.logic.Algorithm;
+import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.State;
+import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
 
 import java.util.List;
 import java.util.stream.IntStream;
