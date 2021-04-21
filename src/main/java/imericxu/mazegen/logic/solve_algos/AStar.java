@@ -5,6 +5,13 @@ import imericxu.mazegen.logic.State;
 
 import java.util.*;
 
+/**
+ * <h2>A* Algorithm</h2>
+ * Uses heuristics to determine the best path to take.<br>
+ *
+ * @apiNote The heuristic is not included in the class and needs to be
+ * provided in the constructor.
+ */
 public class AStar extends SolveAlgorithm {
 	private final PriorityQueue<Integer> openSet;
 	private final Map<Integer, Integer> cameFrom = new HashMap<>();

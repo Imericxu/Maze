@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * <h2>Trémaux’s Algorithm</h2>
+ * Randomly turns at every intersection.
+ * @see <a href="https://en.wikipedia.org/wiki/Maze-solving_algorithm#Tr%C3%A9maux%27s_algorithm">
+ * Wikipedia description
+ * </a>
+ */
 public class Tremaux extends SolveAlgorithm {
 	public Tremaux(Node[] nodes, int startId, int endId) {
 		super(nodes, startId, endId);

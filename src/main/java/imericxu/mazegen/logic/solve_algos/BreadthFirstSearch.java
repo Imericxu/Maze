@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * <h2>Breadth-First Search</h2>
+ * Simply expands in every direction until the target node is found.
+ */
 public class BreadthFirstSearch extends SolveAlgorithm {
 	private final Queue<Integer> queue = new ArrayDeque<>();
 	private final Map<Integer, Integer> cameFrom = new HashMap<>();
