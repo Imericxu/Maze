@@ -2,7 +2,7 @@ package imericxu.mazegen.logic.maze_types;
 
 import imericxu.mazegen.Controller;
 import imericxu.mazegen.graphics.timers.TimerMaze;
-import imericxu.mazegen.graphics.timers.TimerPath;
+import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.maze_algos.Backtracker;
 import imericxu.mazegen.logic.maze_algos.MazeAlgorithm;
@@ -65,8 +65,8 @@ public abstract class Maze {
 		final var canvas = stage.getCanvas();
 
 		if (doAnimateSolve) {
-			TimerPath timerPath = new TimerPath(canvas, solveAlgo);
-			timerPath.start();
+			TimerSolve timerSolve = new TimerSolve(canvas, solveAlgo);
+			timerSolve.start();
 		} else {
 			solveAlgo.instantSolve();
 			canvas.drawMaze(solveAlgo.getNodesCopy());

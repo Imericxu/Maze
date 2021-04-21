@@ -5,6 +5,9 @@ import imericxu.mazegen.logic.maze_types.Maze;
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import javafx.animation.AnimationTimer;
 
+/**
+ * A timer for animating maze generation
+ */
 public class TimerMaze extends AnimationTimer {
 	private final Maze.MazeListener listener;
 	private final MazeCanvas mazeCanvas;

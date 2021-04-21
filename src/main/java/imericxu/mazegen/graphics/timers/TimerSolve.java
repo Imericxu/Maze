@@ -4,11 +4,14 @@ import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
 import javafx.animation.AnimationTimer;
 
-public class TimerPath extends AnimationTimer {
+/**
+ * A timer for animating maze solving
+ */
+public class TimerSolve extends AnimationTimer {
 	private final MazeCanvas canvas;
 	private final SolveAlgorithm solveAlgo;
 
-	public TimerPath(MazeCanvas canvas, SolveAlgorithm solveAlgo) {
+	public TimerSolve(MazeCanvas canvas, SolveAlgorithm solveAlgo) {
 		this.canvas = canvas;
 		this.solveAlgo = solveAlgo;
 	}
