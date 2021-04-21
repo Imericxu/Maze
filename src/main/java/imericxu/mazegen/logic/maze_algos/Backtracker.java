@@ -6,7 +6,11 @@ import imericxu.mazegen.logic.State;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-
+/**
+ * <h2>“Recursive” Backtracking Algorithm.</h2>
+ * Randomly connects to unvisited nodes until it hits a dead end,
+ * then it “backtracks.”
+ */
 public class Backtracker extends MazeAlgorithm {
 	private final Stack<Integer> exploreStack = new Stack<>();
 

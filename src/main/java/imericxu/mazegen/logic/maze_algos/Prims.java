@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * <h2>Randomized Prim’s Algorithm</h2>
+ * Prim’s algorithm with no weights and connections are randomly selected.
+ * Visually, the maze spreads from a center in a somewhat circular fashion.
+ */
 public class Prims extends MazeAlgorithm {
 	private final Set<Integer> frontiers = new HashSet<>();
 

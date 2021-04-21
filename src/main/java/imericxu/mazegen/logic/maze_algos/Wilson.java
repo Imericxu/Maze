@@ -6,6 +6,14 @@ import imericxu.mazegen.logic.State;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * <h2>Wilson’s Algorithm</h2>
+ * Uses loop-erased walks to generate a uniform spanning tree/maze.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Loop-erased_random_walk">
+ * Loop-erased walk on Wikipedia
+ * </a>
+ */
 public class Wilson extends MazeAlgorithm {
 	private final Set<Integer> mazeNodes = new HashSet<>();
 	private final Set<Integer> nonMazeNodes = new HashSet<>();
