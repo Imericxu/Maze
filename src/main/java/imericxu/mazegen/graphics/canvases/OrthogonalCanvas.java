@@ -127,6 +127,17 @@ public class OrthogonalCanvas extends MazeCanvas {
 		}
 	}
 
+	@Override
+	public void drawStartAndEnd(int startId, int endId) {
+		gc.setFill(Colors.START.color);
+		var startCell = nodeMeasurements[startId];
+		gc.fillRect(startCell.x, startCell.y, cellSize, cellSize);
+
+		gc.setFill(Colors.END.color);
+		var endCell = nodeMeasurements[endId];
+		gc.fillRect(endCell.x, endCell.y, cellSize, cellSize);
+	}
+
 
     /* * * * * * * * * * * * * * * * * * * * *
     Helper Methods

@@ -19,6 +19,7 @@ public class TimerSolve extends AnimationTimer {
 	@Override
 	public void handle(long l) {
 		canvas.drawUpdates(solveAlgo);
+		canvas.drawStartAndEnd(solveAlgo.startId, solveAlgo.endId);
 		canvas.drawPath(solveAlgo.getPath());
 		solveAlgo.changeList.clear();
 		if (solveAlgo.isFinished()) {

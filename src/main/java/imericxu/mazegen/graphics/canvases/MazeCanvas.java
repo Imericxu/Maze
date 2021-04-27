@@ -29,6 +29,8 @@ public abstract class MazeCanvas extends Canvas {
 	 */
 	public abstract void drawMaze(Node[] nodes);
 
+	public abstract void drawStartAndEnd(int startId, int endId);
+
 	/**
 	 * Fills the canvas with the set color of {@link State State}{@code .EMPTY}
 	 */
@@ -49,7 +51,9 @@ public abstract class MazeCanvas extends Canvas {
 		EMPTY(Color.web("0x1C5188")),
 		PARTIAL(Color.web("0xADD9FF")),
 		SOLID(Color.WHITE),
-		PATH(Color.web("0xAD360B"));
+		PATH(Color.web("0xAD360B")),
+		START(Color.web("#06D6A0")),
+		END(Color.web("#AF2BBF"));
 
 		public final Color color;
 
