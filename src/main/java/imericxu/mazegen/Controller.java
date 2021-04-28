@@ -114,9 +114,9 @@ public class Controller {
 	}
 
 	public enum MazeType {
-		PRIM("Prim's Algorithm"),
-		RECURSIVE("Recursive Backtracker"),
-		WILSON("Wilson's Algorithm");
+		PRIM("Prim’s Algorithm"),
+		RECURSIVE("Recursive Backtracking Algorithm"),
+		WILSON("Wilson’s Algorithm");
 
 		private final String label;
 

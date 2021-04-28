@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
  * Randomly connects to unvisited nodes until it hits a dead end,
  * then it “backtracks.”
  */
-public class Backtracker extends MazeAlgorithm {
+public class Backtracking extends MazeAlgorithm {
 	private final Stack<Integer> exploreStack = new Stack<>();
 
-	public Backtracker(Node[] nodes) {
+	public Backtracking(Node[] nodes) {
 		super(nodes);
 		final int startId = rand.nextInt(nodes.length);
 		exploreStack.push(startId);

@@ -6,7 +6,7 @@ import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.maze_algos.Backtracker;
+import imericxu.mazegen.logic.maze_algos.Backtracking;
 import imericxu.mazegen.logic.maze_algos.MazeAlgorithm;
 import imericxu.mazegen.logic.maze_algos.Prims;
 import imericxu.mazegen.logic.maze_algos.Wilson;
@@ -101,7 +101,7 @@ public abstract class Maze {
 		final var nodes = generateNodes();
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
-			case RECURSIVE -> new Backtracker(nodes);
+			case RECURSIVE -> new Backtracking(nodes);
 			case WILSON -> new Wilson(nodes);
 		};
 	}
