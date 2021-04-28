@@ -39,20 +39,18 @@ public class Prims extends MazeAlgorithm {
 	private void addFrontiersOf(int nodeId) {
 		changeState(nodeId, State.SOLID);
 
-		nodes[nodeId].getNeighbors()
-				.stream()
-				.filter(id -> states[id] == State.EMPTY && !frontiers.contains(id))
-				.forEach(id -> {
-					frontiers.add(id);
-					changeState(id, State.PARTIAL);
-				});
+		nodes[nodeId].getNeighbors().stream()
+		             .filter(id -> states[id] == State.EMPTY && !frontiers.contains(id))
+		             .forEach(id -> {
+			             frontiers.add(id);
+			             changeState(id, State.PARTIAL);
+		             });
 	}
 
 	private void connectRandMazeCell(int nodeId) {
-		final var connectedMazeCells = nodes[nodeId].getNeighbors()
-				.stream()
-				.filter(id -> states[id] == State.SOLID)
-				.collect(Collectors.toUnmodifiableList());
+		final var connectedMazeCells = nodes[nodeId].getNeighbors().stream()
+		                                            .filter(id -> states[id] == State.SOLID)
+		                                            .collect(Collectors.toUnmodifiableList());
 		final int index = rand.nextInt(connectedMazeCells.size());
 		final int randomId = connectedMazeCells.get(index);
 		Node.connect(nodes[nodeId], nodes[randomId]);
