@@ -103,6 +103,7 @@ public abstract class Maze {
 			case PRIM -> new Prims(nodes);
 			case RECURSIVE -> new Backtracking(nodes);
 			case WILSON -> new Wilson(nodes);
+			default -> throw new IllegalArgumentException();
 		};
 	}
 
@@ -119,6 +120,7 @@ public abstract class Maze {
 			case TREMAUX -> new Tremaux(nodes, start, end);
 			case ASTAR -> new AStar(nodes, start, end, aStarHeuristic);
 			case BREADTH -> new BreadthFirstSearch(nodes, start, end);
+			default -> throw new IllegalArgumentException();
 		};
 	}
 

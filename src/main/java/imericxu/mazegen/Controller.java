@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.util.Random;
@@ -25,37 +23,26 @@ public class Controller {
 	@FXML
 	private ComboBox<MazeType> comboMazeAlgo;
 	@FXML
-	private ToggleSwitch switchShowMazeGen;
+	private ToggleSwitch switchAnimateMaze;
 	@FXML
 	private ToggleSwitch switchDoSolve;
 	@FXML
 	private ComboBox<SolveType> comboSolveAlgo;
 	@FXML
-	private ToggleSwitch switchShowPathfinding;
+	private ToggleSwitch switchAnimateSolve;
 
 	@FXML
 	public void initialize() {
 		UnaryOperator<TextFormatter.Change> integerFilter = change ->
-		{
-			String newText = change.getControlNewText();
-			if (newText.matches("\\d*")) {
-				return change;
-			}
-			return null;
-		};
+				change.getControlNewText().matches("\\d*") ? change : null;
 
 		UnaryOperator<TextFormatter.Change> floatFilter = change ->
-		{
-			String newText = change.getControlNewText();
-			if (newText.matches("\\d*\\.?\\d*")) {
-				return change;
-			}
-			return null;
-		};
+				change.getControlNewText().matches("\\d*\\.?\\d*") ? change : null;
 
-		inputRows.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
-		inputCols.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null, integerFilter));
-		inputRatio.setTextFormatter(new TextFormatter<>(new DoubleStringConverter(), null, floatFilter));
+		inputRows.setTextFormatter(new TextFormatter<>(integerFilter));
+		inputCols.setTextFormatter(new TextFormatter<>(integerFilter));
+		inputRatio.setTextFormatter(new TextFormatter<>(floatFilter));
+
 		comboMazeAlgo.getItems().addAll(MazeType.values());
 		comboSolveAlgo.getItems().addAll(SolveType.values());
 	}
@@ -88,32 +75,32 @@ public class Controller {
 		try {
 			cellWallRatio = Double.parseDouble(inputRatio.getText());
 		} catch (NumberFormatException e) {
-			cellWallRatio = 2;
+			cellWallRatio = 3;
 		}
 
 		MazeType mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
-		if (mazeType == null)
-			mazeType = randomEnum(MazeType.class);
+		if (mazeType == null || mazeType == MazeType.RANDOM) {
+			final var types = MazeType.values();
+			mazeType = types[random.nextInt(types.length - 1) + 1];
+		}
 
-		SolveType pathType = comboSolveAlgo.getSelectionModel().getSelectedItem();
-		if (pathType == null)
-			pathType = randomEnum(SolveType.class);
+		SolveType solveType = comboSolveAlgo.getSelectionModel().getSelectedItem();
+		if (solveType == null || solveType == SolveType.RANDOM) {
+			final var types = SolveType.values();
+			solveType = types[random.nextInt(types.length - 1) + 1];
+		}
 
-		final boolean doAnimateMaze = switchShowMazeGen.isSelected();
+		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
 		final boolean doSolve = switchDoSolve.isSelected();
-		final boolean doAnimateSolve = switchShowPathfinding.isSelected();
+		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
 
-		return new OrthoMazeOptions(mazeType, pathType,
+		return new OrthoMazeOptions(mazeType, solveType,
 		                            rows, cols, cellWallRatio,
 		                            doAnimateMaze, doSolve, doAnimateSolve);
 	}
 
-	private <T extends Enum<?>> T randomEnum(Class<T> clazz) {
-		int x = random.nextInt(clazz.getEnumConstants().length);
-		return clazz.getEnumConstants()[x];
-	}
-
 	public enum MazeType {
+		RANDOM("Random"),
 		PRIM("Prim’s Algorithm"),
 		RECURSIVE("Recursive Backtracking Algorithm"),
 		WILSON("Wilson’s Algorithm");
@@ -131,6 +118,7 @@ public class Controller {
 	}
 
 	public enum SolveType {
+		RANDOM("Random"),
 		TREMAUX("Trémaux"),
 		ASTAR("A*"),
 		BREADTH("Breadth First Search");

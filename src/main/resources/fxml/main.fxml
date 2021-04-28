@@ -43,7 +43,8 @@
                GridPane.rowIndex="1"/>
         <TextField fx:id="inputRows" promptText="20" styleClass="input" GridPane.columnIndex="2"/>
         <TextField fx:id="inputCols" promptText="20" styleClass="input" GridPane.columnIndex="4"/>
-        <TextField fx:id="inputRatio" promptText="2" styleClass="input" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+        <TextField fx:id="inputRatio" promptText="3.0" styleClass="input"
+                   GridPane.columnIndex="4" GridPane.rowIndex="1"/>
         <VBox.margin>
             <Insets bottom="10.0" top="10.0"/>
         </VBox.margin>
@@ -63,7 +64,7 @@
                   styleClass="combobox"
                   GridPane.columnIndex="2"/>
         <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
-        <ToggleSwitch fx:id="switchShowMazeGen" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <ToggleSwitch fx:id="switchAnimateMaze" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Label styleClass="lbl_toggle" text="Solve Maze" GridPane.rowIndex="2"/>
         <ToggleSwitch fx:id="switchDoSolve" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Maze Algorithm" GridPane.columnSpan="2"/>
@@ -82,10 +83,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Pathfinding Algorithm"
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Solve Algorithm"
                   GridPane.columnSpan="2"/>
             <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="1"/>
-            <ToggleSwitch fx:id="switchShowPathfinding" selected="true" GridPane.columnIndex="1"
+            <ToggleSwitch fx:id="switchAnimateSolve" selected="true" GridPane.columnIndex="1"
                           GridPane.rowIndex="1"/>
             <ComboBox fx:id="comboSolveAlgo" maxWidth="1.7976931348623157E308" promptText="Solve Algorithm"
                       styleClass="combobox" GridPane.columnIndex="2"/>
