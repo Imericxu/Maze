@@ -1,5 +1,6 @@
 package imericxu.mazegen.logic.maze_types;
 
+import imericxu.mazegen.logic.maze_shapes.OrthogonalMaze;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

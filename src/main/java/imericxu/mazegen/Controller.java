@@ -1,7 +1,7 @@
 package imericxu.mazegen;
 
-import imericxu.mazegen.logic.maze_types.Maze;
-import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
+import imericxu.mazegen.logic.maze_shapes.Maze;
+import imericxu.mazegen.logic.maze_shapes.OrthogonalMaze;
 import imericxu.mazegen.user_input.OrthoMazeOptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;

@@ -1,4 +1,4 @@
-package imericxu.mazegen.logic.maze_types;
+package imericxu.mazegen.logic.maze_shapes;
 
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.canvases.OrthogonalCanvas;
