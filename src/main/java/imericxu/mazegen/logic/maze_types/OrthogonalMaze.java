@@ -5,6 +5,7 @@ import imericxu.mazegen.graphics.canvases.OrthogonalCanvas;
 import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.solve_algos.AStar;
 import imericxu.mazegen.user_input.OrthoMazeOptions;
+import javafx.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,5 +67,20 @@ public class OrthogonalMaze extends Maze {
 	@Override
 	protected Node[] generateNodes() {
 		return generateNodes(rows, cols);
+	}
+
+	@Override
+	protected Pair<Integer, Integer> randomStartEnd() {
+		final boolean isHorizontal = rand.nextBoolean();
+		int id1, id2;
+		if (isHorizontal) {
+			id1 = rand.nextInt(rows) * cols;
+			id2 = (rand.nextInt(rows) + 1) * cols - 1;
+		} else {
+			id1 = rand.nextInt(cols);
+			id2 = (rows - 1) * cols + rand.nextInt(cols);
+		}
+		// Randomize start and end
+		return rand.nextBoolean() ? new Pair<>(id1, id2) : new Pair<>(id2, id1);
 	}
 }

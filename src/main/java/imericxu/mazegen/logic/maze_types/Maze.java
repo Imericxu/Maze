@@ -15,8 +15,12 @@ import imericxu.mazegen.logic.solve_algos.BreadthFirstSearch;
 import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
 import imericxu.mazegen.logic.solve_algos.Tremaux;
 import imericxu.mazegen.user_input.MazeOptions;
+import javafx.util.Pair;
+
+import java.util.Random;
 
 public abstract class Maze {
+	protected final Random rand = new Random();
 	private final MazeStage stage;
 	private final AStar.Heuristic aStarHeuristic;
 	private final MazeListener mazeListener;
@@ -106,8 +110,9 @@ public abstract class Maze {
 	 * @return a runnable solve algorithm based on the type enum
 	 */
 	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, Node[] nodes) {
-		final int start = 0;
-		final int end = nodes.length - 1;
+		final var startEnd = randomStartEnd();
+		final int start = startEnd.getKey();
+		final int end = startEnd.getValue();
 
 		return switch (type) {
 			case TREMAUX -> new Tremaux(nodes, start, end);
@@ -126,6 +131,13 @@ public abstract class Maze {
 	 * @return a template of nodes with neighbors based on the shape of the maze
 	 */
 	protected abstract Node[] generateNodes();
+
+	/**
+	 * @return (startId, endId)
+	 * @apiNote Needs to be implemented by base classes because of maze shapes
+	 * are different and we want the start and end to be at the edges.
+	 */
+	protected abstract Pair<Integer, Integer> randomStartEnd();
 
 	public interface MazeListener {
 		/**
