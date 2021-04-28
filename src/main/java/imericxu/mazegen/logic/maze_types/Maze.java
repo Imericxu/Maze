@@ -83,7 +83,8 @@ public abstract class Maze {
 			timerSolve.start();
 		} else {
 			solveAlgo.instantSolve();
-			canvas.drawMaze(solveAlgo.getNodesCopy());
+			canvas.drawMaze(solveAlgo.getNodesCopy(), solveAlgo.getStatesCopy());
+			canvas.drawStartAndEnd(solveAlgo.startId, solveAlgo.endId);
 			canvas.drawPath(solveAlgo.getPath());
 		}
 	}
