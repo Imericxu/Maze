@@ -4,15 +4,14 @@ import imericxu.mazegen.logic.Algorithm;
 import imericxu.mazegen.logic.Node;
 import imericxu.mazegen.logic.State;
 import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
+import javafx.scene.paint.Color;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link OrthogonalMaze orthogonal} mazes
  */
 public class OrthogonalCanvas extends MazeCanvas {
-	private final NodeMeasurements[] nodeMeasurements;
 	private final int rows;
 	private final int cols;
 	private final double cellSize;
@@ -37,49 +36,48 @@ public class OrthogonalCanvas extends MazeCanvas {
 			setHeight(rows * (cellSize + wallSize) + wallSize);
 		}
 
-		nodeMeasurements = new NodeMeasurements[rows * cols];
-		IntStream.range(0, nodeMeasurements.length).parallel().forEach(i -> {
-			final int row = i / cols;
-			final int col = i % cols;
-			final double x = (wallSize + cellSize) * (double) col + wallSize;
-			final double y = (wallSize + cellSize) * (double) row + wallSize;
-			nodeMeasurements[i] = new NodeMeasurements(x, y);
-		});
-
-		// drawGrid();
-		gc.setFill(Colors.EMPTY.color);
-		gc.fillRect(0, 0, getWidth(), getHeight());
+		drawBlank();
 	}
 
 	/**
 	 * Draws sections of the maze as requests come in
-	 *
-	 * @param algorithm
 	 */
 	@Override
 	public void drawUpdates(Algorithm algorithm) {
 		algorithm.changeList.forEach(id -> {
-			final NodeMeasurements nodeMeasurements = this.nodeMeasurements[id];
+			final Pos topLeft = calcMazePos(id);
 
 			if (algorithm.getState(id) == State.EMPTY) {
 				gc.setFill(getColor(State.EMPTY));
-				gc.fillRect(nodeMeasurements.x - wallSize, nodeMeasurements.y - wallSize,
+				gc.fillRect(topLeft.x - wallSize, topLeft.y - wallSize,
 				            cellSize + 2 * wallSize, cellSize + 2 * wallSize);
 				return;
 			}
 
-			gc.setFill(getColor(algorithm.getState(id)));
-			gc.fillRect(nodeMeasurements.x, nodeMeasurements.y, cellSize, cellSize);
+			final Color cellColor = getColor(algorithm.getState(id));
+			drawCell(topLeft, cellColor);
 
 			for (final int connectionId : algorithm.getConnectionsOf(id)) {
-				if (connectionId == id - cols)
-					fillRect(nodeMeasurements.top);
-				else if (connectionId == id + 1)
-					fillRect(nodeMeasurements.right);
-				else if (connectionId == id + cols)
-					fillRect(nodeMeasurements.bottom);
-				else
-					fillRect(nodeMeasurements.left);
+				final Color color = algorithm.getState(connectionId) == State.SOLID
+						? Colors.SOLID.color
+						: cellColor;
+
+				// Top
+				if (connectionId == id - cols) {
+					drawWall(topLeft, 1, color);
+				}
+				// Right
+				else if (connectionId == id + 1) {
+					drawWall(topLeft, 2, color);
+				}
+				// Bottom
+				else if (connectionId == id + cols) {
+					drawWall(topLeft, 3, color);
+				}
+				// Left
+				else {
+					drawWall(topLeft, 4, color);
+				}
 			}
 		});
 	}
@@ -90,14 +88,19 @@ public class OrthogonalCanvas extends MazeCanvas {
 		for (int row = 0; row < rows; ++row) {
 			for (int col = 0; col < cols; ++col) {
 				final Node node = nodes[row * cols + col];
-				final var measures = nodeMeasurements[node.id];
-				gc.fillRect(measures.x, measures.y, cellSize, cellSize);
+				final Pos pos = calcMazePos(node.id);
+
+				drawCell(pos, Colors.SOLID.color);
 
 				final var connections = node.getConnections();
-				if (col < cols - 1 && connections.contains(node.id + 1))
-					fillRect(measures.right);
-				if (row < rows - 1 && connections.contains(node.id + cols))
-					fillRect(measures.bottom);
+				// Draw right wall if connected
+				if (col < cols - 1 && connections.contains(node.id + 1)) {
+					drawWall(pos, 2, Colors.SOLID.color);
+				}
+				// Draw bottom wall if connected
+				if (row < rows - 1 && connections.contains(node.id + cols)) {
+					drawWall(pos, 3, Colors.SOLID.color);
+				}
 			}
 		}
 	}
@@ -107,20 +110,18 @@ public class OrthogonalCanvas extends MazeCanvas {
 		if (pathList.isEmpty()) return;
 
 		int first = pathList.get(0);
-		int row = first / cols;
-		int col = first % cols;
-		double x1 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
-		double y1 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
+		final Pos pos1 = calcMazePos(first);
+		double x1 = pos1.x + cellSize / 2.0;
+		double y1 = pos1.y + cellSize / 2.0;
 		double x2, y2;
 
 		gc.setStroke(Colors.PATH.color);
 		gc.setLineWidth(cellSize * 0.5);
 
 		for (int id : pathList.subList(1, pathList.size())) {
-			row = id / cols;
-			col = id % cols;
-			x2 = (wallSize + cellSize) * col + wallSize + cellSize / 2.0;
-			y2 = (wallSize + cellSize) * row + wallSize + cellSize / 2.0;
+			final Pos pos2 = calcMazePos(id);
+			x2 = pos2.x + cellSize / 2.0;
+			y2 = pos2.y + cellSize / 2.0;
 			gc.strokeLine(x1, y1, x2, y2);
 			x1 = x2;
 			y1 = y2;
@@ -129,53 +130,41 @@ public class OrthogonalCanvas extends MazeCanvas {
 
 	@Override
 	public void drawStartAndEnd(int startId, int endId) {
-		gc.setFill(Colors.START.color);
-		var startCell = nodeMeasurements[startId];
-		gc.fillRect(startCell.x, startCell.y, cellSize, cellSize);
-
-		gc.setFill(Colors.END.color);
-		var endCell = nodeMeasurements[endId];
-		gc.fillRect(endCell.x, endCell.y, cellSize, cellSize);
+		drawCell(calcMazePos(startId), Colors.START.color);
+		drawCell(calcMazePos(endId), Colors.END.color);
 	}
 
-
-    /* * * * * * * * * * * * * * * * * * * * *
-    Helper Methods
-    * * * * * * * * * * * * * * * * * * * * */
-
-	private void fillRect(NodeMeasurements.Rect rect) {
-		gc.fillRect(rect.x, rect.y, rect.width, rect.height);
+	@Override
+	protected void drawCell(Pos topLeft, Color color) {
+		gc.setFill(color);
+		gc.fillRect(topLeft.x, topLeft.y, cellSize, cellSize);
 	}
 
-	private class NodeMeasurements {
-		public final double x;
-		public final double y;
-		public final Rect top;
-		public final Rect right;
-		public final Rect bottom;
-		public final Rect left;
-
-		NodeMeasurements(double x, double y) {
-			this.x = x;
-			this.y = y;
-			top = new Rect(x, y - wallSize, cellSize, wallSize);
-			right = new Rect(x + cellSize, y, wallSize, cellSize);
-			bottom = new Rect(x, y + cellSize, cellSize, wallSize);
-			left = new Rect(x - wallSize, y, wallSize, cellSize);
+	@Override
+	protected void drawWall(Pos topLeft, int side, Color color) {
+		gc.setFill(color);
+		switch (side) {
+			// Top
+			case 1 -> gc.fillRect(topLeft.x, topLeft.y - wallSize, cellSize, wallSize);
+			// Right
+			case 2 -> gc.fillRect(topLeft.x + cellSize, topLeft.y, wallSize, cellSize);
+			// Bottom
+			case 3 -> gc.fillRect(topLeft.x, topLeft.y + cellSize, cellSize, wallSize);
+			// Left
+			case 4 -> gc.fillRect(topLeft.x - wallSize, topLeft.y, wallSize, cellSize);
+			default -> throw new IllegalArgumentException("Side " + side + " not defined!");
 		}
+	}
 
-		class Rect {
-			public final double x;
-			public final double y;
-			public final double width;
-			public final double height;
-
-			public Rect(double x, double y, double width, double height) {
-				this.x = x;
-				this.y = y;
-				this.width = width;
-				this.height = height;
-			}
-		}
+	/**
+	 * @return top left corner of a cell in the form of (x, y)
+	 */
+	@Override
+	protected Pos calcMazePos(int id) {
+		final int row = id / cols;
+		final int col = id % cols;
+		final double x = (wallSize + cellSize) * col + wallSize;
+		final double y = (wallSize + cellSize) * row + wallSize;
+		return new Pos(x, y);
 	}
 }
