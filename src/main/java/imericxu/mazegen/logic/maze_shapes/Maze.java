@@ -6,10 +6,7 @@ import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.maze_algos.Backtracking;
-import imericxu.mazegen.logic.maze_algos.MazeAlgorithm;
-import imericxu.mazegen.logic.maze_algos.Prims;
-import imericxu.mazegen.logic.maze_algos.Wilson;
+import imericxu.mazegen.logic.maze_algos.*;
 import imericxu.mazegen.logic.solve_algos.AStar;
 import imericxu.mazegen.logic.solve_algos.BreadthFirstSearch;
 import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
@@ -103,6 +100,7 @@ public abstract class Maze {
 			case PRIM -> new Prims(nodes);
 			case RECURSIVE -> new Backtracking(nodes);
 			case WILSON -> new Wilson(nodes);
+			case KRUSKAL -> new Kruskals(nodes);
 			default -> throw new IllegalArgumentException();
 		};
 	}

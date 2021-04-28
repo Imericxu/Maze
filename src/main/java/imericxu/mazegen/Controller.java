@@ -103,7 +103,8 @@ public class Controller {
 		RANDOM("Random"),
 		PRIM("Prim’s Algorithm"),
 		RECURSIVE("Recursive Backtracking Algorithm"),
-		WILSON("Wilson’s Algorithm");
+		WILSON("Wilson’s Algorithm"),
+		KRUSKAL("Kruskal’s Algorithm");
 
 		private final String label;
 
