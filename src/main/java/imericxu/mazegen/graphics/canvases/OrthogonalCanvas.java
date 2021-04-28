@@ -7,6 +7,7 @@ import imericxu.mazegen.logic.maze_types.OrthogonalMaze;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link OrthogonalMaze orthogonal} mazes
@@ -83,23 +84,25 @@ public class OrthogonalCanvas extends MazeCanvas {
 	}
 
 	@Override
-	public void drawMaze(Node[] nodes) {
-		gc.setFill(getColor(State.SOLID));
-		for (int row = 0; row < rows; ++row) {
-			for (int col = 0; col < cols; ++col) {
-				final Node node = nodes[row * cols + col];
-				final Pos pos = calcMazePos(node.id);
+	public void drawMaze(Node[] nodes, State[] states) {
+		for (int row = 0, id = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col, ++id) {
+				final Node node = nodes[id];
+				final Pos pos = calcMazePos(id);
+				final Color cellColor = getColor(states[id]);
 
-				drawCell(pos, Colors.SOLID.color);
+				drawCell(pos, cellColor);
 
 				final var connections = node.getConnections();
+				final Function<Integer, Color> connectionColor = nodeId ->
+						states[nodeId] == State.SOLID ? Colors.SOLID.color : cellColor;
 				// Draw right wall if connected
-				if (col < cols - 1 && connections.contains(node.id + 1)) {
-					drawWall(pos, 2, Colors.SOLID.color);
+				if (col < cols - 1 && connections.contains(id + 1)) {
+					drawWall(pos, 2, connectionColor.apply(id + 1));
 				}
 				// Draw bottom wall if connected
-				if (row < rows - 1 && connections.contains(node.id + cols)) {
-					drawWall(pos, 3, Colors.SOLID.color);
+				if (row < rows - 1 && connections.contains(id + cols)) {
+					drawWall(pos, 3, connectionColor.apply(id + cols));
 				}
 			}
 		}

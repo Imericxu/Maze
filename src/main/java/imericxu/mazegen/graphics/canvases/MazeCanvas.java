@@ -25,9 +25,9 @@ public abstract class MazeCanvas extends Canvas {
 	public abstract void drawPath(List<Integer> path);
 
 	/**
-	 * Draws a complete maze based on connections of each node
+	 * Instead of drawing from a changelist, this method draws every single node.
 	 */
-	public abstract void drawMaze(Node[] nodes);
+	public abstract void drawMaze(Node[] nodes, State[] states);
 
 	/**
 	 * Colors the start and end nodes.
