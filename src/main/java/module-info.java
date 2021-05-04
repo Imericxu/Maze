@@ -1,4 +1,4 @@
-module imericxu.zhiheng.mazegen {
+module imericxu.mazegen {
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires org.controlsfx.controls;
