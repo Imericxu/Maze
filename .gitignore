@@ -44,7 +44,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
-Maze.iml
+*.iml
 target/
 
 # mpeltonen/sbt-idea plugin
