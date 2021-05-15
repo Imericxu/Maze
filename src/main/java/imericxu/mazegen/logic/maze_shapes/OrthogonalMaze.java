@@ -28,7 +28,7 @@ public class OrthogonalMaze extends Maze {
 		assert rows > 0 && cols > 0;
 		Node[] nodes = new Node[rows * cols];
 
-		IntStream.range(0, nodes.length).parallel().forEach(i -> {
+		IntStream.range(0, nodes.length).forEach(i -> {
 			final Set<Integer> neighbors = new HashSet<>();
 
 			final int row = i / cols;
