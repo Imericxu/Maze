@@ -22,13 +22,13 @@ public class Wilson extends MazeAlgorithm {
 	public Wilson(Node[] nodes) {
 		super(nodes);
 		nonMazeNodes.addAll(Arrays.stream(nodes)
-		                          .map(node -> node.id)
-		                          .collect(Collectors.toSet())
+				                    .map(node -> node.id)
+				                    .collect(Collectors.toSet())
 		);
 		// Select a random node to be part of the maze
 		final int startId = nonMazeNodes.stream()
-		                                .skip(rand.nextInt(nonMazeNodes.size()))
-		                                .findFirst().orElseThrow();
+				.skip(rand.nextInt(nonMazeNodes.size()))
+				.findFirst().orElseThrow();
 		nonMazeNodes.remove(startId);
 		mazeNodes.add(startId);
 		changeState(startId, State.SOLID);
@@ -64,8 +64,8 @@ public class Wilson extends MazeAlgorithm {
 
 	private void startNewWalk() {
 		final int startId = nonMazeNodes.stream()
-		                                .skip(rand.nextInt(nonMazeNodes.size()))
-		                                .findFirst().orElseThrow();
+				.skip(rand.nextInt(nonMazeNodes.size()))
+				.findFirst().orElseThrow();
 		currentWalk.push(startId);
 		changeState(startId, State.PARTIAL);
 	}

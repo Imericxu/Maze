@@ -92,6 +92,24 @@ public abstract class Maze {
 	protected abstract MazeCanvas makeCanvas(double maxWidth, double maxHeight);
 
 	/**
+	 * Since maze shapes are all different, each derived class must implement
+	 * their own heuristic for the {@link AStar A*} pathfinding algorithm
+	 */
+	protected abstract AStar.Heuristic getAStarHeuristic();
+
+	/**
+	 * @return a template of nodes with neighbors based on the shape of the maze
+	 */
+	protected abstract Node[] generateNodes();
+
+	/**
+	 * @return (startId, endId)
+	 * @apiNote Needs to be implemented by base classes because of maze shapes
+	 * are different and we want the start and end to be at the edges.
+	 */
+	protected abstract Pair<Integer, Integer> randomStartEnd();
+
+	/**
 	 * @return a runnable maze algorithm based on the type enum
 	 */
 	private MazeAlgorithm makeMazeAlgorithm(Controller.MazeType type) {
@@ -121,24 +139,6 @@ public abstract class Maze {
 			default -> throw new IllegalArgumentException();
 		};
 	}
-
-	/**
-	 * Since maze shapes are all different, each derived class must implement
-	 * their own heuristic for the {@link AStar A*} pathfinding algorithm
-	 */
-	protected abstract AStar.Heuristic getAStarHeuristic();
-
-	/**
-	 * @return a template of nodes with neighbors based on the shape of the maze
-	 */
-	protected abstract Node[] generateNodes();
-
-	/**
-	 * @return (startId, endId)
-	 * @apiNote Needs to be implemented by base classes because of maze shapes
-	 * are different and we want the start and end to be at the edges.
-	 */
-	protected abstract Pair<Integer, Integer> randomStartEnd();
 
 	public interface MazeListener {
 		/**

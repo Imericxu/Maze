@@ -37,22 +37,6 @@ public abstract class MazeCanvas extends Canvas {
 	public abstract void drawStartAndEnd(int startId, int endId);
 
 	/**
-	 * Colors a cell given an implementation-dependent position
-	 */
-	protected abstract void drawCell(Pos pos, Color color);
-
-	/**
-	 * @implSpec {@code pos} can be anything (e.g., top left corner, center, etc.).<br>
-	 * Define numbers for each side/wall.
-	 */
-	protected abstract void drawWall(Pos pos, int side, Color color);
-
-	/**
-	 * @return an implementation-dependent position used for {@link #drawCell} and {@link #drawWall}
-	 */
-	protected abstract Pos calcMazePos(int id);
-
-	/**
 	 * Fills the canvas with the set color of {@link State State}{@code .EMPTY}
 	 */
 	public void drawBlank() {
@@ -67,6 +51,22 @@ public abstract class MazeCanvas extends Canvas {
 			case SOLID -> Colors.SOLID.color;
 		};
 	}
+
+	/**
+	 * Colors a cell given an implementation-dependent position
+	 */
+	protected abstract void drawCell(Pos pos, Color color);
+
+	/**
+	 * @implSpec {@code pos} can be anything (e.g., top left corner, center, etc.).<br>
+	 * Define numbers for each side/wall.
+	 */
+	protected abstract void drawWall(Pos pos, int side, Color color);
+
+	/**
+	 * @return an implementation-dependent position used for {@link #drawCell} and {@link #drawWall}
+	 */
+	protected abstract Pos calcMazePos(int id);
 
 	public enum Colors {
 		EMPTY(Color.web("0x1C5188")),

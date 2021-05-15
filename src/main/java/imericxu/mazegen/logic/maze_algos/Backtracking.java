@@ -40,8 +40,8 @@ public class Backtracking extends MazeAlgorithm {
 
 	private Node selectRandomUnvisitedNeighbor(Node node) {
 		final var unvisitedNeighbors = node.getNeighbors().stream()
-		                                   .filter(id -> states[id] == State.EMPTY)
-		                                   .collect(Collectors.toUnmodifiableList());
+				.filter(id -> states[id] == State.EMPTY)
+				.collect(Collectors.toUnmodifiableList());
 
 		if (unvisitedNeighbors.isEmpty()) return null;
 

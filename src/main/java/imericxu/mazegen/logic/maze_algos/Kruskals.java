@@ -24,13 +24,13 @@ public class Kruskals extends MazeAlgorithm {
 	public Kruskals(Node[] nodes) {
 		super(nodes);
 		disjointSet = new UnionFind<>(Arrays.stream(nodes)
-		                                    .map(node -> node.id)
-		                                    .collect(Collectors.toSet()));
+				                              .map(node -> node.id)
+				                              .collect(Collectors.toSet()));
 		Set<Wall> walls = new HashSet<>();
 		Arrays.stream(nodes)
-		      .forEach(node -> walls.addAll(node.getNeighbors().stream()
-		                                        .map(neighbor -> new Wall(node.id, neighbor))
-		                                        .collect(Collectors.toSet())));
+				.forEach(node -> walls.addAll(node.getNeighbors().stream()
+						                              .map(neighbor -> new Wall(node.id, neighbor))
+						                              .collect(Collectors.toSet())));
 		this.walls = walls.toArray(new Wall[0]);
 		shuffleArray(this.walls);
 	}

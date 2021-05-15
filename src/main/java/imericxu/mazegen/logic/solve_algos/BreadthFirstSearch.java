@@ -34,12 +34,12 @@ public class BreadthFirstSearch extends SolveAlgorithm {
 				return true;
 			}
 			getConnectionsOf(currentId).stream()
-			                           .filter(id -> states[id] == State.SOLID)
-			                           .forEach(id -> {
-				                           cameFrom.put(id, currentId);
-				                           changeState(id, State.PARTIAL);
-				                           queue.add(id);
-			                           });
+					.filter(id -> states[id] == State.SOLID)
+					.forEach(id -> {
+						cameFrom.put(id, currentId);
+						changeState(id, State.PARTIAL);
+						queue.add(id);
+					});
 		}
 		return false;
 	}

@@ -42,7 +42,7 @@ public class Tremaux extends SolveAlgorithm {
 	private List<Integer> getUnvisited(int nodeId) {
 		final Integer prevId = path.size() > 1 ? path.get(path.size() - 2) : null;
 		return getConnectionsOf(nodeId).stream()
-		                               .filter(id -> states[id] == State.SOLID && !Objects.equals(id, prevId))
-		                               .collect(Collectors.toList());
+				.filter(id -> states[id] == State.SOLID && !Objects.equals(id, prevId))
+				.collect(Collectors.toList());
 	}
 }

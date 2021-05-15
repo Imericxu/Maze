@@ -22,11 +22,6 @@ public abstract class Algorithm {
 		finished = loopOnceImpl();
 	}
 
-	/**
-	 * @return whether or not the algorithm is finished
-	 */
-	protected abstract boolean loopOnceImpl();
-
 	public void instantSolve() {
 		do {
 			changeList.clear();
@@ -57,6 +52,11 @@ public abstract class Algorithm {
 	public State[] getStatesCopy() {
 		return states.clone();
 	}
+
+	/**
+	 * @return whether or not the algorithm is finished
+	 */
+	protected abstract boolean loopOnceImpl();
 
 	protected void changeState(int id, State state) {
 		states[id] = state;

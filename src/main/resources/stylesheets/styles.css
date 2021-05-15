@@ -1,19 +1,19 @@
 .header {
-	-fx-font-size: 25;
+    -fx-font-size: 25;
 }
 
 .lbl_input {
-	-fx-font-size: 16;
+    -fx-font-size: 16;
 }
 
 .input {
-	-fx-alignment: baseline_right;
-	-fx-min-width: 40;
-	-fx-pref-width: 40;
+    -fx-alignment: baseline_right;
+    -fx-min-width: 40;
+    -fx-pref-width: 40;
 }
 
 .lbl_toggle {
-	-fx-font-size: 14;
+    -fx-font-size: 14;
 }
 
 .combobox {
