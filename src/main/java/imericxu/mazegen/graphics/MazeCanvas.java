@@ -1,25 +1,26 @@
-package imericxu.mazegen.graphics.canvases;
+package imericxu.mazegen.graphics;
 
 import imericxu.mazegen.core.Algorithm;
 import imericxu.mazegen.core.Node;
 import imericxu.mazegen.core.State;
-import imericxu.mazegen.maze_shapes.OrthogonalMaze;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.List;
 import java.util.function.Function;
 
 /**
- * {@link javafx.scene.canvas.Canvas} specifically designed to display {@link OrthogonalMaze orthogonal} mazes
+ * {@link javafx.scene.canvas.Canvas} specifically designed to display orthogonal mazes
  */
-public class OrthogonalCanvas extends MazeCanvas {
+public class MazeCanvas extends Canvas {
+	protected final GraphicsContext gc = getGraphicsContext2D();
 	private final int rows;
 	private final int cols;
 	private final double cellSize;
 	private final double wallSize;
 
-	public OrthogonalCanvas(double maxWidth, double maxHeight,
-	                        int rows, int cols, double cellWallRatio) {
+	public MazeCanvas(double maxWidth, double maxHeight, int rows, int cols, double cellWallRatio) {
 		this.rows = rows;
 		this.cols = cols;
 
@@ -43,7 +44,6 @@ public class OrthogonalCanvas extends MazeCanvas {
 	/**
 	 * Draws sections of the maze as requests come in
 	 */
-	@Override
 	public void drawUpdates(Algorithm algorithm) {
 		final var nodes = algorithm.getNodes();
 		final var states = algorithm.getStates();
@@ -86,7 +86,6 @@ public class OrthogonalCanvas extends MazeCanvas {
 		});
 	}
 
-	@Override
 	public void drawMaze(Node[] nodes, State[] states) {
 		for (int row = 0, id = 0; row < rows; ++row) {
 			for (int col = 0; col < cols; ++col, ++id) {
@@ -111,7 +110,6 @@ public class OrthogonalCanvas extends MazeCanvas {
 		}
 	}
 
-	@Override
 	public void drawPath(List<Integer> pathList) {
 		if (pathList.isEmpty()) return;
 
@@ -134,19 +132,32 @@ public class OrthogonalCanvas extends MazeCanvas {
 		}
 	}
 
-	@Override
 	public void drawStartAndEnd(int startId, int endId) {
 		drawCell(calcMazePos(startId), Colors.START.color);
 		drawCell(calcMazePos(endId), Colors.END.color);
 	}
 
-	@Override
+	/**
+	 * Fills the canvas with the set color of {@link State State}{@code .EMPTY}
+	 */
+	public void drawBlank() {
+		gc.setFill(getColor(State.EMPTY));
+		gc.fillRect(0, 0, getWidth(), getHeight());
+	}
+
+	public Color getColor(State state) {
+		return switch (state) {
+			case EMPTY -> Colors.EMPTY.color;
+			case PARTIAL -> Colors.PARTIAL.color;
+			case SOLID -> Colors.SOLID.color;
+		};
+	}
+
 	protected void drawCell(Pos topLeft, Color color) {
 		gc.setFill(color);
 		gc.fillRect(topLeft.x, topLeft.y, cellSize, cellSize);
 	}
 
-	@Override
 	protected void drawWall(Pos topLeft, int side, Color color) {
 		gc.setFill(color);
 		switch (side) {
@@ -165,12 +176,35 @@ public class OrthogonalCanvas extends MazeCanvas {
 	/**
 	 * @return top left corner of a cell in the form of (x, y)
 	 */
-	@Override
 	protected Pos calcMazePos(int id) {
 		final int row = id / cols;
 		final int col = id % cols;
 		final double x = (wallSize + cellSize) * col + wallSize;
 		final double y = (wallSize + cellSize) * row + wallSize;
 		return new Pos(x, y);
+	}
+
+	public enum Colors {
+		EMPTY(Color.web("0x1C5188")),
+		PARTIAL(Color.web("0xADD9FF")),
+		SOLID(Color.WHITE),
+		PATH(Color.web("0xAD360B")),
+		START(Color.web("#06D6A0")),
+		END(Color.web("#AF2BBF"));
+
+		public final Color color;
+
+		Colors(Color color) {
+			this.color = color;
+		}
+	}
+
+	public static class Pos {
+		public final double x, y;
+
+		public Pos(double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
 	}
 }

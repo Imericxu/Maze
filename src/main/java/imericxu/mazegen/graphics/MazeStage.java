@@ -1,6 +1,5 @@
 package imericxu.mazegen.graphics;
 
-import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;

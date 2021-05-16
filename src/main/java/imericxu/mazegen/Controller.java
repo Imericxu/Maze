@@ -1,8 +1,7 @@
 package imericxu.mazegen;
 
-import imericxu.mazegen.maze_shapes.Maze;
-import imericxu.mazegen.maze_shapes.OrthogonalMaze;
-import imericxu.mazegen.user_input.OrthoMazeOptions;
+import imericxu.mazegen.graphics.Maze;
+import imericxu.mazegen.user_input.MazeOptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -51,12 +50,12 @@ public class Controller {
 	 * Attempts to launch the maze after pressing start button
 	 */
 	@FXML
-	public void launchOrthogonal() {
-		Maze maze = new OrthogonalMaze(parseOrthogonalInput());
+	public void launchMaze() {
+		Maze maze = new Maze(parseInput());
 		maze.generate();
 	}
 
-	private OrthoMazeOptions parseOrthogonalInput() {
+	private MazeOptions parseInput() {
 		int rows;
 		try {
 			rows = Integer.parseInt(inputRows.getText());
@@ -94,9 +93,9 @@ public class Controller {
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
 
-		return new OrthoMazeOptions(mazeType, solveType,
-		                            rows, cols, cellWallRatio,
-		                            doAnimateMaze, doSolve, doAnimateSolve);
+		return new MazeOptions(mazeType, solveType,
+		                       rows, cols, cellWallRatio,
+		                       doAnimateMaze, doSolve, doAnimateSolve);
 	}
 
 	public enum MazeType {

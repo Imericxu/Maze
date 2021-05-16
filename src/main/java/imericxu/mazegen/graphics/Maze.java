@@ -1,4 +1,4 @@
-package imericxu.mazegen.maze_shapes;
+package imericxu.mazegen.graphics;
 
 import imericxu.mazegen.Controller;
 import imericxu.mazegen.core.Node;
@@ -7,18 +7,24 @@ import imericxu.mazegen.core.solve_algorithms.AStar;
 import imericxu.mazegen.core.solve_algorithms.Breadth;
 import imericxu.mazegen.core.solve_algorithms.SolveAlgorithm;
 import imericxu.mazegen.core.solve_algorithms.Tremaux;
-import imericxu.mazegen.graphics.MazeStage;
-import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.util.Pair;
 import kotlin.jvm.functions.Function2;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.IntStream;
 
-public abstract class Maze {
+/**
+ * A rectangular/square maze
+ */
+public class Maze {
 	protected final Random rand = new Random();
+	private final int rows;
+	private final int cols;
 	private final MazeStage stage;
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
 	private final MazeListener mazeListener;
@@ -30,15 +36,41 @@ public abstract class Maze {
 	protected double cellWallRatio;
 
 	public Maze(MazeOptions options) {
-		stage = new MazeStage();
-		aStarHeuristic = getAStarHeuristic();
-		mazeListener = this::solve;
-		cellWallRatio = options.cellWallRatio;
-		mazeType = options.mazeType;
-		solveType = options.solveType;
-		doAnimateMaze = options.doAnimateMaze;
-		doSolve = options.doSolve;
-		doAnimateSolve = options.doAnimateSolve;
+		this.stage = new MazeStage();
+		this.aStarHeuristic = getAStarHeuristic();
+		this.mazeListener = this::solve;
+		this.cellWallRatio = options.cellWallRatio;
+		this.mazeType = options.mazeType;
+		this.solveType = options.solveType;
+		this.doAnimateMaze = options.doAnimateMaze;
+		this.doSolve = options.doSolve;
+		this.doAnimateSolve = options.doAnimateSolve;
+		rows = options.rows;
+		cols = options.cols;
+	}
+
+	public static Node[] generateNodes(int rows, int cols) {
+		assert rows > 0 && cols > 0;
+		Node[] nodes = new Node[rows * cols];
+
+		IntStream.range(0, nodes.length).forEach(i -> {
+			final Set<Integer> neighbors = new HashSet<>();
+
+			final int row = i / cols;
+			final int col = i % cols;
+
+			if (row > 0) neighbors.add(i - cols);
+
+			if (col < cols - 1) neighbors.add(i + 1);
+
+			if (row < rows - 1) neighbors.add(i + cols);
+
+			if (col > 0) neighbors.add(i - 1);
+
+			nodes[i] = new Node(i, neighbors);
+		});
+
+		return nodes;
 	}
 
 	/**
@@ -87,28 +119,37 @@ public abstract class Maze {
 		}
 	}
 
-	/**
-	 * All derived classes must implement their own canvas
-	 */
-	protected abstract MazeCanvas makeCanvas(double maxWidth, double maxHeight);
+	protected MazeCanvas makeCanvas(double maxWidth, double maxHeight) {
+		return new MazeCanvas(maxWidth, maxHeight, rows, cols, cellWallRatio);
+	}
 
-	/**
-	 * Since maze shapes are all different, each derived class must implement
-	 * their own heuristic for the {@link AStar A*} pathfinding algorithm
-	 */
-	protected abstract Function2<Integer, Integer, Double> getAStarHeuristic();
+	protected Function2<Integer, Integer, Double> getAStarHeuristic() {
+		return (id1, id2) -> {
+			final int startRow = id1 / cols;
+			final int startCol = id1 % cols;
+			final int endRow = id2 / cols;
+			final int endCol = id2 % cols;
+			return Math.hypot(endCol - startCol, endRow - startRow);
+		};
+	}
 
-	/**
-	 * @return a template of nodes with neighbors based on the shape of the maze
-	 */
-	protected abstract Node[] generateNodes();
+	protected Node[] generateNodes() {
+		return generateNodes(rows, cols);
+	}
 
-	/**
-	 * @return (startId, endId)
-	 * @apiNote Needs to be implemented by base classes because of maze shapes
-	 * are different and we want the start and end to be at the edges.
-	 */
-	protected abstract Pair<Integer, Integer> randomStartEnd();
+	protected Pair<Integer, Integer> randomStartEnd() {
+		final boolean isHorizontal = rand.nextBoolean();
+		int id1, id2;
+		if (isHorizontal) {
+			id1 = rand.nextInt(rows) * cols;
+			id2 = (rand.nextInt(rows) + 1) * cols - 1;
+		} else {
+			id1 = rand.nextInt(cols);
+			id2 = (rows - 1) * cols + rand.nextInt(cols);
+		}
+		// Randomize start and end
+		return rand.nextBoolean() ? new Pair<>(id1, id2) : new Pair<>(id2, id1);
+	}
 
 	/**
 	 * @return a runnable maze algorithm based on the type enum

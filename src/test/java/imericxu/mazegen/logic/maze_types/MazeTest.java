@@ -1,6 +1,6 @@
 package imericxu.mazegen.logic.maze_types;
 
-import imericxu.mazegen.maze_shapes.OrthogonalMaze;
+import imericxu.mazegen.graphics.Maze;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,10 +8,10 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-class OrthogonalMazeTest {
+class MazeTest {
 	@Test
 	void generate1x1() {
-		final var nodes = OrthogonalMaze.generateNodes(1, 1);
+		final var nodes = Maze.generateNodes(1, 1);
 		Assertions.assertEquals(1, nodes.length);
 		Assertions.assertTrue(nodes[0].getNeighbors().isEmpty());
 		Assertions.assertTrue(nodes[0].getConnections().isEmpty());
@@ -19,7 +19,7 @@ class OrthogonalMazeTest {
 
 	@Test
 	void generate1x5() {
-		final var nodes = OrthogonalMaze.generateNodes(1, 5);
+		final var nodes = Maze.generateNodes(1, 5);
 		Assertions.assertEquals(5, nodes.length);
 		Assertions.assertEquals(Set.of(1), nodes[0].getNeighbors());
 		Assertions.assertEquals(Set.of(2, 4), nodes[3].getNeighbors());
@@ -28,7 +28,7 @@ class OrthogonalMazeTest {
 
 	@Test
 	void generate5x1() {
-		final var nodes = OrthogonalMaze.generateNodes(5, 1);
+		final var nodes = Maze.generateNodes(5, 1);
 		Assertions.assertEquals(5, nodes.length);
 		Assertions.assertEquals(Set.of(1), nodes[0].getNeighbors());
 		Assertions.assertEquals(Set.of(2, 4), nodes[3].getNeighbors());
@@ -37,7 +37,7 @@ class OrthogonalMazeTest {
 
 	@Test
 	void generate5x5() {
-		final var nodes = OrthogonalMaze.generateNodes(5, 5);
+		final var nodes = Maze.generateNodes(5, 5);
 		Assertions.assertEquals(25, nodes.length);
 
 		// Test the 4 corners

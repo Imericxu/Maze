@@ -90,7 +90,7 @@
                           GridPane.rowIndex="1"/>
             <ComboBox fx:id="comboSolveAlgo" maxWidth="1.7976931348623157E308" promptText="Solve Algorithm"
                       styleClass="combobox" GridPane.columnIndex="2"/>
-            <Button id="btn_generate" mnemonicParsing="false" onAction="#launchOrthogonal" text="Generate"
+            <Button id="btn_generate" mnemonicParsing="false" onAction="#launchMaze" text="Generate"
                     GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
         </GridPane>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"
