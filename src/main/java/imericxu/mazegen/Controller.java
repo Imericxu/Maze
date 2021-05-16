@@ -2,17 +2,25 @@ package imericxu.mazegen;
 
 import imericxu.mazegen.graphics.Maze;
 import imericxu.mazegen.user_input.MazeOptions;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.function.UnaryOperator;
 
 public class Controller {
-	private final Random random = new Random();
+	private static final Random random = new Random();
+	@FXML
+	public VBox root;
 	@FXML
 	private TextField inputRows;
 	@FXML
@@ -44,6 +52,8 @@ public class Controller {
 
 		comboMazeAlgo.getItems().addAll(MazeType.values());
 		comboSolveAlgo.getItems().addAll(SolveType.values());
+
+		removeFocusOnEscape(inputRows, inputCols, inputRatio, comboMazeAlgo, comboSolveAlgo);
 	}
 
 	/**
@@ -53,6 +63,16 @@ public class Controller {
 	public void launchMaze() {
 		Maze maze = new Maze(parseInput());
 		maze.generate();
+	}
+
+	private void removeFocusOnEscape(Node... nodes) {
+		final EventHandler<KeyEvent> removeFocus = event -> {
+			if (event.getCode() == KeyCode.ESCAPE) {
+				root.requestFocus();
+			}
+		};
+
+		Arrays.stream(nodes).forEach(node -> node.setOnKeyPressed(removeFocus));
 	}
 
 	private MazeOptions parseInput() {
@@ -108,7 +128,7 @@ public class Controller {
 	public enum MazeType {
 		RANDOM("Random"),
 		PRIM("Prim’s Algorithm"),
-		RECURSIVE("Recursive Backtracking Algorithm"),
+		RECURSIVE("Backtracking Algorithm"),
 		WILSON("Wilson’s Algorithm"),
 		KRUSKAL("Kruskal’s Algorithm");
 
