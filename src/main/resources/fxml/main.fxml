@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
 <?import org.controlsfx.control.ToggleSwitch?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" stylesheets="@../stylesheets/styles.css"
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" stylesheets="@../stylesheets/main.css"
       xmlns="http://javafx.com/javafx/11.0.1" fx:controller="imericxu.mazegen.Controller">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
