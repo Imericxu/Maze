@@ -70,9 +70,9 @@ public class Controller {
 			cols = 20;
 		}
 
-		double cellWallRatio;
+		float cellWallRatio;
 		try {
-			cellWallRatio = Double.parseDouble(inputRatio.getText());
+			cellWallRatio = Float.parseFloat(inputRatio.getText());
 		} catch (NumberFormatException e) {
 			cellWallRatio = 3;
 		}
@@ -93,9 +93,16 @@ public class Controller {
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
 
-		return new MazeOptions(mazeType, solveType,
-		                       rows, cols, cellWallRatio,
-		                       doAnimateMaze, doSolve, doAnimateSolve);
+		return new MazeOptions(
+				rows,
+				cols,
+				cellWallRatio,
+				mazeType,
+				solveType,
+				doAnimateMaze,
+				doSolve,
+				doAnimateSolve
+		);
 	}
 
 	public enum MazeType {

@@ -10,7 +10,7 @@ import imericxu.mazegen.core.solve_algorithms.Tremaux;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.user_input.MazeOptions;
-import javafx.util.Pair;
+import kotlin.Pair;
 import kotlin.jvm.functions.Function2;
 
 import java.util.HashSet;
@@ -22,31 +22,15 @@ import java.util.stream.IntStream;
  * A rectangular/square maze
  */
 public class Maze {
-	protected final Random rand = new Random();
-	private final int rows;
-	private final int cols;
+	private static final Random random = new Random();
+	private final MazeOptions options;
 	private final MazeStage stage;
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
-	private final MazeListener mazeListener;
-	private final Controller.MazeType mazeType;
-	private final Controller.SolveType solveType;
-	private final boolean doAnimateMaze;
-	private final boolean doSolve;
-	private final boolean doAnimateSolve;
-	protected double cellWallRatio;
 
 	public Maze(MazeOptions options) {
+		this.options = options;
 		this.stage = new MazeStage();
 		this.aStarHeuristic = getAStarHeuristic();
-		this.mazeListener = this::solve;
-		this.cellWallRatio = options.cellWallRatio;
-		this.mazeType = options.mazeType;
-		this.solveType = options.solveType;
-		this.doAnimateMaze = options.doAnimateMaze;
-		this.doSolve = options.doSolve;
-		this.doAnimateSolve = options.doAnimateSolve;
-		rows = options.rows;
-		cols = options.cols;
 	}
 
 	public static Node[] generateNodes(int rows, int cols) {
@@ -85,10 +69,10 @@ public class Maze {
 		canvas.drawBlank();
 		stage.show();
 
-		final var mazeAlgo = makeMazeAlgorithm(mazeType);
+		final var mazeAlgo = makeMazeAlgorithm(options.getMazeType());
 
-		if (doAnimateMaze) {
-			TimerMaze timerMaze = new TimerMaze(mazeListener, canvas, mazeAlgo);
+		if (options.getDoAnimateMaze()) {
+			TimerMaze timerMaze = new TimerMaze(this::solve, canvas, mazeAlgo);
 			timerMaze.start();
 		} else {
 			mazeAlgo.finishImmediately();
@@ -103,12 +87,12 @@ public class Maze {
 	 * @param nodes a list of nodes representing a maze
 	 */
 	public void solve(Node[] nodes) {
-		if (!doSolve) return;
+		if (!options.getDoSolve()) return;
 
-		final var solveAlgo = makeSolveAlgorithm(solveType, nodes);
+		final var solveAlgo = makeSolveAlgorithm(options.getSolveType(), nodes);
 		final var canvas = stage.getCanvas();
 
-		if (doAnimateSolve) {
+		if (options.getDoAnimateSolve()) {
 			TimerSolve timerSolve = new TimerSolve(canvas, solveAlgo);
 			timerSolve.start();
 		} else {
@@ -119,43 +103,44 @@ public class Maze {
 		}
 	}
 
-	protected MazeCanvas makeCanvas(double maxWidth, double maxHeight) {
-		return new MazeCanvas(maxWidth, maxHeight, rows, cols, cellWallRatio);
+	private MazeCanvas makeCanvas(double maxWidth, double maxHeight) {
+		return new MazeCanvas(maxWidth, maxHeight, options.getRows(), options.getCols(), options.getCellWallRatio());
 	}
 
-	protected Function2<Integer, Integer, Double> getAStarHeuristic() {
+	private Function2<Integer, Integer, Double> getAStarHeuristic() {
+		final int cols = options.getCols();
+
 		return (id1, id2) -> {
 			final int startRow = id1 / cols;
 			final int startCol = id1 % cols;
 			final int endRow = id2 / cols;
 			final int endCol = id2 % cols;
-			return Math.hypot(endCol - startCol, endRow - startRow);
+			return (double) (Math.abs(endCol - startCol) + Math.abs(endRow - startRow));
 		};
 	}
 
-	protected Node[] generateNodes() {
-		return generateNodes(rows, cols);
-	}
+	private Pair<Integer, Integer> randomStartEnd() {
+		final int rows = options.getRows();
+		final int cols = options.getCols();
+		final boolean isHorizontal = random.nextBoolean();
 
-	protected Pair<Integer, Integer> randomStartEnd() {
-		final boolean isHorizontal = rand.nextBoolean();
 		int id1, id2;
 		if (isHorizontal) {
-			id1 = rand.nextInt(rows) * cols;
-			id2 = (rand.nextInt(rows) + 1) * cols - 1;
+			id1 = random.nextInt(rows) * cols;
+			id2 = (random.nextInt(rows) + 1) * cols - 1;
 		} else {
-			id1 = rand.nextInt(cols);
-			id2 = (rows - 1) * cols + rand.nextInt(cols);
+			id1 = random.nextInt(cols);
+			id2 = (rows - 1) * cols + random.nextInt(cols);
 		}
 		// Randomize start and end
-		return rand.nextBoolean() ? new Pair<>(id1, id2) : new Pair<>(id2, id1);
+		return random.nextBoolean() ? new Pair<>(id1, id2) : new Pair<>(id2, id1);
 	}
 
 	/**
 	 * @return a runnable maze algorithm based on the type enum
 	 */
 	private MazeAlgorithm makeMazeAlgorithm(Controller.MazeType type) {
-		final var nodes = generateNodes();
+		final var nodes = generateNodes(options.getRows(), options.getCols());
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
 			case RECURSIVE -> new Backtracking(nodes);
@@ -171,8 +156,8 @@ public class Maze {
 	 */
 	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, Node[] nodes) {
 		final var startEnd = randomStartEnd();
-		final int start = startEnd.getKey();
-		final int end = startEnd.getValue();
+		final int start = startEnd.getFirst();
+		final int end = startEnd.getSecond();
 
 		return switch (type) {
 			case TREMAUX -> new Tremaux(nodes, start, end);
