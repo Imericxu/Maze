@@ -1,9 +1,9 @@
 package imericxu.mazegen.graphics.canvases;
 
-import imericxu.mazegen.logic.Algorithm;
-import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.State;
-import imericxu.mazegen.logic.maze_shapes.OrthogonalMaze;
+import imericxu.mazegen.core.Algorithm;
+import imericxu.mazegen.core.Node;
+import imericxu.mazegen.core.State;
+import imericxu.mazegen.maze_shapes.OrthogonalMaze;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -45,21 +45,24 @@ public class OrthogonalCanvas extends MazeCanvas {
 	 */
 	@Override
 	public void drawUpdates(Algorithm algorithm) {
-		algorithm.changeList.forEach(id -> {
+		final var nodes = algorithm.getNodes();
+		final var states = algorithm.getStates();
+
+		algorithm.getChangeList().forEach(id -> {
 			final Pos topLeft = calcMazePos(id);
 
-			if (algorithm.getState(id) == State.EMPTY) {
+			if (states[id] == State.EMPTY) {
 				gc.setFill(getColor(State.EMPTY));
 				gc.fillRect(topLeft.x - wallSize, topLeft.y - wallSize,
 				            cellSize + 2 * wallSize, cellSize + 2 * wallSize);
 				return;
 			}
 
-			final Color cellColor = getColor(algorithm.getState(id));
+			final Color cellColor = getColor(states[id]);
 			drawCell(topLeft, cellColor);
 
-			for (final int connectionId : algorithm.getConnectionsOf(id)) {
-				final Color color = algorithm.getState(connectionId) == State.SOLID
+			nodes[id].getConnections().forEach(connectionId -> {
+				final Color color = states[connectionId] == State.SOLID
 						? Colors.SOLID.color
 						: cellColor;
 
@@ -79,7 +82,7 @@ public class OrthogonalCanvas extends MazeCanvas {
 				else {
 					drawWall(topLeft, 4, color);
 				}
-			}
+			});
 		});
 	}
 

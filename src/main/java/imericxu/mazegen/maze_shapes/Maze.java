@@ -1,25 +1,26 @@
-package imericxu.mazegen.logic.maze_shapes;
+package imericxu.mazegen.maze_shapes;
 
 import imericxu.mazegen.Controller;
+import imericxu.mazegen.core.Node;
+import imericxu.mazegen.core.maze_algorithms.*;
+import imericxu.mazegen.core.solve_algorithms.AStar;
+import imericxu.mazegen.core.solve_algorithms.Breadth;
+import imericxu.mazegen.core.solve_algorithms.SolveAlgorithm;
+import imericxu.mazegen.core.solve_algorithms.Tremaux;
 import imericxu.mazegen.graphics.MazeStage;
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
-import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.maze_algos.*;
-import imericxu.mazegen.logic.solve_algos.AStar;
-import imericxu.mazegen.logic.solve_algos.BreadthFirstSearch;
-import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
-import imericxu.mazegen.logic.solve_algos.Tremaux;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.util.Pair;
+import kotlin.jvm.functions.Function2;
 
 import java.util.Random;
 
 public abstract class Maze {
 	protected final Random rand = new Random();
 	private final MazeStage stage;
-	private final AStar.Heuristic aStarHeuristic;
+	private final Function2<Integer, Integer, Double> aStarHeuristic;
 	private final MazeListener mazeListener;
 	private final Controller.MazeType mazeType;
 	private final Controller.SolveType solveType;
@@ -58,9 +59,9 @@ public abstract class Maze {
 			TimerMaze timerMaze = new TimerMaze(mazeListener, canvas, mazeAlgo);
 			timerMaze.start();
 		} else {
-			mazeAlgo.instantSolve();
-			canvas.drawMaze(mazeAlgo.getNodesCopy(), mazeAlgo.getStatesCopy());
-			solve(mazeAlgo.getNodesCopy());
+			mazeAlgo.finishImmediately();
+			canvas.drawMaze(mazeAlgo.getNodes(), mazeAlgo.getStates());
+			solve(mazeAlgo.getNodes());
 		}
 	}
 
@@ -79,9 +80,9 @@ public abstract class Maze {
 			TimerSolve timerSolve = new TimerSolve(canvas, solveAlgo);
 			timerSolve.start();
 		} else {
-			solveAlgo.instantSolve();
-			canvas.drawMaze(solveAlgo.getNodesCopy(), solveAlgo.getStatesCopy());
-			canvas.drawStartAndEnd(solveAlgo.startId, solveAlgo.endId);
+			solveAlgo.finishImmediately();
+			canvas.drawMaze(solveAlgo.getNodes(), solveAlgo.getStates());
+			canvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
 			canvas.drawPath(solveAlgo.getPath());
 		}
 	}
@@ -95,7 +96,7 @@ public abstract class Maze {
 	 * Since maze shapes are all different, each derived class must implement
 	 * their own heuristic for the {@link AStar A*} pathfinding algorithm
 	 */
-	protected abstract AStar.Heuristic getAStarHeuristic();
+	protected abstract Function2<Integer, Integer, Double> getAStarHeuristic();
 
 	/**
 	 * @return a template of nodes with neighbors based on the shape of the maze
@@ -117,7 +118,7 @@ public abstract class Maze {
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
 			case RECURSIVE -> new Backtracking(nodes);
-			case WILSON -> new Wilson(nodes);
+			case WILSON -> new Wilsons(nodes);
 			case KRUSKAL -> new Kruskals(nodes);
 			default -> throw new IllegalArgumentException();
 		};
@@ -135,7 +136,7 @@ public abstract class Maze {
 		return switch (type) {
 			case TREMAUX -> new Tremaux(nodes, start, end);
 			case ASTAR -> new AStar(nodes, start, end, aStarHeuristic);
-			case BREADTH -> new BreadthFirstSearch(nodes, start, end);
+			case BREADTH -> new Breadth(nodes, start, end);
 			default -> throw new IllegalArgumentException();
 		};
 	}

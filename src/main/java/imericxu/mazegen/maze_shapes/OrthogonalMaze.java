@@ -1,11 +1,11 @@
-package imericxu.mazegen.logic.maze_shapes;
+package imericxu.mazegen.maze_shapes;
 
+import imericxu.mazegen.core.Node;
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
 import imericxu.mazegen.graphics.canvases.OrthogonalCanvas;
-import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.solve_algos.AStar;
 import imericxu.mazegen.user_input.OrthoMazeOptions;
 import javafx.util.Pair;
+import kotlin.jvm.functions.Function2;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +54,7 @@ public class OrthogonalMaze extends Maze {
 	}
 
 	@Override
-	protected AStar.Heuristic getAStarHeuristic() {
+	protected Function2<Integer, Integer, Double> getAStarHeuristic() {
 		return (id1, id2) -> {
 			final int startRow = id1 / cols;
 			final int startCol = id1 % cols;

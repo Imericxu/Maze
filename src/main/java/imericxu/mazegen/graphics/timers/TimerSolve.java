@@ -1,7 +1,7 @@
 package imericxu.mazegen.graphics.timers;
 
+import imericxu.mazegen.core.solve_algorithms.SolveAlgorithm;
 import imericxu.mazegen.graphics.canvases.MazeCanvas;
-import imericxu.mazegen.logic.solve_algos.SolveAlgorithm;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -19,10 +19,10 @@ public class TimerSolve extends AnimationTimer {
 	@Override
 	public void handle(long l) {
 		canvas.drawUpdates(solveAlgo);
-		canvas.drawStartAndEnd(solveAlgo.startId, solveAlgo.endId);
+		canvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
 		canvas.drawPath(solveAlgo.getPath());
-		solveAlgo.changeList.clear();
-		if (solveAlgo.isFinished()) {
+		solveAlgo.getChangeList().clear();
+		if (solveAlgo.getFinished()) {
 			stop();
 			return;
 		}

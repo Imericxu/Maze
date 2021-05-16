@@ -1,5 +1,6 @@
 package imericxu.mazegen.logic;
 
+import imericxu.mazegen.core.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,15 +22,15 @@ class NodeTest {
 
 	@Test
 	void connect() {
-		Node.connect(nodes[0], nodes[1]);
+		nodes[0].connect(nodes[1]);
 		Assertions.assertEquals(Set.of(1), nodes[0].getConnections());
 		Assertions.assertEquals(Set.of(0), nodes[1].getConnections());
 	}
 
 	@Test
 	void disconnect() {
-		Node.connect(nodes[0], nodes[1]);
-		Node.disconnect(nodes[0], nodes[1]);
+		nodes[0].connect(nodes[1]);
+		nodes[0].disconnect(nodes[1]);
 		Assertions.assertTrue(nodes[0].getConnections().isEmpty());
 		Assertions.assertTrue(nodes[1].getConnections().isEmpty());
 	}

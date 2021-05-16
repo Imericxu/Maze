@@ -1,8 +1,8 @@
 package imericxu.mazegen.graphics.canvases;
 
-import imericxu.mazegen.logic.Algorithm;
-import imericxu.mazegen.logic.Node;
-import imericxu.mazegen.logic.State;
+import imericxu.mazegen.core.Algorithm;
+import imericxu.mazegen.core.Node;
+import imericxu.mazegen.core.State;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
