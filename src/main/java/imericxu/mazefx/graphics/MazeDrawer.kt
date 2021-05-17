@@ -36,7 +36,7 @@ class MazeDrawer(
 		val states = algorithm.states
 
 		algorithm.changeList.forEach { id ->
-			val topLeft = calcMazePos(id)
+			val topLeft = calcCellTopLeftPos(id)
 
 			if (states[id] == State.EMPTY) {
 				gc.fill = State.EMPTY.color
@@ -70,7 +70,7 @@ class MazeDrawer(
 		var id = 0
 		for (row in 0..rows) {
 			for (col in 0..cols) {
-				val topLeft = calcMazePos(id)
+				val topLeft = calcCellTopLeftPos(id)
 				val cellColor = states[id].color
 
 				drawCell(topLeft, cellColor)
@@ -103,7 +103,7 @@ class MazeDrawer(
 
 		val halfCellSize = cellSize / 2.0
 
-		var prevPos = with(calcMazePos(pathList.first())) {
+		var prevPos = with(calcCellTopLeftPos(pathList.first())) {
 			Pos(x + halfCellSize, y + halfCellSize)
 		}
 		var currentPos: Pos
@@ -111,7 +111,7 @@ class MazeDrawer(
 		pathList
 			.drop(1)
 			.forEach {
-				currentPos = with(calcMazePos(it)) {
+				currentPos = with(calcCellTopLeftPos(it)) {
 					Pos(x + halfCellSize, y + halfCellSize)
 				}
 				gc.strokeLine(prevPos.x, prevPos.y, currentPos.x, currentPos.y)
@@ -120,8 +120,8 @@ class MazeDrawer(
 	}
 
 	fun drawStartAndEnd(startId: Int, endId: Int) {
-		drawCell(calcMazePos(startId), Colors.START.color)
-		drawCell(calcMazePos(endId), Colors.END.color)
+		drawCell(calcCellTopLeftPos(startId), Colors.START.color)
+		drawCell(calcCellTopLeftPos(endId), Colors.END.color)
 	}
 
 	fun drawBlank() {
@@ -150,8 +150,7 @@ class MazeDrawer(
 		}
 	}
 
-	// TODO Rename to calcTopLeft?
-	private fun calcMazePos(id: Int): Pos {
+	private fun calcCellTopLeftPos(id: Int): Pos {
 		val row = id / cols
 		val col = id % cols
 		return with(wallSize + cellSize) {
