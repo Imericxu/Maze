@@ -21,7 +21,7 @@ public class MazeDrawer {
 	private final double cellSize;
 	private final double wallSize;
 
-	public MazeDrawer(Canvas canvas, int rows, int cols, double cellWallRatio) {
+	public MazeDrawer(Canvas canvas, int rows, int cols, float cellWallRatio) {
 		gc = canvas.getGraphicsContext2D();
 		this.canvas = canvas;
 		this.rows = rows;
