@@ -59,6 +59,11 @@ public class MazeController {
 		inputRows.setText(String.valueOf(mazeOptions.getRows()));
 		inputCols.setText(String.valueOf(mazeOptions.getCols()));
 		inputRatio.setText(String.valueOf(mazeOptions.getCellWallRatio()));
+		comboMazeAlgorithm.getSelectionModel().select(mazeOptions.getMazeType());
+		comboSolveAlgorithm.getSelectionModel().select(mazeOptions.getSolveType());
+		switchAnimateMaze.setSelected(mazeOptions.getDoAnimateMaze());
+		switchDoSolve.setSelected(mazeOptions.getDoSolve());
+		switchAnimateSolve.setSelected(mazeOptions.getDoAnimateSolve());
 	}
 
 	@FXML
