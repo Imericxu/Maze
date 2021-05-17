@@ -6,7 +6,7 @@ abstract class Algorithm(val nodes: Array<Node>) {
 	var finished = false
 		private set
 
-	fun loopOnce() {
+	open fun loopOnce() {
 		assert(!finished)
 		finished = loopOnceImpl()
 	}

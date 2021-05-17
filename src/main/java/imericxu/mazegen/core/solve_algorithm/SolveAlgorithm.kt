@@ -11,4 +11,10 @@ abstract class SolveAlgorithm(nodes: Array<Node>, val startId: Int, val endId: I
 
 	@Suppress("PropertyName")
 	protected val _path = ArrayDeque<Int>()
+
+	// TODO Remove temporary fix by adding the path to the changelist
+	override fun loopOnce() {
+		changeList.addAll(path)
+		super.loopOnce()
+	}
 }
