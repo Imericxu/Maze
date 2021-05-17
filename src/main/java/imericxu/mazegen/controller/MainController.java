@@ -24,21 +24,21 @@ public class MainController {
 	@FXML
 	public VBox root;
 	@FXML
-	private TextField inputRows;
+	public TextField inputRows;
 	@FXML
-	private TextField inputCols;
+	public TextField inputCols;
 	@FXML
-	private TextField inputRatio;
+	public TextField inputRatio;
 	@FXML
-	private ComboBox<MazeType> comboMazeAlgo;
+	public ComboBox<MazeType> comboMazeAlgo;
 	@FXML
-	private ToggleSwitch switchAnimateMaze;
+	public ToggleSwitch switchAnimateMaze;
 	@FXML
-	private ToggleSwitch switchDoSolve;
+	public ToggleSwitch switchDoSolve;
 	@FXML
-	private ComboBox<SolveType> comboSolveAlgo;
+	public ComboBox<SolveType> comboSolveAlgo;
 	@FXML
-	private ToggleSwitch switchAnimateSolve;
+	public ToggleSwitch switchAnimateSolve;
 
 	@FXML
 	public void initialize() {
