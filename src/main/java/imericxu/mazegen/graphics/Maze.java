@@ -32,12 +32,12 @@ public class Maze {
 	private static final Random random = new Random();
 	private final MazeOptions options;
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
-	private final MazeCanvas mazeCanvas;
+	private final MazeDrawer mazeDrawer;
 
 	public Maze(MazeOptions options, Canvas canvas) throws IOException {
 		this.options = options;
 		this.aStarHeuristic = getAStarHeuristic();
-		mazeCanvas = new MazeCanvas(canvas, options.getRows(), options.getCols(), options.getCellWallRatio());
+		mazeDrawer = new MazeDrawer(canvas, options.getRows(), options.getCols(), options.getCellWallRatio());
 	}
 
 	public static Node[] generateNodes(int rows, int cols) {
@@ -71,16 +71,16 @@ public class Maze {
 	 * @see MazeOptions
 	 */
 	public void generate() {
-		mazeCanvas.drawBlank();
+		mazeDrawer.drawBlank();
 
 		final var mazeAlgo = makeMazeAlgorithm(options.getMazeType());
 
 		if (options.getDoAnimateMaze()) {
-			TimerMaze timerMaze = new TimerMaze(this::solve, mazeCanvas, mazeAlgo);
+			TimerMaze timerMaze = new TimerMaze(this::solve, mazeDrawer, mazeAlgo);
 			timerMaze.start();
 		} else {
 			mazeAlgo.finishImmediately();
-			mazeCanvas.drawMaze(mazeAlgo.getNodes(), mazeAlgo.getStates());
+			mazeDrawer.drawMaze(mazeAlgo.getNodes(), mazeAlgo.getStates());
 			solve(mazeAlgo.getNodes());
 		}
 	}
@@ -96,13 +96,13 @@ public class Maze {
 		final var solveAlgo = makeSolveAlgorithm(options.getSolveType(), nodes);
 
 		if (options.getDoAnimateSolve()) {
-			TimerSolve timerSolve = new TimerSolve(mazeCanvas, solveAlgo);
+			TimerSolve timerSolve = new TimerSolve(mazeDrawer, solveAlgo);
 			timerSolve.start();
 		} else {
 			solveAlgo.finishImmediately();
-			mazeCanvas.drawMaze(solveAlgo.getNodes(), solveAlgo.getStates());
-			mazeCanvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
-			mazeCanvas.drawPath(solveAlgo.getPath());
+			mazeDrawer.drawMaze(solveAlgo.getNodes(), solveAlgo.getStates());
+			mazeDrawer.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
+			mazeDrawer.drawPath(solveAlgo.getPath());
 		}
 	}
 

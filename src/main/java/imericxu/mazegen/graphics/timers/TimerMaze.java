@@ -2,7 +2,7 @@ package imericxu.mazegen.graphics.timers;
 
 import imericxu.mazegen.core.maze_algorithm.MazeAlgorithm;
 import imericxu.mazegen.graphics.Maze;
-import imericxu.mazegen.graphics.MazeCanvas;
+import imericxu.mazegen.graphics.MazeDrawer;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -10,18 +10,18 @@ import javafx.animation.AnimationTimer;
  */
 public class TimerMaze extends AnimationTimer {
 	private final Maze.MazeListener listener;
-	private final MazeCanvas mazeCanvas;
+	private final MazeDrawer mazeDrawer;
 	private final MazeAlgorithm mazeAlgorithm;
 
-	public TimerMaze(Maze.MazeListener listener, MazeCanvas mazeCanvas, MazeAlgorithm mazeAlgorithm) {
+	public TimerMaze(Maze.MazeListener listener, MazeDrawer mazeDrawer, MazeAlgorithm mazeAlgorithm) {
 		this.listener = listener;
-		this.mazeCanvas = mazeCanvas;
+		this.mazeDrawer = mazeDrawer;
 		this.mazeAlgorithm = mazeAlgorithm;
 	}
 
 	@Override
 	public void handle(long l) {
-		mazeCanvas.drawUpdates(mazeAlgorithm);
+		mazeDrawer.drawUpdates(mazeAlgorithm);
 		mazeAlgorithm.getChangeList().clear();
 		if (mazeAlgorithm.getFinished()) {
 			listener.onFinishMazeGeneration(mazeAlgorithm.getNodes());

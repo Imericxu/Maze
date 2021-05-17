@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display orthogonal mazes
  */
-public class MazeCanvas {
+public class MazeDrawer {
 	protected final GraphicsContext gc;
 	private final Canvas canvas;
 	private final int rows;
@@ -21,7 +21,7 @@ public class MazeCanvas {
 	private final double cellSize;
 	private final double wallSize;
 
-	public MazeCanvas(Canvas canvas, int rows, int cols, double cellWallRatio) {
+	public MazeDrawer(Canvas canvas, int rows, int cols, double cellWallRatio) {
 		gc = canvas.getGraphicsContext2D();
 		this.canvas = canvas;
 		this.rows = rows;
