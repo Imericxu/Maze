@@ -75,18 +75,15 @@ public class MazeController {
 	}
 
 	private MazeOptions parseInput() {
-		final int rows = MainController.parseOrDefault(inputRows.getText(), 20, Integer::parseUnsignedInt);
-		final int cols = MainController.parseOrDefault(inputCols.getText(), 20, Integer::parseUnsignedInt);
-		final float ratio = MainController.parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
-		final MazeType mazeType = comboMazeAlgorithm.getValue();
-		final SolveType solveType = comboSolveAlgorithm.getValue();
-		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
-		final boolean doSolve = switchDoSolve.isSelected();
-		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
-		return new MazeOptions(
-				rows, cols, ratio,
-				mazeType, solveType,
-				doAnimateMaze, doSolve, doAnimateSolve
+		return MainController.parseInput(
+				inputRows,
+				inputCols,
+				inputRatio,
+				comboMazeAlgorithm,
+				comboSolveAlgorithm,
+				switchAnimateMaze,
+				switchDoSolve,
+				switchAnimateSolve
 		);
 	}
 }

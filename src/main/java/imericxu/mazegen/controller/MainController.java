@@ -78,6 +78,32 @@ public class MainController {
 		Arrays.stream(nodes).forEach(node -> node.setOnKeyPressed(removeFocus));
 	}
 
+	public static MazeOptions parseInput(
+			TextField inputRows,
+			TextField inputCols,
+			TextField inputRatio,
+			ComboBox<MazeType> comboMazeAlgorithm,
+			ComboBox<SolveType> comboSolveAlgorithm,
+			ToggleSwitch switchAnimateMaze,
+			ToggleSwitch switchDoSolve,
+			ToggleSwitch switchAnimateSolve
+	) {
+		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseUnsignedInt);
+		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseUnsignedInt);
+		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
+		final MazeType mazeType = comboMazeAlgorithm.getValue();
+		final SolveType solveType = comboSolveAlgorithm.getValue();
+		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
+		final boolean doSolve = switchDoSolve.isSelected();
+		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
+
+		return new MazeOptions(
+				rows, cols, ratio,
+				mazeType, solveType,
+				doAnimateMaze, doSolve, doAnimateSolve
+		);
+	}
+
 	@FXML
 	public void initialize() {
 		restrictInputs(inputRows, inputCols, inputRatio);
@@ -109,19 +135,15 @@ public class MainController {
 	}
 
 	private MazeOptions parseInput() {
-		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
-		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
-		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
-		final MazeType mazeType = comboMazeAlgorithm.getValue();
-		final SolveType solveType = comboSolveAlgorithm.getValue();
-		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
-		final boolean doSolve = switchDoSolve.isSelected();
-		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
-
-		return new MazeOptions(
-				rows, cols, ratio,
-				mazeType, solveType,
-				doAnimateMaze, doSolve, doAnimateSolve
+		return parseInput(
+				inputRows,
+				inputCols,
+				inputRatio,
+				comboMazeAlgorithm,
+				comboSolveAlgorithm,
+				switchAnimateMaze,
+				switchDoSolve,
+				switchAnimateSolve
 		);
 	}
 }
