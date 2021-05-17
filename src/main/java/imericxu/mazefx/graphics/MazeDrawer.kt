@@ -50,7 +50,7 @@ class MazeDrawer(
 			drawCell(topLeft, cellColor)
 
 			nodes[id].connections.forEach { connectionId ->
-				val wallColor = if (states[connectionId] == State.SOLID) Colors.SOLID.color else cellColor
+				val wallColor = if (states[connectionId] == State.SOLID) MazeColor.SOLID.color else cellColor
 
 				when (connectionId) {
 					// Top
@@ -76,7 +76,7 @@ class MazeDrawer(
 				drawCell(topLeft, cellColor)
 
 				fun getWallColor(connectionId: Int): Color =
-					if (states[connectionId] == State.SOLID) Colors.SOLID.color else cellColor
+					if (states[connectionId] == State.SOLID) MazeColor.SOLID.color else cellColor
 
 				val connections = nodes[id].connections
 				// Right
@@ -98,7 +98,7 @@ class MazeDrawer(
 	fun drawPath(pathList: List<Int>) {
 		if (pathList.isEmpty()) return
 
-		gc.stroke = Colors.PATH.color
+		gc.stroke = MazeColor.PATH.color
 		gc.lineWidth = cellSize * 0.5
 
 		val halfCellSize = cellSize / 2.0
@@ -120,12 +120,12 @@ class MazeDrawer(
 	}
 
 	fun drawStartAndEnd(startId: Int, endId: Int) {
-		drawCell(calcCellTopLeftPos(startId), Colors.START.color)
-		drawCell(calcCellTopLeftPos(endId), Colors.END.color)
+		drawCell(calcCellTopLeftPos(startId), MazeColor.START.color)
+		drawCell(calcCellTopLeftPos(endId), MazeColor.END.color)
 	}
 
 	fun drawBlank() {
-		gc.fill = Colors.EMPTY.color
+		gc.fill = MazeColor.EMPTY.color
 		gc.fillRect(0.0, 0.0, canvas.width, canvas.height)
 	}
 
@@ -163,13 +163,12 @@ class MazeDrawer(
 
 private val State.color: Color
 	get() = when (this) {
-		State.EMPTY -> Colors.EMPTY.color
-		State.PARTIAL -> Colors.PARTIAL.color
-		State.SOLID -> Colors.SOLID.color
+		State.EMPTY -> MazeColor.EMPTY.color
+		State.PARTIAL -> MazeColor.PARTIAL.color
+		State.SOLID -> MazeColor.SOLID.color
 	}
 
-// TODO Rename to MazeColor
-private enum class Colors(val color: Color) {
+private enum class MazeColor(val color: Color) {
 	EMPTY(Color.web("0x1c5188")),
 	PARTIAL(Color.web("0xADD9FF")),
 	SOLID(Color.WHITE),
