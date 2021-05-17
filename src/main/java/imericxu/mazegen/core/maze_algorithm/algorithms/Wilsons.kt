@@ -38,15 +38,19 @@ class Wilsons(nodes: Array<Node>) : MazeAlgorithm(nodes) {
 			.minus(with(currentWalk) { getOrElse(size - 2) { -1 } })
 			.random()
 
-		if (mazeNodes.contains(randomId)) {
-			nodes[currentId].connect(nodes[randomId])
-			transferWalkToMaze()
-		} else if (currentWalk.contains(randomId)) {
-			deleteLoop(randomId)
-		} else {
-			currentWalk.addLast(randomId)
-			nodes[currentId].connect(nodes[randomId])
-			changeState(randomId, State.PARTIAL)
+		when {
+			mazeNodes.contains(randomId) -> {
+				nodes[currentId].connect(nodes[randomId])
+				transferWalkToMaze()
+			}
+			currentWalk.contains(randomId) -> {
+				deleteLoop(randomId)
+			}
+			else -> {
+				currentWalk.addLast(randomId)
+				nodes[currentId].connect(nodes[randomId])
+				changeState(randomId, State.PARTIAL)
+			}
 		}
 
 		return nonMazeNodes.isEmpty()
