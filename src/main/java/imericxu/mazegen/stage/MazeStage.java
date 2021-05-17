@@ -1,4 +1,4 @@
-package imericxu.mazegen.graphics;
+package imericxu.mazegen.stage;
 
 import imericxu.mazegen.MazeScene;
 import javafx.fxml.FXMLLoader;

@@ -1,7 +1,7 @@
 package imericxu.mazegen;
 
 import imericxu.mazegen.graphics.Maze;
-import imericxu.mazegen.graphics.MazeStage;
+import imericxu.mazegen.stage.MazeStage;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
