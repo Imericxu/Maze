@@ -6,7 +6,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
       fx:controller="imericxu.mazegen.controller.MazeController"
-      stylesheets="@../stylesheets/maze_scene.css">
+      stylesheets="@../stylesheets/maze.css">
 	<HBox id="menu" alignment="CENTER" VBox.vgrow="NEVER">
 		<Label text="Rows"/>
 		<TextField fx:id="inputRows" promptText="20"/>
