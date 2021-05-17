@@ -10,9 +10,11 @@ import imericxu.mazegen.core.solve_algorithms.Tremaux;
 import imericxu.mazegen.graphics.timers.TimerMaze;
 import imericxu.mazegen.graphics.timers.TimerSolve;
 import imericxu.mazegen.user_input.MazeOptions;
+import javafx.scene.canvas.Canvas;
 import kotlin.Pair;
 import kotlin.jvm.functions.Function2;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -24,13 +26,13 @@ import java.util.stream.IntStream;
 public class Maze {
 	private static final Random random = new Random();
 	private final MazeOptions options;
-	private final MazeStage stage;
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
+	private final MazeCanvas mazeCanvas;
 
-	public Maze(MazeOptions options) {
+	public Maze(MazeOptions options, Canvas canvas) throws IOException {
 		this.options = options;
-		this.stage = new MazeStage();
 		this.aStarHeuristic = getAStarHeuristic();
+		mazeCanvas = new MazeCanvas(canvas, options.getRows(), options.getCols(), options.getCellWallRatio());
 	}
 
 	public static Node[] generateNodes(int rows, int cols) {
@@ -64,19 +66,16 @@ public class Maze {
 	 * @see MazeOptions
 	 */
 	public void generate() {
-		final var canvas = makeCanvas(stage.getSceneWidth(), stage.getSceneHeight());
-		stage.setCanvas(canvas);
-		canvas.drawBlank();
-		stage.show();
+		mazeCanvas.drawBlank();
 
 		final var mazeAlgo = makeMazeAlgorithm(options.getMazeType());
 
 		if (options.getDoAnimateMaze()) {
-			TimerMaze timerMaze = new TimerMaze(this::solve, canvas, mazeAlgo);
+			TimerMaze timerMaze = new TimerMaze(this::solve, mazeCanvas, mazeAlgo);
 			timerMaze.start();
 		} else {
 			mazeAlgo.finishImmediately();
-			canvas.drawMaze(mazeAlgo.getNodes(), mazeAlgo.getStates());
+			mazeCanvas.drawMaze(mazeAlgo.getNodes(), mazeAlgo.getStates());
 			solve(mazeAlgo.getNodes());
 		}
 	}
@@ -90,21 +89,16 @@ public class Maze {
 		if (!options.getDoSolve()) return;
 
 		final var solveAlgo = makeSolveAlgorithm(options.getSolveType(), nodes);
-		final var canvas = stage.getCanvas();
 
 		if (options.getDoAnimateSolve()) {
-			TimerSolve timerSolve = new TimerSolve(canvas, solveAlgo);
+			TimerSolve timerSolve = new TimerSolve(mazeCanvas, solveAlgo);
 			timerSolve.start();
 		} else {
 			solveAlgo.finishImmediately();
-			canvas.drawMaze(solveAlgo.getNodes(), solveAlgo.getStates());
-			canvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
-			canvas.drawPath(solveAlgo.getPath());
+			mazeCanvas.drawMaze(solveAlgo.getNodes(), solveAlgo.getStates());
+			mazeCanvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
+			mazeCanvas.drawPath(solveAlgo.getPath());
 		}
-	}
-
-	private MazeCanvas makeCanvas(double maxWidth, double maxHeight) {
-		return new MazeCanvas(maxWidth, maxHeight, options.getRows(), options.getCols(), options.getCellWallRatio());
 	}
 
 	private Function2<Integer, Integer, Double> getAStarHeuristic() {

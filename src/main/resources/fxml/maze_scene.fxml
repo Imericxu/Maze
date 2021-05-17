@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="imericxu.mazegen.MazeScene"
+      stylesheets="@../stylesheets/maze_scene.css">
+	<HBox id="menu" alignment="CENTER" VBox.vgrow="NEVER">
+		<Label text="Rows"/>
+		<TextField fx:id="inputRows" promptText="20"/>
+		<Region styleClass="spacer"/>
+
+		<Label text="Cols"/>
+		<TextField fx:id="inputCols" promptText="20"/>
+		<Region styleClass="spacer"/>
+
+		<Label text="Cell-to-Wall-Size-Ratio"/>
+		<TextField fx:id="inputRatio" promptText="3.0"/>
+		<Region styleClass="spacer"/>
+
+		<Region minWidth="30"/>
+		<Button onAction="#generate" text="Generate"/>
+	</HBox>
+	<Pane fx:id="canvasWrapper" VBox.vgrow="ALWAYS">
+		<Canvas fx:id="canvas" height="${canvasWrapper.height}" width="${canvasWrapper.width}"/>
+	</Pane>
+</VBox>

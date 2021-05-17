@@ -1,6 +1,7 @@
 package imericxu.mazegen;
 
 import imericxu.mazegen.graphics.Maze;
+import imericxu.mazegen.graphics.MazeStage;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.function.UnaryOperator;
@@ -60,9 +62,16 @@ public class Controller {
 	 * Attempts to launch the maze after pressing start button
 	 */
 	@FXML
-	public void launchMaze() {
-		Maze maze = new Maze(parseInput());
-		maze.generate();
+	public void launchMaze() throws IOException {
+		final var stage = new MazeStage();
+		stage.setOnShown(event -> {
+			try {
+				new Maze(parseInput(), stage.canvas).generate();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		stage.show();
 	}
 
 	private void removeFocusOnEscape(Node... nodes) {

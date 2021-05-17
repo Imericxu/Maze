@@ -1,0 +1,53 @@
+.root {
+	-fx-background-color: black;
+	-fx-pref-width: 1300;
+	-fx-pref-height: 850;
+}
+
+#menu {
+	-fx-background-color: #232323;
+	-fx-padding: 5;
+}
+
+#menu > * {
+	-fx-text-fill: white;
+}
+
+.label {
+	-fx-padding: 0 8 0 0;
+}
+
+.text-field {
+	-fx-pref-width: 60;
+	-fx-background-color: #505050, linear-gradient(from 50% 0% to 50% 15%, black, #1a1a1a);
+	-fx-prompt-text-fill: #5a5a5a;
+}
+
+.text-field:hover {
+	-fx-background-color: #585858, linear-gradient(from 50% 0% to 50% 15%, black, #202020);
+}
+
+.button {
+	-fx-background-color: black, #505050, linear-gradient(from 50% 10% to 50% 80%, #242424, #151515);
+}
+
+.button:hover {
+	-fx-background-color: black, #656565, linear-gradient(from 50% 10% to 50% 80%, #303030, #202020);
+	-fx-cursor: hand;
+}
+
+.button:pressed {
+	-fx-background-color: black, #505050, linear-gradient(from 50% 10% to 50% 80%, #151515, #242424);
+}
+
+.button:focused {
+	-fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
+
+.spacer {
+	-fx-min-width: 20;
+}
+
+#canvasWrapper {
+	-fx-background-color: none;
+}

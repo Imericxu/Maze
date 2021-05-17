@@ -13,29 +13,35 @@ import java.util.function.Function;
 /**
  * {@link javafx.scene.canvas.Canvas} specifically designed to display orthogonal mazes
  */
-public class MazeCanvas extends Canvas {
-	protected final GraphicsContext gc = getGraphicsContext2D();
+public class MazeCanvas {
+	protected final GraphicsContext gc;
+	private final Canvas canvas;
 	private final int rows;
 	private final int cols;
 	private final double cellSize;
 	private final double wallSize;
 
-	public MazeCanvas(double maxWidth, double maxHeight, int rows, int cols, double cellWallRatio) {
+	public MazeCanvas(Canvas canvas, int rows, int cols, double cellWallRatio) {
+		gc = canvas.getGraphicsContext2D();
+		this.canvas = canvas;
 		this.rows = rows;
 		this.cols = cols;
+
+		final double maxWidth = canvas.getWidth();
+		final double maxHeight = canvas.getHeight();
 
 		double screenRatio = maxWidth / maxHeight;
 		double gridRatio = (double) cols / rows;
 		if (screenRatio > gridRatio) {
-			setHeight(maxHeight);
+//			setHeight(maxHeight);
 			wallSize = maxHeight / (rows * (cellWallRatio + 1) + 1);
 			cellSize = wallSize * cellWallRatio;
-			setWidth(cols * (cellSize + wallSize) + wallSize);
+//			setWidth(cols * (cellSize + wallSize) + wallSize);
 		} else {
-			setWidth(maxWidth);
+//			setWidth(maxWidth);
 			wallSize = maxWidth / (cols * (cellWallRatio + 1) + 1);
 			cellSize = wallSize * cellWallRatio;
-			setHeight(rows * (cellSize + wallSize) + wallSize);
+//			setHeight(rows * (cellSize + wallSize) + wallSize);
 		}
 
 		drawBlank();
@@ -142,7 +148,7 @@ public class MazeCanvas extends Canvas {
 	 */
 	public void drawBlank() {
 		gc.setFill(getColor(State.EMPTY));
-		gc.fillRect(0, 0, getWidth(), getHeight());
+		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	public Color getColor(State state) {
