@@ -142,7 +142,7 @@ public class Maze {
 		final var nodes = generateNodes(options.getRows(), options.getCols());
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
-			case RECURSIVE -> new Backtracking(nodes);
+			case BACKTRACKING -> new Backtracking(nodes);
 			case WILSON -> new Wilsons(nodes);
 			case KRUSKAL -> new Kruskals(nodes);
 			default -> throw new IllegalArgumentException();
