@@ -20,9 +20,7 @@ import kotlin.Pair;
 import kotlin.jvm.functions.Function2;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -140,12 +138,19 @@ public class Maze {
 	 */
 	private MazeAlgorithm makeMazeAlgorithm(MazeType type) {
 		final var nodes = generateNodes(options.getRows(), options.getCols());
+
+		if (type == MazeType.RANDOM) {
+			final List<MazeType> values = new ArrayList<>(Arrays.asList(MazeType.values()));
+			values.remove(MazeType.RANDOM);
+			type = values.get(random.nextInt(values.size()));
+		}
+
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
 			case BACKTRACKING -> new Backtracking(nodes);
 			case WILSON -> new Wilsons(nodes);
 			case KRUSKAL -> new Kruskals(nodes);
-			default -> throw new IllegalArgumentException();
+			default -> throw new IllegalStateException("Unexpected value: " + type);
 		};
 	}
 
@@ -158,11 +163,17 @@ public class Maze {
 		final int start = startEnd.getFirst();
 		final int end = startEnd.getSecond();
 
+		if (type == SolveType.RANDOM) {
+			final List<SolveType> values = new ArrayList<>(Arrays.asList(SolveType.values()));
+			values.remove(SolveType.RANDOM);
+			type = values.get(random.nextInt(values.size()));
+		}
+
 		return switch (type) {
 			case TREMAUX -> new Tremaux(nodes, start, end);
 			case ASTAR -> new AStar(nodes, start, end, aStarHeuristic);
 			case BREADTH -> new Breadth(nodes, start, end);
-			default -> throw new IllegalArgumentException();
+			default -> throw new IllegalStateException("Unexpected value: " + type);
 		};
 	}
 

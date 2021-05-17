@@ -78,28 +78,6 @@ public class MainController {
 		Arrays.stream(nodes).forEach(node -> node.setOnKeyPressed(removeFocus));
 	}
 
-	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
-		final SolveType solveType;
-		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
-		if (selected == SolveType.RANDOM) {
-			final SolveType[] types = SolveType.values();
-			selected = types[random.nextInt(types.length - 1) + 1];
-		}
-		solveType = selected;
-		return solveType;
-	}
-
-	public static MazeType getMazeType(ComboBox<MazeType> comboMazeAlgo) {
-		final MazeType mazeType;
-		MazeType selected = comboMazeAlgo.getSelectionModel().getSelectedItem();
-		if (selected == MazeType.RANDOM) {
-			final MazeType[] types = MazeType.values();
-			selected = types[random.nextInt(types.length - 1) + 1];
-		}
-		mazeType = selected;
-		return mazeType;
-	}
-
 	@FXML
 	public void initialize() {
 		restrictInputs(inputRows, inputCols, inputRatio);
@@ -134,8 +112,8 @@ public class MainController {
 		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
 		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
 		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
-		final MazeType mazeType = getMazeType(comboMazeAlgorithm);
-		final SolveType solveType = getSolveType(comboSolveAlgorithm);
+		final MazeType mazeType = comboMazeAlgorithm.getValue();
+		final SolveType solveType = comboSolveAlgorithm.getValue();
 		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
