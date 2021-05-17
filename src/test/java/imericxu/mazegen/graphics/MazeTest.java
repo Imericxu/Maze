@@ -1,6 +1,5 @@
-package imericxu.mazegen.logic.maze_types;
+package imericxu.mazegen.graphics;
 
-import imericxu.mazegen.graphics.Maze;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
