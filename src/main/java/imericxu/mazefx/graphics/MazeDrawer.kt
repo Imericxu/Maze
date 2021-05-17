@@ -28,7 +28,6 @@ class MazeDrawer(
 
 		cellSize = wallSize * cellWallRatio
 
-		// TODO Remove after commit
 		drawBlank()
 	}
 
