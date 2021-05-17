@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>imericxu.mazegen</groupId>
+    <groupId>imericxu.mazefx</groupId>
     <artifactId>Maze</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -63,7 +63,7 @@
                     <stripDebug>true</stripDebug>
                     <noManPages>true</noManPages>
                     <launcher>mazefx</launcher>
-                    <mainClass>imericxu.mazegen.Main</mainClass>
+                    <mainClass>imericxu.mazefx.Main</mainClass>
                     <jlinkImageName>mazefx</jlinkImageName>
                     <jlinkZipName>mazefx</jlinkZipName>
                 </configuration>
@@ -77,7 +77,7 @@
                     <appVersion>1.0.0</appVersion>
                     <vendor>imericxu</vendor>
                     <destination>target/dist</destination>
-                    <module>imericxu.mazegen/imericxu.mazegen.Main</module>
+                    <module>imericxu.mazefx/imericxu.mazefx.Main</module>
                     <runtimeImage>target/mazefx</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>

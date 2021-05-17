@@ -4,8 +4,8 @@ module imericxu.mazegen {
 	requires org.controlsfx.controls;
 	requires kotlin.stdlib;
 
-	opens imericxu.mazegen to javafx.fxml;
-	opens imericxu.mazegen.controller to javafx.fxml;
+	opens imericxu.mazefx to javafx.fxml;
+	opens imericxu.mazefx.controller to javafx.fxml;
 
-	exports imericxu.mazegen;
+	exports imericxu.mazefx;
 }

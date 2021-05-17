@@ -27,7 +27,7 @@ Use Maven to build and run the project.
 
 1. Open terminal and cd to folder containing 'pom.xml'
 2. `mvn compile`
-3. `mvn exec:java -Dexec.mainClass=imericxu.mazegen.Main`
+3. `mvn exec:java -Dexec.mainClass=imericxu.mazefx.Main`
 
 ## Roadmap
 
