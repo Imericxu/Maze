@@ -6,10 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.ToggleSwitch?>
 <VBox xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../stylesheets/maze.css"
       xmlns="http://javafx.com/javafx"
-      fx:controller="imericxu.mazegen.controller.MazeController">
-	<HBox id="menu" alignment="CENTER" VBox.vgrow="NEVER">
+      fx:controller="imericxu.mazegen.controller.MazeController"
+      stylesheets="@../stylesheets/maze.css"
+      fx:id="root">
+	<HBox fx:id="menu" alignment="CENTER" VBox.vgrow="NEVER">
 		<Label text="Rows"/>
 		<TextField fx:id="inputRows" promptText="20"/>
 		<Region styleClass="spacer"/>

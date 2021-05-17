@@ -5,15 +5,22 @@ import imericxu.mazegen.core.solve_algorithm.SolveType;
 import imericxu.mazegen.graphics.Maze;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.IOException;
 
 public class MazeController {
+	@FXML
+	public VBox root;
+	@FXML
+	public HBox menu;
 	@FXML
 	public Pane canvasWrapper;
 	@FXML
@@ -44,6 +51,8 @@ public class MazeController {
 
 		comboSolveAlgorithm.getItems().addAll(SolveType.values());
 		comboSolveAlgorithm.getSelectionModel().select(SolveType.RANDOM);
+
+		MainController.removeFocusOnEscape(root, menu.getChildren().toArray(Node[]::new));
 	}
 
 	public void injectValues(MazeOptions mazeOptions) {

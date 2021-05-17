@@ -65,6 +65,19 @@ public class MainController {
 		inputRatio.setTextFormatter(new TextFormatter<>(floatFilter));
 	}
 
+	/**
+	 * Puts focus on the root if the escape key is pressed when the given nodes are active
+	 */
+	public static void removeFocusOnEscape(Node root, Node... nodes) {
+		final EventHandler<KeyEvent> removeFocus = event -> {
+			if (event.getCode() == KeyCode.ESCAPE) {
+				root.requestFocus();
+			}
+		};
+
+		Arrays.stream(nodes).forEach(node -> node.setOnKeyPressed(removeFocus));
+	}
+
 	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
 		final SolveType solveType;
 		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
@@ -115,19 +128,6 @@ public class MainController {
 			}
 		});
 		stage.show();
-	}
-
-	/**
-	 * Puts focus on the root if the escape key is pressed when the given nodes are active
-	 */
-	private void removeFocusOnEscape(Node... nodes) {
-		final EventHandler<KeyEvent> removeFocus = event -> {
-			if (event.getCode() == KeyCode.ESCAPE) {
-				root.requestFocus();
-			}
-		};
-
-		Arrays.stream(nodes).forEach(node -> node.setOnKeyPressed(removeFocus));
 	}
 
 	private MazeOptions parseInput() {
