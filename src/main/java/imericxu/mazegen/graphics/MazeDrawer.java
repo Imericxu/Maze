@@ -27,22 +27,14 @@ public class MazeDrawer {
 		this.rows = rows;
 		this.cols = cols;
 
-		final double maxWidth = canvas.getWidth();
-		final double maxHeight = canvas.getHeight();
-
-		double screenRatio = maxWidth / maxHeight;
+		double canvasRatio = canvas.getWidth() / canvas.getHeight();
 		double gridRatio = (double) cols / rows;
-		if (screenRatio > gridRatio) {
-//			setHeight(maxHeight);
-			wallSize = maxHeight / (rows * (cellWallRatio + 1) + 1);
-			cellSize = wallSize * cellWallRatio;
-//			setWidth(cols * (cellSize + wallSize) + wallSize);
+		if (canvasRatio > gridRatio) {
+			wallSize = canvas.getHeight() / (rows * (cellWallRatio + 1) + 1);
 		} else {
-//			setWidth(maxWidth);
-			wallSize = maxWidth / (cols * (cellWallRatio + 1) + 1);
-			cellSize = wallSize * cellWallRatio;
-//			setHeight(rows * (cellSize + wallSize) + wallSize);
+			wallSize = canvas.getWidth() / (cols * (cellWallRatio + 1) + 1);
 		}
+		cellSize = wallSize * cellWallRatio;
 
 		drawBlank();
 	}
