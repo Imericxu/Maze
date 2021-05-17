@@ -63,7 +63,7 @@
 
 		<!--Maze Algorithm Section-->
 		<Text styleClass="header" text="Maze Algorithm" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
-		<ComboBox fx:id="comboMazeAlgo"
+		<ComboBox fx:id="comboMazeAlgorithm"
 		          maxWidth="300.0"
 		          promptText="Maze Algorithm"
 		          GridPane.columnIndex="2"
@@ -75,7 +75,7 @@
 
 		<!--Solve Algorithm Section-->
 		<Text styleClass="header" text="Solve Algorithm" GridPane.columnSpan="2" GridPane.rowIndex="4"/>
-		<ComboBox fx:id="comboSolveAlgo"
+		<ComboBox fx:id="comboSolveAlgorithm"
 		          maxWidth="300.0"
 		          promptText="Solve Algorithm"
 		          GridPane.columnIndex="2"

@@ -33,13 +33,13 @@ public class MainController {
 	@FXML
 	public TextField inputRatio;
 	@FXML
-	public ComboBox<MazeType> comboMazeAlgo;
+	public ComboBox<MazeType> comboMazeAlgorithm;
 	@FXML
 	public ToggleSwitch switchAnimateMaze;
 	@FXML
 	public ToggleSwitch switchDoSolve;
 	@FXML
-	public ComboBox<SolveType> comboSolveAlgo;
+	public ComboBox<SolveType> comboSolveAlgorithm;
 	@FXML
 	public ToggleSwitch switchAnimateSolve;
 
@@ -91,13 +91,13 @@ public class MainController {
 	public void initialize() {
 		restrictInputs(inputRows, inputCols, inputRatio);
 
-		comboMazeAlgo.getItems().addAll(MazeType.values());
-		comboMazeAlgo.getSelectionModel().select(MazeType.RANDOM);
+		comboMazeAlgorithm.getItems().addAll(MazeType.values());
+		comboMazeAlgorithm.getSelectionModel().select(MazeType.RANDOM);
 
-		comboSolveAlgo.getItems().addAll(SolveType.values());
-		comboSolveAlgo.getSelectionModel().select(SolveType.RANDOM);
+		comboSolveAlgorithm.getItems().addAll(SolveType.values());
+		comboSolveAlgorithm.getSelectionModel().select(SolveType.RANDOM);
 
-		removeFocusOnEscape(inputRows, inputCols, inputRatio, comboMazeAlgo, comboSolveAlgo);
+		removeFocusOnEscape(inputRows, inputCols, inputRatio, comboMazeAlgorithm, comboSolveAlgorithm);
 	}
 
 	/**
@@ -134,8 +134,8 @@ public class MainController {
 		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
 		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
 		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
-		final MazeType mazeType = getMazeType(comboMazeAlgo);
-		final SolveType solveType = getSolveType(comboSolveAlgo);
+		final MazeType mazeType = getMazeType(comboMazeAlgorithm);
+		final SolveType solveType = getSolveType(comboSolveAlgorithm);
 		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
