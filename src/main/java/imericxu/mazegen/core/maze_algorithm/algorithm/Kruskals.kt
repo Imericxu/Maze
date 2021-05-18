@@ -1,8 +1,9 @@
-package imericxu.mazegen.core.maze_algorithms
+package imericxu.mazegen.core.maze_algorithm.algorithm
 
 import imericxu.mazegen.core.Node
 import imericxu.mazegen.core.State
-import imericxu.mazegen.core.maze_algorithms.helper.UnionFind
+import imericxu.mazegen.core.maze_algorithm.MazeAlgorithm
+import imericxu.mazegen.core.maze_algorithm.algorithm.helper.UnionFind
 
 /**
  * Randomized Kruskal’s Algorithm
@@ -12,7 +13,8 @@ import imericxu.mazegen.core.maze_algorithms.helper.UnionFind
  * @see <a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm">Kruskal’s Algorithm (Wikipedia)</a>
  */
 class Kruskals(nodes: Array<Node>) : MazeAlgorithm(nodes) {
-	private val disjointSet = UnionFind(nodes.map { it.id }.toSet())
+	private val disjointSet =
+		UnionFind(nodes.map { it.id }.toSet())
 
 	/**
 	 * A pre-shuffled list of all the walls

@@ -1,6 +1,6 @@
 package imericxu.mazegen.graphics.timers;
 
-import imericxu.mazegen.core.solve_algorithms.SolveAlgorithm;
+import imericxu.mazegen.core.solve_algorithm.SolveAlgorithm;
 import imericxu.mazegen.graphics.MazeCanvas;
 import javafx.animation.AnimationTimer;
 

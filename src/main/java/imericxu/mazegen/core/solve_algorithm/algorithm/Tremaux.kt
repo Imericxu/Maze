@@ -1,7 +1,8 @@
-package imericxu.mazegen.core.solve_algorithms
+package imericxu.mazegen.core.solve_algorithm.algorithm
 
 import imericxu.mazegen.core.Node
 import imericxu.mazegen.core.State
+import imericxu.mazegen.core.solve_algorithm.SolveAlgorithm
 
 /**
  * Trémaux’s Algorithm

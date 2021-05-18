@@ -1,7 +1,8 @@
-package imericxu.mazegen.core.maze_algorithms
+package imericxu.mazegen.core.maze_algorithm.algorithm
 
 import imericxu.mazegen.core.Node
 import imericxu.mazegen.core.State
+import imericxu.mazegen.core.maze_algorithm.MazeAlgorithm
 import java.util.*
 import kotlin.random.Random
 

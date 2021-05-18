@@ -1,4 +1,4 @@
-package imericxu.mazegen.core.solve_algorithms
+package imericxu.mazegen.core.solve_algorithm
 
 import imericxu.mazegen.core.Algorithm
 import imericxu.mazegen.core.Node
