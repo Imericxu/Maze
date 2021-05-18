@@ -68,8 +68,7 @@ public class MazeController {
 
 	@FXML
 	public void generate() throws IOException {
-		final MazeOptions options = parseInput();
-		final Maze maze = new Maze(options, canvas);
+		final Maze maze = new Maze(parseInput(), canvas);
 		// TODO Stop timers before generating
 		maze.generate();
 	}

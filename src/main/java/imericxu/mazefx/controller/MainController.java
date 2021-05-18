@@ -2,7 +2,6 @@ package imericxu.mazefx.controller;
 
 import imericxu.mazefx.core.maze_algorithm.MazeType;
 import imericxu.mazefx.core.solve_algorithm.SolveType;
-import imericxu.mazefx.graphics.Maze;
 import imericxu.mazefx.stage.MazeStage;
 import imericxu.mazefx.user_input.MazeOptions;
 import javafx.event.EventHandler;
@@ -124,14 +123,8 @@ public class MainController {
 	public void launchMaze() throws IOException {
 		final MazeOptions options = parseInput();
 		final var stage = new MazeStage(options);
-		stage.setOnShown(event -> {
-			try {
-				new Maze(options, stage.canvas).generate();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
 		stage.show();
+		stage.controller.generate();
 	}
 
 	private MazeOptions parseInput() {
