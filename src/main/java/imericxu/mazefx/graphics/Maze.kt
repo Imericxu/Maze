@@ -26,7 +26,7 @@ object Maze {
 		with(options) {
 			val mazeDrawer = MazeDrawer(canvas, rows, cols, cellWallRatio)
 			val mazeAlgorithm = makeMazeAlgorithm(mazeType, rows, cols)
-			var timerMaze: AnimationTimer? = null
+			val timerMaze: AnimationTimer
 			var timerSolve: AnimationTimer? = null
 
 			fun startSolve(nodes: Array<Node>) {
@@ -37,15 +37,8 @@ object Maze {
 				}
 			}
 
-			if (doAnimateMaze) {
-				timerMaze = MazeTimer(mazeDrawer, mazeAlgorithm, ::startSolve).also {
-					it.start()
-				}
-			} else {
-				mazeAlgorithm.finishImmediately()
-				mazeDrawer.update(mazeAlgorithm.nodes, mazeAlgorithm.states)
-				mazeDrawer.render()
-				startSolve(mazeAlgorithm.nodes)
+			timerMaze = MazeTimer(mazeDrawer, mazeAlgorithm, doAnimateMaze, ::startSolve).also {
+				it.start()
 			}
 
 			return listOfNotNull(timerMaze, timerSolve)
