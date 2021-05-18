@@ -32,16 +32,8 @@ object Maze {
 			fun startSolve(nodes: Array<Node>) {
 				if (!doSolve) return
 				val solveAlgorithm = makeSolveAlgorithm(solveType, nodes, rows, cols, makeAStarHeuristic(cols))
-				if (doAnimateSolve) {
-					timerSolve = SolveTimer(mazeDrawer, solveAlgorithm).also {
-						it.start()
-					}
-				} else {
-					solveAlgorithm.finishImmediately()
-					mazeDrawer.update(solveAlgorithm.nodes, solveAlgorithm.states)
-					mazeDrawer.updateStartEnd(solveAlgorithm.startId, solveAlgorithm.endId)
-					mazeDrawer.render()
-					mazeDrawer.renderPath(solveAlgorithm.path)
+				timerSolve = SolveTimer(mazeDrawer, solveAlgorithm, doAnimateSolve).also {
+					it.start()
 				}
 			}
 
