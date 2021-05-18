@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  * @param <T> element type
  * @author Tom Conerly
  */
+@SuppressWarnings("unused")
 public class UnionFind<T> {
 	private final Map<T, T> parentMap;
 	private final Map<T, Integer> rankMap;
