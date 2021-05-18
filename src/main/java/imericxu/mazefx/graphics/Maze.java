@@ -19,7 +19,6 @@ import javafx.scene.canvas.Canvas;
 import kotlin.Pair;
 import kotlin.jvm.functions.Function2;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -32,7 +31,7 @@ public class Maze {
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
 	private final MazeDrawer mazeDrawer;
 
-	public Maze(MazeOptions options, Canvas canvas) throws IOException {
+	public Maze(MazeOptions options, Canvas canvas) {
 		this.options = options;
 		this.aStarHeuristic = getAStarHeuristic();
 		mazeDrawer = new MazeDrawer(canvas, options.getRows(), options.getCols(), options.getCellWallRatio());

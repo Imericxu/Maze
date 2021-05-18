@@ -14,8 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
-import java.io.IOException;
-
 public class MazeController {
 	@FXML
 	public VBox root;
@@ -67,7 +65,7 @@ public class MazeController {
 	}
 
 	@FXML
-	public void generate() throws IOException {
+	public void generate() {
 		final Maze maze = new Maze(parseInput(), canvas);
 		// TODO Stop timers before generating
 		maze.generate();
