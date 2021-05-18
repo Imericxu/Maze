@@ -157,7 +157,7 @@ class MazeDrawer(
 		if (pathList.isEmpty()) return
 
 		gc.stroke = MazeColor.PATH.color
-		gc.lineWidth = scale * cellSize * 0.5
+		gc.lineWidth = scale * cellSize * 0.3
 
 		val halfCellSize = cellSize / 2.0
 
