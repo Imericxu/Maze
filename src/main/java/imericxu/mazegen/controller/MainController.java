@@ -1,5 +1,7 @@
 package imericxu.mazegen.controller;
 
+import imericxu.mazegen.core.maze_algorithm.MazeType;
+import imericxu.mazegen.core.solve_algorithm.SolveType;
 import imericxu.mazegen.graphics.Maze;
 import imericxu.mazegen.stage.MazeStage;
 import imericxu.mazegen.user_input.MazeOptions;
@@ -133,42 +135,5 @@ public class MainController {
 				doSolve,
 				doAnimateSolve
 		);
-	}
-
-	public enum MazeType {
-		RANDOM("Random"),
-		PRIM("Prim’s Algorithm"),
-		RECURSIVE("Backtracking Algorithm"),
-		WILSON("Wilson’s Algorithm"),
-		KRUSKAL("Kruskal’s Algorithm");
-
-		private final String label;
-
-		MazeType(String label) {
-			this.label = label;
-		}
-
-		@Override
-		public String toString() {
-			return label;
-		}
-	}
-
-	public enum SolveType {
-		RANDOM("Random"),
-		TREMAUX("Trémaux"),
-		ASTAR("A*"),
-		BREADTH("Breadth First Search");
-
-		private final String label;
-
-		SolveType(String label) {
-			this.label = label;
-		}
-
-		@Override
-		public String toString() {
-			return label;
-		}
 	}
 }
