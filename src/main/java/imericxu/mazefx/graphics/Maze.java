@@ -30,6 +30,8 @@ public class Maze {
 	private final MazeOptions options;
 	private final Function2<Integer, Integer, Double> aStarHeuristic;
 	private final MazeDrawer mazeDrawer;
+	private TimerMaze timerMaze;
+	private TimerSolve timerSolve;
 
 	public Maze(MazeOptions options, Canvas canvas) {
 		this.options = options;
@@ -73,7 +75,7 @@ public class Maze {
 		final var mazeAlgo = makeMazeAlgorithm(options.getMazeType());
 
 		if (options.getDoAnimateMaze()) {
-			TimerMaze timerMaze = new TimerMaze(this::solve, mazeDrawer, mazeAlgo);
+			timerMaze = new TimerMaze(this::solve, mazeDrawer, mazeAlgo);
 			timerMaze.start();
 		} else {
 			mazeAlgo.finishImmediately();
@@ -93,7 +95,7 @@ public class Maze {
 		final var solveAlgo = makeSolveAlgorithm(options.getSolveType(), nodes);
 
 		if (options.getDoAnimateSolve()) {
-			TimerSolve timerSolve = new TimerSolve(mazeDrawer, solveAlgo);
+			timerSolve = new TimerSolve(mazeDrawer, solveAlgo);
 			timerSolve.start();
 		} else {
 			solveAlgo.finishImmediately();
@@ -101,6 +103,13 @@ public class Maze {
 			mazeDrawer.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
 			mazeDrawer.drawPath(solveAlgo.getPath());
 		}
+	}
+
+	public void stop() {
+		if (timerMaze != null)
+			timerMaze.stop();
+		if (timerSolve != null)
+			timerSolve.stop();
 	}
 
 	private Function2<Integer, Integer, Double> getAStarHeuristic() {

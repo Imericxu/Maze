@@ -40,6 +40,8 @@ public class MazeController {
 	@FXML
 	public ToggleSwitch switchAnimateSolve;
 
+	private Maze maze;
+
 	@FXML
 	public void initialize() {
 		MainController.restrictInputs(inputRows, inputCols, inputRatio);
@@ -66,8 +68,9 @@ public class MazeController {
 
 	@FXML
 	public void generate() {
-		final Maze maze = new Maze(parseInput(), canvas);
-		// TODO Stop timers before generating
+		if (maze != null)
+			maze.stop();
+		maze = new Maze(parseInput(), canvas);
 		maze.generate();
 	}
 
