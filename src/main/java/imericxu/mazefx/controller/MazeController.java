@@ -4,6 +4,7 @@ import imericxu.mazefx.core.maze_algorithm.MazeType;
 import imericxu.mazefx.core.solve_algorithm.SolveType;
 import imericxu.mazefx.graphics.Maze;
 import imericxu.mazefx.user_input.MazeOptions;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +14,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MazeController {
 	@FXML
@@ -40,7 +44,7 @@ public class MazeController {
 	@FXML
 	public ToggleSwitch switchAnimateSolve;
 
-	private Maze maze;
+	private List<AnimationTimer> timers = new ArrayList<>();
 
 	@FXML
 	public void initialize() {
@@ -68,10 +72,8 @@ public class MazeController {
 
 	@FXML
 	public void generate() {
-		if (maze != null)
-			maze.stop();
-		maze = new Maze(parseInput(), canvas);
-		maze.generate();
+		timers.forEach(AnimationTimer::stop);
+		timers = Maze.run(parseInput(), canvas);
 	}
 
 	private MazeOptions parseInput() {
