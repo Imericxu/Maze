@@ -156,9 +156,6 @@ class MazeDrawer(
 	fun renderPath(pathList: List<Int>) {
 		if (pathList.isEmpty()) return
 
-		gc.stroke = MazeColor.PATH.color
-		gc.lineWidth = scale * cellSize * 0.3
-
 		val halfCellSize = cellSize / 2.0
 
 		var prevPos = with(calcCellTopLeftPos(pathList.first())) {
@@ -181,6 +178,8 @@ class MazeDrawer(
 			}
 
 		gc.closePath()
+		gc.stroke = MazeColor.PATH.color
+		gc.lineWidth = scale * cellSize * 0.3
 		gc.stroke()
 	}
 
