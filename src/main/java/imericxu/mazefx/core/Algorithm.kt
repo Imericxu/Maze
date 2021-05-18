@@ -3,12 +3,12 @@ package imericxu.mazefx.core
 abstract class Algorithm(val nodes: Array<Node>) {
 	abstract val states: Array<State>
 	val changeList: MutableList<Int> = mutableListOf()
-	var finished = false
+	var isFinished = false
 		private set
 
 	open fun loopOnce() {
-		assert(!finished)
-		finished = loopOnceImpl()
+		assert(!isFinished)
+		isFinished = loopOnceImpl()
 	}
 
 	/**
@@ -18,7 +18,7 @@ abstract class Algorithm(val nodes: Array<Node>) {
 		do {
 			loopOnce()
 			changeList.clear()
-		} while (!finished)
+		} while (!isFinished)
 	}
 
 	protected abstract fun loopOnceImpl(): Boolean

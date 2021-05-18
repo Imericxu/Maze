@@ -23,7 +23,7 @@ public class TimerSolve extends AnimationTimer {
 		// TODO represent the maze in a new way to prevent trails
 		canvas.drawPath(solveAlgo.getPath());
 		solveAlgo.getChangeList().clear();
-		if (solveAlgo.getFinished()) {
+		if (solveAlgo.isFinished()) {
 			stop();
 			return;
 		}

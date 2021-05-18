@@ -23,7 +23,7 @@ public class TimerMaze extends AnimationTimer {
 	public void handle(long l) {
 		mazeDrawer.drawUpdates(mazeAlgorithm);
 		mazeAlgorithm.getChangeList().clear();
-		if (mazeAlgorithm.getFinished()) {
+		if (mazeAlgorithm.isFinished()) {
 			listener.onFinishMazeGeneration(mazeAlgorithm.getNodes());
 			stop();
 			return;
