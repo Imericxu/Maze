@@ -30,6 +30,7 @@ class MazeDrawer(
 	private val width: Int = FULL_SIZE * cols + wallSize
 	private val height: Int = FULL_SIZE * rows + wallSize
 	private val image: WritableImage = WritableImage(width, height)
+	private var origin: Pos
 	private var scale: Double
 
 	init {
@@ -48,6 +49,15 @@ class MazeDrawer(
 		} else {
 			canvas.width / width
 		}
+
+		val tempX: Double = (canvas.width - width) / 2
+		val tempY: Double = (canvas.height - height) / 2
+		val centerX: Double = canvas.width / 2
+		val centerY: Double = canvas.height / 2
+		origin = Pos(
+			x = centerX - (centerX - tempX) * scale,
+			y = centerY - (centerY - tempY) * scale
+		)
 
 		// Image smoothing causes antialiasing of our pixels, which we don't want, because we want sharp pixels
 		// Although, we do want it on when we're drawing less than a pixel
@@ -145,7 +155,13 @@ class MazeDrawer(
 	fun render() {
 		drawList.forEach { rect ->
 			val cropped = WritableImage(image.pixelReader, rect.x, rect.y, rect.width, rect.height)
-			gc.drawImage(cropped, rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale)
+			gc.drawImage(
+				cropped,
+				origin.x + rect.x * scale,
+				origin.y + rect.y * scale,
+				rect.width * scale,
+				rect.height * scale
+			)
 		}
 		drawList.clear()
 	}
@@ -159,7 +175,10 @@ class MazeDrawer(
 		val halfCellSize = cellSize / 2.0
 
 		var prevPos = with(calcCellTopLeftPos(pathList.first())) {
-			Pos(scale * (x + halfCellSize), scale * (y + halfCellSize))
+			Pos(
+				x = origin.x + scale * (x + halfCellSize),
+				y = origin.y + scale * (y + halfCellSize)
+			)
 		}
 		var currentPos: Pos
 
@@ -170,7 +189,10 @@ class MazeDrawer(
 			.drop(1)
 			.forEach {
 				currentPos = with(calcCellTopLeftPos(it)) {
-					Pos(scale * (x + halfCellSize), scale * (y + halfCellSize))
+					Pos(
+						x = origin.x + scale * (x + halfCellSize),
+						y = origin.y + scale * (y + halfCellSize)
+					)
 				}
 				gc.lineTo(currentPos.x, currentPos.y)
 				gc.moveTo(currentPos.x, currentPos.y)
