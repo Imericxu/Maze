@@ -1,6 +1,6 @@
 package imericxu.mazegen.stage;
 
-import imericxu.mazegen.controller.MazeScene;
+import imericxu.mazegen.controller.MazeController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +16,7 @@ public class MazeStage extends Stage {
 		final var loader = new FXMLLoader(getClass().getResource("/fxml/maze_scene.fxml"));
 		final Pane root = loader.load();
 
-		final MazeScene controller = loader.getController();
+		final MazeController controller = loader.getController();
 		canvas = controller.canvas;
 
 		setTitle("Maze Generator");

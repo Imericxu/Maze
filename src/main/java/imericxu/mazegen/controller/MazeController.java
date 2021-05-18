@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-public class MazeScene {
+public class MazeController {
 	@FXML
 	public Pane canvasWrapper;
 	@FXML

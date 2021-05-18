@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.UnaryOperator;
 
-public class Controller {
+public class MainController {
 	private static final Random random = new Random();
 	@FXML
 	public VBox root;

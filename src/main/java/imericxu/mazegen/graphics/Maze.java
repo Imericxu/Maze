@@ -1,6 +1,6 @@
 package imericxu.mazegen.graphics;
 
-import imericxu.mazegen.controller.Controller;
+import imericxu.mazegen.controller.MainController;
 import imericxu.mazegen.core.Node;
 import imericxu.mazegen.core.maze_algorithms.*;
 import imericxu.mazegen.core.solve_algorithms.AStar;
@@ -133,7 +133,7 @@ public class Maze {
 	/**
 	 * @return a runnable maze algorithm based on the type enum
 	 */
-	private MazeAlgorithm makeMazeAlgorithm(Controller.MazeType type) {
+	private MazeAlgorithm makeMazeAlgorithm(MainController.MazeType type) {
 		final var nodes = generateNodes(options.getRows(), options.getCols());
 		return switch (type) {
 			case PRIM -> new Prims(nodes);
@@ -148,7 +148,7 @@ public class Maze {
 	 * @param nodes the maze to be solved
 	 * @return a runnable solve algorithm based on the type enum
 	 */
-	private SolveAlgorithm makeSolveAlgorithm(Controller.SolveType type, Node[] nodes) {
+	private SolveAlgorithm makeSolveAlgorithm(MainController.SolveType type, Node[] nodes) {
 		final var startEnd = randomStartEnd();
 		final int start = startEnd.getFirst();
 		final int end = startEnd.getSecond();
