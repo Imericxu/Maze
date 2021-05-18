@@ -41,11 +41,11 @@
         <Text styleClass="header" text="Dimensions" GridPane.columnSpan="2"/>
         <!--Numeric Inputs-->
         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
-            <Label styleClass="lbl_input" text="Rows"/>
+            <Label styleClass="label-input" text="Rows"/>
             <Region styleClass="spacer-label"/>
             <TextField fx:id="inputRows" promptText="20" styleClass="input"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Label styleClass="lbl_input" text="Columns"/>
+            <Label styleClass="label-input" text="Columns"/>
             <Region styleClass="spacer-label"/>
             <TextField fx:id="inputCols" promptText="20" styleClass="input"/>
         </HBox>
@@ -55,7 +55,7 @@
               prefWidth="200.0"
               GridPane.columnIndex="2"
               GridPane.rowIndex="1">
-            <Label styleClass="lbl_input" text="Cell-to-Wall-Size Ratio"/>
+            <Label styleClass="label-input" text="Cell-to-Wall-Size Ratio"/>
             <Region HBox.hgrow="ALWAYS"/>
             <TextField fx:id="inputRatio" promptText="3.0" styleClass="input"/>
         </HBox>
@@ -67,10 +67,10 @@
                   promptText="Maze Algorithm"
                   GridPane.columnIndex="2"
                   GridPane.rowIndex="2"/>
-        <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="3"/>
+        <Label styleClass="label-toggle" text="Show Animation" GridPane.rowIndex="3"/>
         <ToggleSwitch fx:id="switchAnimateMaze" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         <ToggleSwitch fx:id="switchDoSolve" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        <Label styleClass="lbl_toggle" text="Solve Maze" GridPane.rowIndex="5"/>
+        <Label styleClass="label-toggle" text="Solve Maze" GridPane.rowIndex="5"/>
 
         <!--Solve Algorithm Section-->
         <Text styleClass="header" text="Solve Algorithm" GridPane.columnSpan="2" GridPane.rowIndex="4"/>
@@ -79,7 +79,7 @@
                   promptText="Solve Algorithm"
                   GridPane.columnIndex="2"
                   GridPane.rowIndex="4"/>
-        <Label styleClass="lbl_toggle" text="Show Animation" GridPane.rowIndex="6"/>
+        <Label styleClass="label-toggle" text="Show Animation" GridPane.rowIndex="6"/>
         <ToggleSwitch fx:id="switchAnimateSolve" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
         <Button id="btn_generate"
                 mnemonicParsing="false"

@@ -7,7 +7,7 @@
     -fx-alignment: top left;
 }
 
-.lbl_input {
+.label-input {
     -fx-font-size: 16;
 }
 
@@ -17,7 +17,7 @@
     -fx-pref-width: 40;
 }
 
-.lbl_toggle {
+.label-toggle {
     -fx-font-size: 14;
 }
 
