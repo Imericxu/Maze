@@ -162,19 +162,26 @@ class MazeDrawer(
 		val halfCellSize = cellSize / 2.0
 
 		var prevPos = with(calcCellTopLeftPos(pathList.first())) {
-			Pos(x + halfCellSize, y + halfCellSize)
+			Pos(scale * (x + halfCellSize), scale * (y + halfCellSize))
 		}
 		var currentPos: Pos
+
+		gc.beginPath()
+		gc.moveTo(prevPos.x, prevPos.y)
 
 		pathList
 			.drop(1)
 			.forEach {
 				currentPos = with(calcCellTopLeftPos(it)) {
-					Pos(x + halfCellSize, y + halfCellSize)
+					Pos(scale * (x + halfCellSize), scale * (y + halfCellSize))
 				}
-				gc.strokeLine(prevPos.x, prevPos.y, currentPos.x, currentPos.y)
+				gc.lineTo(currentPos.x, currentPos.y)
+				gc.moveTo(currentPos.x, currentPos.y)
 				prevPos = currentPos
 			}
+
+		gc.closePath()
+		gc.stroke()
 	}
 
 	private fun IntPos.cellUpdateRect() =
