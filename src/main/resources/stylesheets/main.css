@@ -11,16 +11,16 @@
     -fx-font-size: 16;
 }
 
-.input {
-    -fx-alignment: baseline_right;
-    -fx-min-width: 40;
-    -fx-pref-width: 40;
-}
-
 .label-toggle {
     -fx-font-size: 14;
 }
 
 .spacer-label {
     -fx-pref-width: 5;
+}
+
+.input {
+    -fx-alignment: baseline_right;
+    -fx-min-width: 40;
+    -fx-pref-width: 40;
 }
