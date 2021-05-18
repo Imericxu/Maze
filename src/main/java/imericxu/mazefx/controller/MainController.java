@@ -17,12 +17,10 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class MainController {
-	private static final Random random = new Random();
 	@FXML
 	public VBox root;
 	@FXML
