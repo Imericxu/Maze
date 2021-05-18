@@ -65,8 +65,8 @@ class MazeDrawer(
 
 	fun drawMaze(nodes: Array<Node>, states: Array<State>) {
 		var id = 0
-		for (row in 0..rows) {
-			for (col in 0..cols) {
+		for (row in 0 until rows) {
+			for (col in 0 until cols) {
 				val topLeft = calcCellTopLeftPos(id)
 				val cellColor = states[id].color
 
