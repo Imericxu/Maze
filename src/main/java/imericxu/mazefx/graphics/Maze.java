@@ -28,14 +28,12 @@ import java.util.stream.IntStream;
 public class Maze {
 	private static final Random random = new Random();
 	private final MazeOptions options;
-	private final Function2<Integer, Integer, Double> aStarHeuristic;
 	private final MazeDrawer mazeDrawer;
 	private TimerMaze timerMaze;
 	private TimerSolve timerSolve;
 
 	public Maze(MazeOptions options, Canvas canvas) {
 		this.options = options;
-		this.aStarHeuristic = getAStarHeuristic();
 		mazeDrawer = new MazeDrawer(canvas, options.getRows(), options.getCols(), options.getCellWallRatio());
 	}
 
@@ -179,7 +177,7 @@ public class Maze {
 
 		return switch (type) {
 			case TREMAUX -> new Tremaux(nodes, start, end);
-			case ASTAR -> new AStar(nodes, start, end, aStarHeuristic);
+			case ASTAR -> new AStar(nodes, start, end, getAStarHeuristic());
 			case BREADTH -> new Breadth(nodes, start, end);
 			default -> throw new IllegalStateException("Unexpected value: " + type);
 		};
