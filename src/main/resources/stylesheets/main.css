@@ -1,5 +1,10 @@
+#title {
+    -fx-font-size: 50;
+}
+
 .header {
     -fx-font-size: 25;
+    -fx-alignment: top left;
 }
 
 .lbl_input {
@@ -16,5 +21,6 @@
     -fx-font-size: 14;
 }
 
-.combobox {
+.spacer-label {
+    -fx-pref-width: 5;
 }
