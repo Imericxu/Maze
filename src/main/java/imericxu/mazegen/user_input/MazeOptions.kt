@@ -1,6 +1,6 @@
 package imericxu.mazegen.user_input
 
-import imericxu.mazegen.Controller
+import imericxu.mazegen.controller.Controller
 
 data class MazeOptions(
 	val rows: Int,

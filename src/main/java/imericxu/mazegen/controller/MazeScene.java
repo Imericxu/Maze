@@ -1,4 +1,4 @@
-package imericxu.mazegen;
+package imericxu.mazegen.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

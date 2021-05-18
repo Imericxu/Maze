@@ -7,7 +7,7 @@
 <?import org.controlsfx.control.ToggleSwitch?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="imericxu.mazegen.Controller"
+      fx:controller="imericxu.mazegen.controller.Controller"
       stylesheets="@../stylesheets/main.css"
       fx:id="root"
       alignment="CENTER"

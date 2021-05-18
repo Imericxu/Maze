@@ -1,4 +1,4 @@
-package imericxu.mazegen;
+package imericxu.mazegen.controller;
 
 import imericxu.mazegen.graphics.Maze;
 import imericxu.mazegen.stage.MazeStage;

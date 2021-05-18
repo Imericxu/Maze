@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="imericxu.mazegen.MazeScene"
+      fx:controller="imericxu.mazegen.controller.MazeScene"
       stylesheets="@../stylesheets/maze_scene.css">
 	<HBox id="menu" alignment="CENTER" VBox.vgrow="NEVER">
 		<Label text="Rows"/>

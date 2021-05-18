@@ -1,6 +1,6 @@
 package imericxu.mazegen.stage;
 
-import imericxu.mazegen.MazeScene;
+import imericxu.mazegen.controller.MazeScene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;

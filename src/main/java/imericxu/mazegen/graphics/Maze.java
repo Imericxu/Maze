@@ -1,6 +1,6 @@
 package imericxu.mazegen.graphics;
 
-import imericxu.mazegen.Controller;
+import imericxu.mazegen.controller.Controller;
 import imericxu.mazegen.core.Node;
 import imericxu.mazegen.core.maze_algorithms.*;
 import imericxu.mazegen.core.solve_algorithms.AStar;

@@ -5,5 +5,7 @@ module imericxu.mazegen {
 	requires kotlin.stdlib;
 
 	opens imericxu.mazegen to javafx.fxml;
+	opens imericxu.mazegen.controller to javafx.fxml;
+
 	exports imericxu.mazegen;
 }
