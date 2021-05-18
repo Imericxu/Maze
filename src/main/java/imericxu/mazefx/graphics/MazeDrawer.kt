@@ -148,20 +148,20 @@ class MazeDrawer(
 	}
 
 	private data class Pos(val x: Double, val y: Double)
-}
 
-private val State.color: Color
-	get() = when (this) {
-		State.EMPTY -> MazeColor.EMPTY.color
-		State.PARTIAL -> MazeColor.PARTIAL.color
-		State.SOLID -> MazeColor.SOLID.color
+	private val State.color: Color
+		get() = when (this) {
+			State.EMPTY -> MazeColor.EMPTY.color
+			State.PARTIAL -> MazeColor.PARTIAL.color
+			State.SOLID -> MazeColor.SOLID.color
+		}
+
+	private enum class MazeColor(val color: Color) {
+		EMPTY(Color.web("0x1c5188")),
+		PARTIAL(Color.web("0xADD9FF")),
+		SOLID(Color.WHITE),
+		PATH(Color.web("0xAD360B")),
+		START(Color.web("#06D6A0")),
+		END(Color.web("#AF2BBF"))
 	}
-
-private enum class MazeColor(val color: Color) {
-	EMPTY(Color.web("0x1c5188")),
-	PARTIAL(Color.web("0xADD9FF")),
-	SOLID(Color.WHITE),
-	PATH(Color.web("0xAD360B")),
-	START(Color.web("#06D6A0")),
-	END(Color.web("#AF2BBF"))
 }
