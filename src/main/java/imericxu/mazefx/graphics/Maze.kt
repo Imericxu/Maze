@@ -33,9 +33,10 @@ object Maze {
 				if (doAnimateSolve) {
 					timerSolve = object : AnimationTimer() {
 						override fun handle(now: Long) {
-							mazeDrawer.drawUpdates(solveAlgorithm)
-							mazeDrawer.drawStartAndEnd(solveAlgorithm.startId, solveAlgorithm.endId)
-							mazeDrawer.drawPath(solveAlgorithm.path)
+							mazeDrawer.update(solveAlgorithm)
+							mazeDrawer.updateStartEnd(solveAlgorithm.startId, solveAlgorithm.endId)
+							mazeDrawer.render()
+							mazeDrawer.renderPath(solveAlgorithm.path)
 							solveAlgorithm.changeList.clear()
 							if (solveAlgorithm.isFinished) {
 								stop()
@@ -47,16 +48,18 @@ object Maze {
 					timerSolve!!.start()
 				} else {
 					solveAlgorithm.finishImmediately()
-					mazeDrawer.drawMaze(solveAlgorithm.nodes, solveAlgorithm.states)
-					mazeDrawer.drawStartAndEnd(solveAlgorithm.startId, solveAlgorithm.endId)
-					mazeDrawer.drawPath(solveAlgorithm.path)
+					mazeDrawer.update(solveAlgorithm.nodes, solveAlgorithm.states)
+					mazeDrawer.updateStartEnd(solveAlgorithm.startId, solveAlgorithm.endId)
+					mazeDrawer.render()
+					mazeDrawer.renderPath(solveAlgorithm.path)
 				}
 			}
 
 			if (doAnimateMaze) {
 				timerMaze = object : AnimationTimer() {
 					override fun handle(now: Long) {
-						mazeDrawer.drawUpdates(mazeAlgorithm)
+						mazeDrawer.update(mazeAlgorithm)
+						mazeDrawer.render()
 						mazeAlgorithm.changeList.clear()
 						if (mazeAlgorithm.isFinished) {
 							startSolve(mazeAlgorithm.nodes)
@@ -69,7 +72,8 @@ object Maze {
 				timerMaze.start()
 			} else {
 				mazeAlgorithm.finishImmediately()
-				mazeDrawer.drawMaze(mazeAlgorithm.nodes, mazeAlgorithm.states)
+				mazeDrawer.update(mazeAlgorithm.nodes, mazeAlgorithm.states)
+				mazeDrawer.render()
 				startSolve(mazeAlgorithm.nodes)
 			}
 
