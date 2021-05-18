@@ -12,6 +12,8 @@ import imericxu.mazefx.core.solve_algorithm.SolveType
 import imericxu.mazefx.core.solve_algorithm.algorithms.AStar
 import imericxu.mazefx.core.solve_algorithm.algorithms.Breadth
 import imericxu.mazefx.core.solve_algorithm.algorithms.Tremaux
+import imericxu.mazefx.graphics.timer.MazeTimer
+import imericxu.mazefx.graphics.timer.SolveTimer
 import imericxu.mazefx.user_input.MazeOptions
 import javafx.animation.AnimationTimer
 import javafx.scene.canvas.Canvas
@@ -31,21 +33,9 @@ object Maze {
 				if (!doSolve) return
 				val solveAlgorithm = makeSolveAlgorithm(solveType, nodes, rows, cols, makeAStarHeuristic(cols))
 				if (doAnimateSolve) {
-					timerSolve = object : AnimationTimer() {
-						override fun handle(now: Long) {
-							mazeDrawer.update(solveAlgorithm)
-							mazeDrawer.updateStartEnd(solveAlgorithm.startId, solveAlgorithm.endId)
-							mazeDrawer.render()
-							mazeDrawer.renderPath(solveAlgorithm.path)
-							solveAlgorithm.changeList.clear()
-							if (solveAlgorithm.isFinished) {
-								stop()
-								return
-							}
-							solveAlgorithm.loopOnce()
-						}
+					timerSolve = SolveTimer(mazeDrawer, solveAlgorithm).also {
+						it.start()
 					}
-					timerSolve!!.start()
 				} else {
 					solveAlgorithm.finishImmediately()
 					mazeDrawer.update(solveAlgorithm.nodes, solveAlgorithm.states)
@@ -56,20 +46,9 @@ object Maze {
 			}
 
 			if (doAnimateMaze) {
-				timerMaze = object : AnimationTimer() {
-					override fun handle(now: Long) {
-						mazeDrawer.update(mazeAlgorithm)
-						mazeDrawer.render()
-						mazeAlgorithm.changeList.clear()
-						if (mazeAlgorithm.isFinished) {
-							startSolve(mazeAlgorithm.nodes)
-							stop()
-							return
-						}
-						mazeAlgorithm.loopOnce()
-					}
+				timerMaze = MazeTimer(mazeDrawer, mazeAlgorithm, ::startSolve).also {
+					it.start()
 				}
-				timerMaze.start()
 			} else {
 				mazeAlgorithm.finishImmediately()
 				mazeDrawer.update(mazeAlgorithm.nodes, mazeAlgorithm.states)
