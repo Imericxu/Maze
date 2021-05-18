@@ -63,10 +63,11 @@ public class MainController {
 	 */
 	@FXML
 	public void launchMaze() throws IOException {
-		final var stage = new MazeStage();
+		final MazeOptions options = parseInput();
+		final var stage = new MazeStage(options);
 		stage.setOnShown(event -> {
 			try {
-				new Maze(parseInput(), stage.canvas).generate();
+				new Maze(options, stage.canvas).generate();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
