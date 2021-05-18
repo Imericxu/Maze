@@ -3,6 +3,7 @@ package imericxu.mazefx.graphics
 import imericxu.mazefx.core.Algorithm
 import imericxu.mazefx.core.Node
 import imericxu.mazefx.core.State
+import javafx.geometry.Side
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 
@@ -53,14 +54,10 @@ class MazeDrawer(
 				val wallColor = if (states[connectionId] == State.SOLID) MazeColor.SOLID.color else cellColor
 
 				when (connectionId) {
-					// Top
-					id - cols -> drawWall(topLeft, 1, wallColor)
-					// Right
-					id + 1 -> drawWall(topLeft, 2, wallColor)
-					// Bottom
-					id + cols -> drawWall(topLeft, 3, wallColor)
-					// Left
-					else -> drawWall(topLeft, 4, wallColor)
+					id - cols -> drawWall(topLeft, Side.TOP, wallColor)
+					id + 1 -> drawWall(topLeft, Side.RIGHT, wallColor)
+					id + cols -> drawWall(topLeft, Side.BOTTOM, wallColor)
+					else -> drawWall(topLeft, Side.LEFT, wallColor)
 				}
 			}
 		}
@@ -79,15 +76,13 @@ class MazeDrawer(
 					if (states[connectionId] == State.SOLID) MazeColor.SOLID.color else cellColor
 
 				val connections = nodes[id].connections
-				// Right
 				with(id + 1) {
 					if (col < cols - 1 && connections.contains(this))
-						drawWall(topLeft, 2, getWallColor(this))
+						drawWall(topLeft, Side.RIGHT, getWallColor(this))
 				}
-				// Bottom
 				with(id + cols) {
 					if (row < rows - 1 && connections.contains(this))
-						drawWall(topLeft, 3, getWallColor(this))
+						drawWall(topLeft, Side.BOTTOM, getWallColor(this))
 				}
 
 				++id
@@ -134,19 +129,13 @@ class MazeDrawer(
 		gc.fillRect(topLeft.x, topLeft.y, cellSize, cellSize)
 	}
 
-	// TODO change side to JavaFX Side enum for safety
-	private fun drawWall(topLeft: Pos, side: Int, color: Color) {
+	private fun drawWall(topLeft: Pos, side: Side, color: Color) {
 		gc.fill = color
 		when (side) {
-			// Top
-			1 -> gc.fillRect(topLeft.x, topLeft.y - wallSize, cellSize, wallSize)
-			// Right
-			2 -> gc.fillRect(topLeft.x + cellSize, topLeft.y, wallSize, cellSize)
-			// Bottom
-			3 -> gc.fillRect(topLeft.x, topLeft.y + cellSize, cellSize, wallSize)
-			// Left
-			4 -> gc.fillRect(topLeft.x - wallSize, topLeft.y, wallSize, cellSize)
-			else -> throw IllegalArgumentException("Side $side not defined!")
+			Side.TOP -> gc.fillRect(topLeft.x, topLeft.y - wallSize, cellSize, wallSize)
+			Side.RIGHT -> gc.fillRect(topLeft.x + cellSize, topLeft.y, wallSize, cellSize)
+			Side.BOTTOM -> gc.fillRect(topLeft.x, topLeft.y + cellSize, cellSize, wallSize)
+			Side.LEFT -> gc.fillRect(topLeft.x - wallSize, topLeft.y, wallSize, cellSize)
 		}
 	}
 
