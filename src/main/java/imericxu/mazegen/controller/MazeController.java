@@ -1,10 +1,17 @@
 package imericxu.mazegen.controller;
 
+import imericxu.mazegen.core.maze_algorithm.MazeType;
+import imericxu.mazegen.core.solve_algorithm.SolveType;
+import imericxu.mazegen.graphics.Maze;
 import imericxu.mazegen.user_input.MazeOptions;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import org.controlsfx.control.ToggleSwitch;
+
+import java.io.IOException;
 
 public class MazeController {
 	@FXML
@@ -17,6 +24,27 @@ public class MazeController {
 	public TextField inputCols;
 	@FXML
 	public TextField inputRatio;
+	@FXML
+	public ComboBox<MazeType> comboMazeAlgorithm;
+	@FXML
+	public ComboBox<SolveType> comboSolveAlgorithm;
+	@FXML
+	public ToggleSwitch switchAnimateMaze;
+	@FXML
+	public ToggleSwitch switchDoSolve;
+	@FXML
+	public ToggleSwitch switchAnimateSolve;
+
+	@FXML
+	public void initialize() {
+		MainController.restrictInputs(inputRows, inputCols, inputRatio);
+
+		comboMazeAlgorithm.getItems().addAll(MazeType.values());
+		comboMazeAlgorithm.getSelectionModel().select(MazeType.RANDOM);
+
+		comboSolveAlgorithm.getItems().addAll(SolveType.values());
+		comboSolveAlgorithm.getSelectionModel().select(SolveType.RANDOM);
+	}
 
 	public void injectValues(MazeOptions mazeOptions) {
 		inputRows.setText(String.valueOf(mazeOptions.getRows()));
@@ -25,7 +53,26 @@ public class MazeController {
 	}
 
 	@FXML
-	public void generate() {
-		// TODO
+	public void generate() throws IOException {
+		final MazeOptions options = parseInput();
+		final Maze maze = new Maze(options, canvas);
+		// TODO Stop timers before generating
+		maze.generate();
+	}
+
+	private MazeOptions parseInput() {
+		final int rows = MainController.parseOrDefault(inputRows.getText(), 20, Integer::parseUnsignedInt);
+		final int cols = MainController.parseOrDefault(inputCols.getText(), 20, Integer::parseUnsignedInt);
+		final float ratio = MainController.parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
+		final MazeType mazeType = MainController.getMazeType(comboMazeAlgorithm);
+		final SolveType solveType = MainController.getSolveType(comboSolveAlgorithm);
+		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
+		final boolean doSolve = switchDoSolve.isSelected();
+		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
+		return new MazeOptions(
+				rows, cols, ratio,
+				mazeType, solveType,
+				doAnimateMaze, doSolve, doAnimateSolve
+		);
 	}
 }
