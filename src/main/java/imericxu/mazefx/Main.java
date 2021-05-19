@@ -20,7 +20,7 @@ public class Main extends Application {
 				getClass().getResource("/fxml/main.fxml")
 		));
 
-		primaryStage.setTitle("MazeSquare Generator");
+		primaryStage.setTitle("Maze Generator");
 		primaryStage.setScene(new Scene(root));
 		primaryStage.setResizable(false);
 		primaryStage.show();
