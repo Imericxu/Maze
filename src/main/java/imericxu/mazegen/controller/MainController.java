@@ -108,8 +108,8 @@ public class MainController {
 		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
 		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
 		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
-		final MazeType mazeType = getMazeType();
-		final SolveType solveType = getSolveType();
+		final MazeType mazeType = getMazeType(comboMazeAlgo);
+		final SolveType solveType = getSolveType(comboSolveAlgo);
 		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
@@ -121,7 +121,7 @@ public class MainController {
 		);
 	}
 
-	private SolveType getSolveType() {
+	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
 		final SolveType solveType;
 		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
 		if (selected == SolveType.RANDOM) {
@@ -132,7 +132,7 @@ public class MainController {
 		return solveType;
 	}
 
-	private MazeType getMazeType() {
+	public static MazeType getMazeType(ComboBox<MazeType> comboMazeAlgo) {
 		final MazeType mazeType;
 		MazeType selected = comboMazeAlgo.getSelectionModel().getSelectedItem();
 		if (selected == MazeType.RANDOM) {
