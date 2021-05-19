@@ -53,6 +53,28 @@ public class MainController {
 		return value;
 	}
 
+	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
+		final SolveType solveType;
+		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
+		if (selected == SolveType.RANDOM) {
+			final SolveType[] types = SolveType.values();
+			selected = types[random.nextInt(types.length - 1) + 1];
+		}
+		solveType = selected;
+		return solveType;
+	}
+
+	public static MazeType getMazeType(ComboBox<MazeType> comboMazeAlgo) {
+		final MazeType mazeType;
+		MazeType selected = comboMazeAlgo.getSelectionModel().getSelectedItem();
+		if (selected == MazeType.RANDOM) {
+			final MazeType[] types = MazeType.values();
+			selected = types[random.nextInt(types.length - 1) + 1];
+		}
+		mazeType = selected;
+		return mazeType;
+	}
+
 	@FXML
 	public void initialize() {
 		UnaryOperator<TextFormatter.Change> integerFilter = change ->
@@ -119,27 +141,5 @@ public class MainController {
 				mazeType, solveType,
 				doAnimateMaze, doSolve, doAnimateSolve
 		);
-	}
-
-	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
-		final SolveType solveType;
-		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
-		if (selected == SolveType.RANDOM) {
-			final SolveType[] types = SolveType.values();
-			selected = types[random.nextInt(types.length - 1) + 1];
-		}
-		solveType = selected;
-		return solveType;
-	}
-
-	public static MazeType getMazeType(ComboBox<MazeType> comboMazeAlgo) {
-		final MazeType mazeType;
-		MazeType selected = comboMazeAlgo.getSelectionModel().getSelectedItem();
-		if (selected == MazeType.RANDOM) {
-			final MazeType[] types = MazeType.values();
-			selected = types[random.nextInt(types.length - 1) + 1];
-		}
-		mazeType = selected;
-		return mazeType;
 	}
 }
