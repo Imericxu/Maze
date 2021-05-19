@@ -115,14 +115,9 @@ public class MainController {
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
 
 		return new MazeOptions(
-				rows,
-				cols,
-				ratio,
-				mazeType,
-				solveType,
-				doAnimateMaze,
-				doSolve,
-				doAnimateSolve
+				rows, cols, ratio,
+				mazeType, solveType,
+				doAnimateMaze, doSolve, doAnimateSolve
 		);
 	}
 
