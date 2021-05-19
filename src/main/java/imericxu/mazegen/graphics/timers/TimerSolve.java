@@ -20,6 +20,7 @@ public class TimerSolve extends AnimationTimer {
 	public void handle(long l) {
 		canvas.drawUpdates(solveAlgo);
 		canvas.drawStartAndEnd(solveAlgo.getStartId(), solveAlgo.getEndId());
+		// TODO represent the maze in a new way to prevent trails
 		canvas.drawPath(solveAlgo.getPath());
 		solveAlgo.getChangeList().clear();
 		if (solveAlgo.getFinished()) {
