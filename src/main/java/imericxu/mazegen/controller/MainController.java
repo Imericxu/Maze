@@ -19,6 +19,7 @@ import org.controlsfx.control.ToggleSwitch;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class MainController {
@@ -42,6 +43,16 @@ public class MainController {
 	@FXML
 	public ToggleSwitch switchAnimateSolve;
 
+	public static <T> T parseOrDefault(String string, T defaultValue, Function<String, T> parseFunction) {
+		T value;
+		try {
+			value = parseFunction.apply(string);
+		} catch (Exception e) {
+			value = defaultValue;
+		}
+		return value;
+	}
+
 	@FXML
 	public void initialize() {
 		UnaryOperator<TextFormatter.Change> integerFilter = change ->
@@ -55,7 +66,10 @@ public class MainController {
 		inputRatio.setTextFormatter(new TextFormatter<>(floatFilter));
 
 		comboMazeAlgo.getItems().addAll(MazeType.values());
+		comboMazeAlgo.getSelectionModel().select(MazeType.RANDOM);
+
 		comboSolveAlgo.getItems().addAll(SolveType.values());
+		comboSolveAlgo.getSelectionModel().select(SolveType.RANDOM);
 
 		removeFocusOnEscape(inputRows, inputCols, inputRatio, comboMazeAlgo, comboSolveAlgo);
 	}
@@ -88,39 +102,11 @@ public class MainController {
 	}
 
 	private MazeOptions parseInput() {
-		int rows;
-		try {
-			rows = Integer.parseInt(inputRows.getText());
-		} catch (NumberFormatException e) {
-			rows = 20;
-		}
-
-		int cols;
-		try {
-			cols = Integer.parseInt(inputCols.getText());
-		} catch (NumberFormatException e) {
-			cols = 20;
-		}
-
-		float cellWallRatio;
-		try {
-			cellWallRatio = Float.parseFloat(inputRatio.getText());
-		} catch (NumberFormatException e) {
-			cellWallRatio = 3;
-		}
-
-		MazeType mazeType = comboMazeAlgo.getSelectionModel().getSelectedItem();
-		if (mazeType == null || mazeType == MazeType.RANDOM) {
-			final var types = MazeType.values();
-			mazeType = types[random.nextInt(types.length - 1) + 1];
-		}
-
-		SolveType solveType = comboSolveAlgo.getSelectionModel().getSelectedItem();
-		if (solveType == null || solveType == SolveType.RANDOM) {
-			final var types = SolveType.values();
-			solveType = types[random.nextInt(types.length - 1) + 1];
-		}
-
+		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
+		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
+		final float cellWallRatio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
+		final MazeType mazeType = getMazeType();
+		final SolveType solveType = getSolveType();
 		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
 		final boolean doSolve = switchDoSolve.isSelected();
 		final boolean doAnimateSolve = switchAnimateSolve.isSelected();
@@ -135,5 +121,27 @@ public class MainController {
 				doSolve,
 				doAnimateSolve
 		);
+	}
+
+	private SolveType getSolveType() {
+		final SolveType solveType;
+		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
+		if (selected == SolveType.RANDOM) {
+			final SolveType[] types = SolveType.values();
+			selected = types[random.nextInt(types.length - 1) + 1];
+		}
+		solveType = selected;
+		return solveType;
+	}
+
+	private MazeType getMazeType() {
+		final MazeType mazeType;
+		MazeType selected = comboMazeAlgo.getSelectionModel().getSelectedItem();
+		if (selected == MazeType.RANDOM) {
+			final MazeType[] types = MazeType.values();
+			selected = types[random.nextInt(types.length - 1) + 1];
+		}
+		mazeType = selected;
+		return mazeType;
 	}
 }
