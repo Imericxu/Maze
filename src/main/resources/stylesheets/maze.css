@@ -10,7 +10,7 @@
 }
 
 #menu > * {
-	-fx-text-fill: white;
+	-fx-text-fill: #c3c3c3;
 }
 
 .label {
@@ -42,6 +42,51 @@
 
 .button:focused {
 	-fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
+
+.combo-box-base {
+	-fx-background-color: black, #505050, linear-gradient(from 50% 10% to 50% 80%, #242424, #151515);
+}
+
+.list-cell {
+	-fx-text-fill: #c3c3c3;
+	-fx-background-color: transparent;
+}
+
+.list-view {
+	-fx-background-color: black, #282828;
+}
+
+.list-view .list-cell:even {
+	-fx-background-color: #222;
+}
+
+.list-view .list-cell:selected {
+	-fx-background-color: #004eb6;
+}
+
+.list-view .list-cell:hover {
+	-fx-background-color: #003d8d;
+}
+
+.list-view .scroll-bar {
+	-fx-background-color: #1a1a1a;
+}
+
+.list-view .scroll-bar .thumb {
+	-fx-background-color: #666, #363636;
+}
+
+ToggleSwitch .thumb {
+	-fx-background-color: #7b7b7b, #c3c3c3;
+}
+
+ToggleSwitch .thumb-area {
+	-fx-background-color: #535353;
+}
+
+ToggleSwitch:selected .thumb-area {
+	-fx-background-color: #004eb6
 }
 
 .spacer {
