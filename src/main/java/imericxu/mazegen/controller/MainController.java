@@ -91,6 +91,9 @@ public class MainController {
 		stage.show();
 	}
 
+	/**
+	 * Puts focus on the root if the escape key is pressed when the given nodes are active
+	 */
 	private void removeFocusOnEscape(Node... nodes) {
 		final EventHandler<KeyEvent> removeFocus = event -> {
 			if (event.getCode() == KeyCode.ESCAPE) {
