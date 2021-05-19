@@ -1,9 +1,9 @@
-package imericxu.mazegen.core.maze_algorithm.algorithm
+package imericxu.mazegen.core.maze_algorithm.algorithms
 
 import imericxu.mazegen.core.Node
 import imericxu.mazegen.core.State
 import imericxu.mazegen.core.maze_algorithm.MazeAlgorithm
-import imericxu.mazegen.core.maze_algorithm.algorithm.helper.UnionFind
+import imericxu.mazegen.core.maze_algorithm.algorithms.helper.UnionFind
 
 /**
  * Randomized Kruskal’s Algorithm

@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR LGPL-2.1-or-later
  */
-package imericxu.mazegen.core.maze_algorithm.algorithm.helper;
+package imericxu.mazegen.core.maze_algorithm.algorithms.helper;
 
 import java.util.*;
 import java.util.stream.Collectors;
