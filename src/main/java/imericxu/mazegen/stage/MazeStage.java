@@ -14,7 +14,7 @@ public class MazeStage extends Stage {
 	public final Canvas canvas;
 
 	public MazeStage(MazeOptions mazeOptions) throws IOException {
-		final var loader = new FXMLLoader(getClass().getResource("/fxml/maze_scene.fxml"));
+		final var loader = new FXMLLoader(getClass().getResource("/fxml/maze.fxml"));
 		final Pane root = loader.load();
 
 		final MazeController controller = loader.getController();
