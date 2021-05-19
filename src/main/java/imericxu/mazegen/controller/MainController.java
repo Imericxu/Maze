@@ -104,7 +104,7 @@ public class MainController {
 	private MazeOptions parseInput() {
 		final int rows = parseOrDefault(inputRows.getText(), 20, Integer::parseInt);
 		final int cols = parseOrDefault(inputCols.getText(), 20, Integer::parseInt);
-		final float cellWallRatio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
+		final float ratio = parseOrDefault(inputRatio.getText(), 3.0f, Float::parseFloat);
 		final MazeType mazeType = getMazeType();
 		final SolveType solveType = getSolveType();
 		final boolean doAnimateMaze = switchAnimateMaze.isSelected();
@@ -114,7 +114,7 @@ public class MainController {
 		return new MazeOptions(
 				rows,
 				cols,
-				cellWallRatio,
+				ratio,
 				mazeType,
 				solveType,
 				doAnimateMaze,
