@@ -53,6 +53,18 @@ public class MainController {
 		return value;
 	}
 
+	public static void restrictInputs(TextField inputRows, TextField inputCols, TextField inputRatio) {
+		final UnaryOperator<TextFormatter.Change> integerFilter = change ->
+				change.getControlNewText().matches("\\d*") ? change : null;
+
+		final UnaryOperator<TextFormatter.Change> floatFilter = change ->
+				change.getControlNewText().matches("\\d*\\.?\\d*") ? change : null;
+
+		inputRows.setTextFormatter(new TextFormatter<>(integerFilter));
+		inputCols.setTextFormatter(new TextFormatter<>(integerFilter));
+		inputRatio.setTextFormatter(new TextFormatter<>(floatFilter));
+	}
+
 	public static SolveType getSolveType(ComboBox<SolveType> comboSolveAlgo) {
 		final SolveType solveType;
 		SolveType selected = comboSolveAlgo.getSelectionModel().getSelectedItem();
@@ -77,15 +89,7 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
-		UnaryOperator<TextFormatter.Change> integerFilter = change ->
-				change.getControlNewText().matches("\\d*") ? change : null;
-
-		UnaryOperator<TextFormatter.Change> floatFilter = change ->
-				change.getControlNewText().matches("\\d*\\.?\\d*") ? change : null;
-
-		inputRows.setTextFormatter(new TextFormatter<>(integerFilter));
-		inputCols.setTextFormatter(new TextFormatter<>(integerFilter));
-		inputRatio.setTextFormatter(new TextFormatter<>(floatFilter));
+		restrictInputs(inputRows, inputCols, inputRatio);
 
 		comboMazeAlgo.getItems().addAll(MazeType.values());
 		comboMazeAlgo.getSelectionModel().select(MazeType.RANDOM);
