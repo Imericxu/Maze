@@ -2,14 +2,14 @@
 
 Maze Generator is a JavaFX application that can generate rectangular mazes of custom sizes and solve them.
 
-### Maze Algorithms
+### [Maze Algorithms](https://github.com/Imericxu/Maze-JavaFX/tree/master/src/main/java/imericxu/mazefx/core/maze_algorithm)
 
 * Recursive Backtracker
 * Prim's Algorithm
 * Wilson's Algorithm
 * Kruskal's Algorithm
 
-### Solve Algorithms
+### [Solve Algorithms](https://github.com/Imericxu/Maze-JavaFX/tree/master/src/main/java/imericxu/mazefx/core/solve_algorithm)
 
 * Trémaux
 * A*
