@@ -203,12 +203,19 @@ class MazeDrawer(
 		gc.stroke()
 	}
 
+	/**
+	 * Clears the canvas and redraws everything
+	 */
 	private fun redraw() {
 		gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
 		gc.drawImage(image, origin.x, origin.y, scale * width, scale * height)
 		pathList?.let(::renderPath)
 	}
 
+	/**
+	 * Calculates and returns the appropriate scale and origin
+	 * such that the maze will fill the smallest canvas dimension
+	 */
 	private fun calcScaleAndOrigin(): ScaleAndOrigin {
 		val mazeRatio: Double = width.toDouble() / height
 		val canvasRatio: Double = canvas.width / canvas.height
