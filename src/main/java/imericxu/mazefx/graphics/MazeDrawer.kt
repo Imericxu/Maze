@@ -11,7 +11,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 class MazeDrawer(
-	canvas: Canvas,
+	private val canvas: Canvas,
 	private val rows: Int,
 	private val cols: Int,
 	cellWallRatio: Float
@@ -30,35 +30,26 @@ class MazeDrawer(
 	private val width: Int = FULL_SIZE * cols + wallSize
 	private val height: Int = FULL_SIZE * rows + wallSize
 	private val image: WritableImage = WritableImage(width, height)
-	private var origin: Pos
 	private var scale: Double
+	private var origin: Pos
 
+	// Fill the background of the image with the EMPTY color and add the entire image to the draw list
 	init {
-		// Fill the background of the image with the EMPTY color and add the entire image to the draw list
 		for (x in 0 until width) for (y in 0 until height)
 			image.pixelWriter.setArgb(x, y, MazeColor.EMPTY.argb)
 
 		drawList.add(Rect(0, 0, width, height))
+	}
 
-		// Calculate the default scale of the image based on the canvas size
-		val mazeRatio: Double = width.toDouble() / height
-		val canvasRatio: Double = canvas.width / canvas.height
+	// Calculate the default scale of the image based on the canvas size
+	init {
+		val (newScale, newOrigin) = calcScaleAndOrigin()
+		scale = newScale
+		origin = newOrigin
+	}
 
-		scale = if (mazeRatio < canvasRatio) {
-			canvas.height / height
-		} else {
-			canvas.width / width
-		}
-
-		val tempX: Double = (canvas.width - width) / 2
-		val tempY: Double = (canvas.height - height) / 2
-		val centerX: Double = canvas.width / 2
-		val centerY: Double = canvas.height / 2
-		origin = Pos(
-			x = centerX - (centerX - tempX) * scale,
-			y = centerY - (centerY - tempY) * scale
-		)
-
+	// Init canvas settings
+	init {
 		// Image smoothing causes antialiasing of our pixels, which we don't want, because we want sharp pixels
 		// Although, we do want it on when we're drawing less than a pixel
 		gc.isImageSmoothing = scale * min(wallSize, cellSize) < 1.0
@@ -202,6 +193,28 @@ class MazeDrawer(
 		gc.stroke()
 	}
 
+	private fun calcScaleAndOrigin(): ScaleOrigin {
+		val mazeRatio: Double = width.toDouble() / height
+		val canvasRatio: Double = canvas.width / canvas.height
+
+		val scale = if (mazeRatio < canvasRatio) {
+			canvas.height / height
+		} else {
+			canvas.width / width
+		}
+
+		val tempX: Double = (canvas.width - width) / 2
+		val tempY: Double = (canvas.height - height) / 2
+		val centerX: Double = canvas.width / 2
+		val centerY: Double = canvas.height / 2
+		val origin = Pos(
+			x = centerX - (centerX - tempX) * scale,
+			y = centerY - (centerY - tempY) * scale
+		)
+
+		return ScaleAndOrigin(scale, origin)
+	}
+
 	private fun IntPos.cellUpdateRect() =
 		Rect(
 			x = x - wallSize,
@@ -263,6 +276,8 @@ class MazeDrawer(
 	 * Holds the top-left coordinates and dimensions of a rectangle
 	 */
 	private data class Rect(val x: Int, val y: Int, val width: Int, val height: Int)
+
+	private data class ScaleAndOrigin(val scale: Double, val origin: Pos)
 
 	/**
 	 * The respective [MazeColor.argb] color value of a [State]
