@@ -30,6 +30,7 @@ class MazeDrawer(
 	private val width: Int = FULL_SIZE * cols + wallSize
 	private val height: Int = FULL_SIZE * rows + wallSize
 	private val image: WritableImage = WritableImage(width, height)
+	private var pathList: List<Int>? = null
 	private var scale: Double
 	private var origin: Pos
 
@@ -56,6 +57,14 @@ class MazeDrawer(
 
 		// Clear the canvas
 		gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
+
+		// Recalculate scale and origin then redraw on resize
+		canvas.boundsInParentProperty().addListener { _, _, _ ->
+			val (newScale, newOrigin) = calcScaleAndOrigin()
+			scale = newScale
+			origin = newOrigin
+			redraw()
+		}
 	}
 
 	/**
@@ -163,6 +172,7 @@ class MazeDrawer(
 	fun renderPath(pathList: List<Int>) {
 		if (pathList.isEmpty()) return
 
+		this.pathList = pathList
 		val halfCellSize = cellSize / 2.0
 
 		fun Int.calcPathPos(): Pos =
@@ -193,7 +203,13 @@ class MazeDrawer(
 		gc.stroke()
 	}
 
-	private fun calcScaleAndOrigin(): ScaleOrigin {
+	private fun redraw() {
+		gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
+		gc.drawImage(image, origin.x, origin.y, scale * width, scale * height)
+		pathList?.let(::renderPath)
+	}
+
+	private fun calcScaleAndOrigin(): ScaleAndOrigin {
 		val mazeRatio: Double = width.toDouble() / height
 		val canvasRatio: Double = canvas.width / canvas.height
 
